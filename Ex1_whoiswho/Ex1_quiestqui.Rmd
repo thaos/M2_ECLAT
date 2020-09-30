@@ -1,0 +1,193 @@
+---
+title: "Exercice 1 : Qui est qui ?"
+output: html_notebook
+---
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. Execute a chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*. 
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Ctrl+Alt+I*.
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Ctrl+Shift+K* to preview the HTML file).
+
+The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
+
+## Objectifs
+Dans le fichiers "Ex1_tas_df_wonames.rds" se trouvent stockees dans une matrice 11 series temporelles de temperature moyenne journaliere pour la periode 1979-2005. Chaque ligne de la matrice correspond à une date. les 29 fevriers ont été enlevés par soucis de simplicité. Chaque colonne correspond à une série temporelle. Elles sont extraites des jeux de donnees suivantes:
+
+  - les simulations historiques issues de l'exercice CMIP5 realisées par le modèle CNRM-CM5 pour le membre r1i1p1
+  
+  - les simulations historiques issues de l'exercice CMIP5 realisées par le modèle CNRM-CM5 pour le membre r2i1p1
+
+  - les simulations historiques issues de l'exercice CMIP5 realisées par le modèle IPSL-CM5A-LR pour le membre r1i1p1
+
+  - les simulations historiques issues de l'exercice CMIP5 realisées par le modèle IPSL-CM5A-LR pour le membre r2i1p1
+
+  - les simulations historiques issues de l'exercice EUROCORDEX  realisées à une resolution de 0.44 degree par le modèle CNRM-ALADIN53_v1 forcé par le modele globale CNRM-CERFACS-CNRM-CM5 pour le membre r2i1p1
+
+  - les simulations historiques issues de l'exercice EUROCORDEX  realisées à une resolution de 0.11 degree par le modèle CNRM-ALADIN53_v1 forcé par le modele globale CNRM-CERFACS-CNRM-CM5 pour le membre r2i1p1
+
+  - les reanalyses ERA5
+
+  - les reanalyses NCEP
+
+  - le produit d'observations EOBS sur une grille à 0.25 degrée
+
+  - le produit d'observations EOBS sur une grille à 0.1 degrée
+
+  - les observations de la station d'Orly issues du reseau Global Historical Climatology Network
+
+Pour les modèles, les réanalyses ou les produits grillés, les séries temporelles provienne du point de grille le plus proche de Paris.
+
+Les series temporelles sont données dans le désordre et l'objectif est de retrouver, dans la mesure du possible, le jeu de données dont elles sont extraites.
+
+Pour cela, il vous faudra vous renseigner sur ces jeux de donnees et identifier les différentes carateristiques (statistiques) qui vous permettront de les differencier. Il n'y a peut etre pas de solution à ce probleme, l'objectif réel de cette exercice est:
+
+1) d'illustrer les disparites entre jeux de donnees representant le "meme" objet: ra temperature au plus proche de Paris.
+
+2) vous familiariser avec la manipulation des jeux de donnees sous R.
+
+Indice: il doit etre facile de separer les jeux construits à partir d'observations des simulations des modeles climatiques. Pourquoi ?
+
+
+
+Lecture des données
+```{r}
+tas_df <- readRDS("Ex1_tas_df_wonames.rds")
+dates <- rownames(tas_df)
+```
+
+Calcul des moyennes annuelles
+```{r}
+yyyy <- substring(gsub("-", "", dates), 1, 4)
+compute_yearmean <- function(tas, yyyy){
+  tapply(tas, yyyy, mean, na.rm = TRUE)
+}
+yearmean <-
+  apply(
+    tas_df,
+    2,
+    compute_yearmean,
+    yyyy = yyyy
+  )
+```
+
+Calcul du cycle saisonnier moyen
+```{r}
+mmdd <- substring(gsub("-", "", dates), 5, 8)
+compute_seasonality <- function(tas, mmdd){
+  tapply(tas, mmdd, mean, na.rm = TRUE)
+}
+seasonality <-
+  apply(
+    tas_df,
+    2,
+    compute_seasonality,
+    mmdd = mmdd
+  )
+```
+
+Calcul des anomalies
+```{r}
+anomalies <- matrix(
+  as.vector(t(tas_df)) - as.vector(t(seasonality)),
+  nrow = nrow(tas_df),
+  ncol = ncol(tas_df),
+  byrow = TRUE
+)
+dimnames(anomalies) <- dimnames(tas_df)
+
+```
+
+
+Plot des séries temporelles brutes
+```{r, fig.width = 12, fig.height = 12}
+ylim <- range(tas_df, na.rm = TRUE)
+par(mfrow = c(4, 3))
+apply(tas_df, 2, plot, type = "l", ylim = ylim)
+```
+
+Plot des séries de moyenne annuelle
+```{r, fig.width = 12, fig.height = 12}
+ylim <- range(yearmean, na.rm = TRUE)
+par(mfrow = c(4, 3))
+apply(yearmean, 2, plot, type = "l", ylim = ylim)
+summary(yearmean)
+```
+
+Plot de la saisonnalité
+```{r, fig.width = 12, fig.height = 12}
+ylim <- range(seasonality, na.rm = TRUE)
+par(mfrow = c(4, 3))
+apply(seasonality, 2, plot, type = "l", ylim = ylim)
+summary(seasonality)
+```
+
+Plot des anomalies
+```{r, fig.width = 12, fig.height = 12}
+ylim <- range(anomalies, na.rm = TRUE)
+par(mfrow = c(4, 3))
+apply(anomalies, 2, plot, type = "l", ylim = ylim)
+summary(anomalies)
+```
+
+Histogramme des anomalies
+
+```{r, fig.width = 12, fig.height = 12}
+xlim <- range(anomalies, na.rm = TRUE)
+par(mfrow = c(4, 3))
+apply(anomalies, 2, hist, xlim = xlim)
+```
+
+
+Plot des coefficient d'autocorrelation
+```{r, fig.width = 12, fig.height = 12}
+pacf_ano <- apply(anomalies, 2, function(x) pacf(x, na.action = na.pass, plot = FALSE)$acf)
+par(mfrow = c(4, 3))
+apply(anomalies, 2, acf, na.action = na.pass)
+```
+
+Quelques statitiques
+```{r}
+mu <- apply(anomalies, 2, mean, na.rm = TRUE)
+sigma <- apply(anomalies, 2, sd, na.rm = TRUE)
+skewness <- apply(
+  sweep(anomalies, 2, mu, FUN = "-")^3,
+  2, mean, na.rm = TRUE
+) / sigma^3 
+kurtosis <- apply(
+  sweep(anomalies, 2, mu, FUN = "-")^4,
+  2, mean, na.rm = TRUE
+) / sigma^4 
+
+trends <- apply(anomalies, 2, function(y){
+  x <- cbind(1, seq_along(y))
+  ina <- is.na(y)
+  lm.fit(x = x[!ina,, drop = FALSE], y = y[!ina])$coefficients[2]
+})
+```
+
+
+Distance euclidienne entre characteristiques des differentes series temporelles
+```{r}
+d <- dist(t(tas_df)) # euclidean distances between the columns
+d <- dist(t(seasonality)) # euclidean distances between the columns
+d <- dist(t(anomalies)) # euclidean distances between the columns
+d <- dist(t(pacf_ano)) # euclidean distances between the columns
+d <- dist(trends) 
+d <- dist(cbind(mu, sigma, skewness, kurtosis)) 
+```
+
+
+
+Reprentation des modeles en fonction de leur distance sur un plan 2d
+```{r}
+fit <- cmdscale(d, eig=TRUE, k=2) # k is the number of dim
+fit # view results
+# plot solution
+x <- fit$points[,1]
+y <- fit$points[,2]
+par(mfrow = c(1, 1))
+plot(x, y, xlab="Coordinate 1", ylab="Coordinate 2",
+  main="Metric MDS", type="n")
+text(x, y, labels = colnames(anomalies), cex=.6)
+```
