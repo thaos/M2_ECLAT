@@ -1,0 +1,111 @@
+---
+title: "Exercice 2 : Effet de l'aggregation spatiale et temporelle sur les distributions statistiques"
+output: html_notebook
+---
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. Execute a chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*. 
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Ctrl+Alt+I*.
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Ctrl+Shift+K* to preview the HTML file).
+
+The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
+
+## Objectifs
+Le but est d'illustrer les changements dans les distributions d'une serie temporelle en fonction du type d'aggregation spatio-temporelle utilisé.
+
+Pour cela, nous utilisons les simulations pi-control, au pas de temps journalier, du modèle  CNRM-CM6-1-HR réalisées lors de l'exercice CMIP6. Nous y avons extrait les variables de température et de précipitation pour la zone géographique suivante: de 0 à 5 degrés de longitude et  de 45.18 à 49.68 degrés de latitude.
+
+Spatialement, nous aggrégeons les données pour des patchs de differentes tailles (1x1, 7x5, 11x9 points de grille) centré autours du point de grille situé à 2.5 degrés de longitude et 47.68 degrés de latitude. L'aggrégation est realiser soit en prenant la moyenne ou le maximum sur l'ensembre des points de grilles du patch.
+
+Temporellement, les données à aggreger consistent soit à la journée du 15 juillet, soit au mois de juillet dans son ensemble, soit à l'ensemble de l'année. L'aggrégation est realiser soit en prenant la moyenne ou le maximum sur l'ensembre des pas de temps de la periode d'intérêt.
+
+Les données sont tout d'abord aggrégées spatialement puis temporellement. Ainsi, un type d'aggrégation spatio-temporelle donne une série  temporelle univariée au pas de temps annuel. Pour un couple d'aggregateurs spatial (moyenne/maximum) et temporelle (moyenne/maximum), les series temporelles sont stockées sous forme d'une array avec les dimensions suivantes: temps, zone d'aggrégation et période d'aggrégation.  
+
+Les distributions peuvent être représentées sous forme d'histogramme (fonction hist), de densité estimée par des méthodes à noyau (fonction density) ou par fonction de répartition empirique (fonctien ecdf). 
+
+### Chargement des packages
+```{r}
+library(extRemes)
+```
+
+### Lecture des données
+```{r}
+tas_stagg <- readRDS(file = "tas_stagg.rds")
+pr_stagg <- readRDS(file = "pr_stagg.rds")
+tas <- readRDS(file = "tas.rds")
+pr <- readRDS(file = "pr.rds")
+dates <- dimnames(tas)[[3]]
+str(tas)
+
+tas_smean_tmean <- tas_stagg[[1]][[1]]  
+tas_smean_tmax <- tas_stagg[[1]][[2]]  
+tas_smax_tmean <- tas_stagg[[2]][[1]]  
+tas_smax_tmax <- tas_stagg[[2]][[2]]  
+str(tas_smean_tmean)
+
+pr_smean_tmean <- pr_stagg[[1]][[1]]  
+pr_smean_tmax <- pr_stagg[[1]][[2]]  
+pr_smax_tmean <- pr_stagg[[2]][[1]]  
+pr_smax_tmax <- pr_stagg[[2]][[2]]
+
+zones <- dimnames(tas_smax_tmax)[[2]]
+periods <- dimnames(tas_smax_tmax)[[3]]
+```
+
+```{r}
+y <- pr_smax_tmean
+breaks <- hist(c(y), breaks = 30, plot = FALSE)$breaks
+par(mfrow = c(3, 3))
+for(i in 1:3){
+  for(j in 1:3){
+    hist(y[, i, j], breaks = breaks, freq = FALSE, main = paste("spatial:", zones[i], "temporal:", periods[j])) 
+    x <- seq(min(breaks), max(breaks), length.out = 1000)
+    lines(x, dnorm(x, mean = mean(y[, i, j]), sd = sd(y[, i, j])), col = "red")
+    gev_fit <- fevd(y[, i, j], method = "Lmoments")
+    gev_param <- gev_fit$results
+    lines(x, devd(x, loc = gev_param[1], scale = gev_param[2], shape = gev_param[3]), col = "blue")
+}}
+```
+
+```{r}
+xrange <- range(c(y))
+par(mfrow = c(3, 3))
+for(i in 1:3){
+  for(j in 1:3){
+    plot(density(y[, i, j]), xlim = xrange, main = paste("spatial:", zones[i], "temporal:", periods[j])) 
+    x <- seq(xrange[1], xrange[2], length.out = 1000)
+    lines(x, dnorm(x, mean = mean(y[, i, j]), sd = sd(y[, i, j])), col = "red")
+    gev_fit <- fevd(y[, i, j], method = "Lmoments")
+    gev_param <- gev_fit$results
+    lines(x, devd(x, loc = gev_param[1], scale = gev_param[2], shape = gev_param[3]), col = "blue")
+}}
+
+```
+
+```{r}
+xrange <- range(c(y))
+par(mfrow = c(3, 3))
+for(i in 1:3){
+  for(j in 1:3){
+    plot(ecdf(y[, i, j]), xlim = xrange, main = paste("spatial:", zones[i], "temporal:", periods[j]), col = "grey") 
+    x <- seq(xrange[1], xrange[2], length.out = 1000)
+    lines(x, pnorm(x, mean = mean(y[, i, j]), sd = sd(y[, i, j])), col = "red")
+    gev_fit <- fevd(y[, i, j], method = "Lmoments")
+    gev_param <- gev_fit$results
+    lines(x, pevd(x, loc = gev_param[1], scale = gev_param[2], shape = gev_param[3]), col = "blue")
+}}
+```
+
+## Convergence en loi
+
+Théorème Central Limite.
+
+Théorème de la valeur extrême.
+
+
+Theorie vs Pratique: Hypothese i.i.d (independant et identiquement distribué)
+
+Sur les graphiques representant les distributions empiriques:
+- Tracer les courbes de densité et de fonction de repartition sous approximation gaussienne. Les parametres de la loi gaussienne peuvent être estimés par la méthodes des momemts, i.e. la moyenne est estimée par la moyenne empirique et la variance par la variance empirique. 
+- Tracer les courbes de densité et de fonction de repartition sous approximation de la loi GEV. Les parametres de la loi gaussienne peuvent être estimés via la fonction 'fevd' du package 'extRemes'. La densite et la fonction de repartition de la loi GEV peuvent être respectivement calculées via les fonctions 'devd' et 'pevd' de ce même package.
