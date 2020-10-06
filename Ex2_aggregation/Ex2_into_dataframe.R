@@ -156,30 +156,6 @@ tas_stagg <- tas_agg$stagg
 pr_spagg <- pr_agg$spagg
 pr_stagg <- pr_agg$stagg
 
-breaks <- hist(c(unlist(tas_stagg[[1]][[1]][,3,])), breaks = 30)$breaks
-par(mfrow = c(3, 1))
-hist(tas_stagg[[1]][[1]][,3,1], breaks = breaks)
-hist(tas_stagg[[1]][[1]][,3,2], breaks = breaks)
-hist(tas_stagg[[1]][[1]][,3,3], breaks = breaks)
-
-breaks <- hist(c(unlist(tas_spagg[[2]])), breaks = 30)$breaks
-par(mfrow = c(3, 1))
-hist(tas_spagg[[2]][,1], breaks = breaks)
-hist(tas_spagg[[2]][,2], breaks = breaks)
-hist(tas_spagg[[2]][,3], breaks = breaks)
-
-breaks <- hist(c(unlist(pr_stagg[[2]][[2]][,3,])), breaks = 30)$breaks
-par(mfrow = c(3, 1))
-hist(pr_stagg[[2]][[2]][,3,1], breaks = breaks)
-hist(pr_stagg[[2]][[2]][,3,2], breaks = breaks)
-hist(pr_stagg[[2]][[2]][,3,3], breaks = breaks)
-
-breaks <- hist(c(unlist(pr_spagg[[2]])), breaks = 30)$breaks
-par(mfrow = c(3, 1))
-hist(pr_spagg[[2]][,1], breaks = breaks)
-hist(pr_spagg[[2]][,2], breaks = breaks)
-hist(pr_spagg[[2]][,3], breaks = breaks)
-
 saveRDS(tas_stagg, file =  "tas_stagg.rds")
 saveRDS(tas, file =  "tas.rds")
 saveRDS(pr_stagg, file =  "pr_stagg.rds")

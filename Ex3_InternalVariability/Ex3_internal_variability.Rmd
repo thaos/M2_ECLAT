@@ -1,0 +1,162 @@
+---
+title: "Exercice 2 : Effet de l'aggregation spatiale et temporelle sur les distributions statistiques"
+output: html_notebook
+---
+
+This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. Execute a chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*. 
+
+Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Ctrl+Alt+I*.
+
+When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Ctrl+Shift+K* to preview the HTML file).
+
+The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
+
+## Objectifs
+Le but est d'illustrer l'effet de la variabilité climatique.
+
+simulations preindustrielles piControl:
+"Pre-Industrial coupled atmosphere/ocean control run. Imposes non-evolving pre-industrial conditions, which may include prescribed atmospheric concentrations or non-evolving emissions of gases, aerosols or their precursors, as well as unperturbed land use"
+
+
+### Lecture des données
+```{r}
+pi_df <- readRDS(file = "tas_pi.rds")
+hist_df <- readRDS(file = "tas_hist.rds")
+time_pi <- pi_df$time
+tas_pi <- pi_df$tas
+time_hist <- hist_df$time
+tas_hist <- hist_df$tas
+
+yyyy_pi <- as.numeric(substring(gsub("-", "", time_pi), 1, 4))
+yyyy_hist <- as.numeric(substring(gsub("-", "", time_hist), 1, 4))
+```
+
+### Combien d'années pour estimer la moyenne de temperature
+```{r}
+x <- seq_along(tas_pi)
+avg <- cumsum(tas_pi) / x
+plot(avg, type = "l")
+```
+### Combien d'années pour estimer l'ecart-type de la temperature temperature
+```{r}
+x <- seq_along(tas_pi)
+sd <- sqrt(cumsum(tas_pi^2)/x - avg^2)
+plot(sd, type = "l")
+```
+
+### Quelle est l'esperance de la tendance linéaire sur ces simulations ?
+### Combien d'annee faut-il pour converger vers la bonne valeur ?
+```{r}
+trend <- sapply(x[-(1:365)], function(i) lm.fit( y = tas_pi[1:i], x = cbind(1, x)[1:i, ])$coefficients[2])
+plot(trend, type = "l")
+summary(trend[101:200])
+```
+
+
+### Les tendances lineaire estimées sur les simulations historiques sont-elles cohérentes avec les tendances estimées sur les simulations pré-industrielles?
+
+### Définition des periodes pour le calcul des tendances linéaires
+```{r}
+nyear = 20
+by = nyear / 2
+y30pi <- c(seq(min(yyyy_pi), max(yyyy_pi) - nyear, by = by), max(yyyy_pi) - nyear + 1)
+y30hist <- c(seq(min(yyyy_hist), max(yyyy_hist) - nyear, by = by), max(yyyy_hist) - nyear + 1)
+```
+
+### Séries journalières
+```{r}
+ylim = range(tas_pi, tas_hist)
+plot(yyyy_pi, tas_pi, col = "grey", pch = 20, cex = 0.5)
+points(yyyy_hist, tas_hist, col = "black", pch = 20, cex = 0.3)
+```
+
+### Séries annuelles
+```{r}
+tas_byyear_pi <- tapply(tas_pi, yyyy_pi, mean)
+tas_byyear_hist <- tapply(tas_hist, yyyy_hist, mean)
+yyyy_pi_u <- unique(yyyy_pi)
+yyyy_hist_u <- unique(yyyy_hist)
+ylim <- range(tas_byyear_pi, tas_byyear_hist)
+plot(yyyy_pi_u, tas_byyear_pi, col = "grey", pch = 20, cex = 0.5)
+points(yyyy_hist_u, tas_byyear_hist, col = "black", pch = 20, cex = 0.5)
+```
+
+```{r, fig.width = 6, fig.height = 9}
+ylim <- range(tas_byyear_hist, tas_byyear_pi, na.rm = TRUE)
+par(mfrow = c(2, 1))
+plot(yyyy_pi_u, tas_byyear_pi, ylim = ylim)
+trend_pi <- sapply(y30pi, function(yearmin){
+  iyears <- which(yyyy_pi_u >= yearmin & yyyy_pi_u < (yearmin + 30))
+  fit <- lm.fit( y = tas_byyear_pi[iyears], x = cbind(1, yyyy_pi_u[iyears]))
+  lines(yyyy_pi_u[iyears], fit$fitted.values)
+})
+
+
+plot(yyyy_hist_u, tas_byyear_hist, ylim = ylim)
+trend_hist <- sapply(y30hist, function(yearmin){
+  iyears <- which(yyyy_hist_u >= yearmin & yyyy_hist_u < (yearmin + 30))
+  fit <- lm.fit( y = tas_byyear_hist[iyears], x = cbind(1, yyyy_hist_u[iyears]))
+  lines(yyyy_hist_u[iyears], fit$fitted.values)
+})
+```
+
+### Séries par moyenne glissante
+```{r}
+ma <- function(x, n = 20){filter(x, rep(1 / n, n), sides = 2)}
+yyyy_pi_ma <- ma(yyyy_pi_u )
+tas_ma_pi <- ma(tas_byyear_pi)
+yyyy_hist_ma <- ma(yyyy_hist_u)
+tas_ma_hist <- ma(tas_byyear_hist)
+ylim <- range(tas_ma_hist, tas_ma_pi, na.rm = TRUE)
+plot(yyyy_pi_ma, tas_ma_pi, col = "grey", pch = 20, cex = 0.5, ylim = ylim)
+points(yyyy_hist_ma, tas_ma_hist, col = "black", pch = 20, cex = 0.5, ylim = ylim)
+```
+
+```{r, fig.width = 6, fig.height = 9}
+ylim <- range(tas_ma_hist, tas_ma_pi, na.rm = TRUE)
+par(mfrow = c(2, 1))
+plot(yyyy_pi_ma, tas_ma_pi, ylim = ylim)
+trend_pi <- sapply(y30pi, function(yearmin){
+  iyears <- which(yyyy_pi_ma >= yearmin & yyyy_pi_ma < (yearmin + 30))
+  fit <- lm.fit( y = tas_ma_pi[iyears], x = cbind(1, yyyy_pi_ma[iyears]))
+  lines(yyyy_pi_ma[iyears], fit$fitted.values)
+})
+
+
+plot(yyyy_hist_ma, tas_ma_hist, ylim = ylim)
+trend_hist <- sapply(y30hist, function(yearmin){
+  iyears <- which(yyyy_hist_ma >= yearmin & yyyy_hist_ma < (yearmin + 30))
+  fit <- lm.fit( y = tas_ma_hist[iyears], x = cbind(1, yyyy_hist_ma[iyears]))
+  lines(yyyy_hist_ma[iyears], fit$fitted.values)
+})
+```
+
+### Comparaison des tendances entre simulations historiques et pré-industriel
+```{r}
+
+trend_pi <- sapply(y30pi, function(yearmin){
+  print(yearmin)
+  iyears <- which(yyyy_pi >= yearmin & yyyy_pi < (yearmin + nyear))
+  lm.fit( y = tas_pi[iyears], x = cbind(1, seq_along(iyears)))$coefficients[2]
+})
+trend_hist <- sapply(y30hist, function(yearmin){
+  iyears <- which(yyyy_hist >= yearmin & yyyy_hist < (yearmin + nyear))
+  lm.fit( y = tas_hist[iyears], x = cbind(1, seq_along(iyears)))$coefficients[2]
+})
+summary(trend_hist)
+
+hplot <- hist(trend_pi, breaks = 100, col = "orange", border = "white", yaxs = "i", xlim = range(trend_pi, trend_hist))
+summary(trend_pi)
+abline(v = quantile(trend_pi, probs = c(0.05, 0.95)), col = "red", lwd = 2)
+segments(x0 = trend_hist, y0 = 0, y1 =  0.5, lwd = 3)
+text(trend_hist, 0.5, labels = y30hist, srt = 90, pos = 3)
+```
+
+### Analogies avec les testes d'hypothèses statistiques
+1) Modelisation statistique: e.g. réponse aux forcages externes + variabilité interne <=> tendance déterministe + bruit
+2) Formulation de l'hypothése nulle H0: e.g. la reponse aux forcages externes est contante, en particulier entre 1990 et 2020 => la tendance lineaire est nulle entre 1990 et 2020
+3) Formulation de l'hypothése alternative H1: e.g. la tendance lineaire est differente de 0 entre 1990 et 2020.
+4) Choix et calcul de la statistique de test: e.g coefficient de régression linéaire calculé sur les simulations historiques pour la période 1990-2020.
+5) Estimation de la distribution sous H0 de la statistique de test: e.g. sous H0, les simulations historiques doivent se comporter comme les simulations de controle pré-industrielles donc la distribution de la statistique de test peut être approximée par la distribution empirique des tendances lineaires sur 30 ans mesurées sur les simulations pré-industrielles.
+6) Calculer sous l'hypothese H0 la probabilités d'avoir une statistique de test plus extreme que celle observée (i.e. la p-value)
+7) Decider ou non de rejeter le test en fonction du risque alpha que l'on est prêt à accepter. Le risque alpha est le risque que l'on se trompe si on rejette H0 (à tort). En statitique, on ne contrôle pas (en general) le risque que l'on se trompe si on decide de ne pas rejetter H0.   
