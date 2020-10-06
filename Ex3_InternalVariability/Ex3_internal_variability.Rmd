@@ -31,13 +31,13 @@ yyyy_pi <- as.numeric(substring(gsub("-", "", time_pi), 1, 4))
 yyyy_hist <- as.numeric(substring(gsub("-", "", time_hist), 1, 4))
 ```
 
-### Combien d'années pour estimer la moyenne de temperature
+### Combien d'années pour estimer la moyenne de temperature ?
 ```{r}
 x <- seq_along(tas_pi)
 avg <- cumsum(tas_pi) / x
 plot(avg, type = "l")
 ```
-### Combien d'années pour estimer l'ecart-type de la temperature temperature
+### Combien d'années pour estimer l'ecart-type de la temperature temperature ?
 ```{r}
 x <- seq_along(tas_pi)
 sd <- sqrt(cumsum(tas_pi^2)/x - avg^2)
@@ -53,7 +53,7 @@ summary(trend[101:200])
 ```
 
 
-### Les tendances lineaire estimées sur les simulations historiques sont-elles cohérentes avec les tendances estimées sur les simulations pré-industrielles?
+## Les tendances lineaire estimées sur les simulations historiques sont-elles cohérentes avec les tendances estimées sur les simulations pré-industrielles?
 
 ### Définition des periodes pour le calcul des tendances linéaires
 ```{r}
@@ -135,7 +135,6 @@ trend_hist <- sapply(y30hist, function(yearmin){
 ```{r}
 
 trend_pi <- sapply(y30pi, function(yearmin){
-  print(yearmin)
   iyears <- which(yyyy_pi >= yearmin & yyyy_pi < (yearmin + nyear))
   lm.fit( y = tas_pi[iyears], x = cbind(1, seq_along(iyears)))$coefficients[2]
 })
@@ -146,17 +145,23 @@ trend_hist <- sapply(y30hist, function(yearmin){
 summary(trend_hist)
 
 hplot <- hist(trend_pi, breaks = 100, col = "orange", border = "white", yaxs = "i", xlim = range(trend_pi, trend_hist))
-summary(trend_pi)
 abline(v = quantile(trend_pi, probs = c(0.05, 0.95)), col = "red", lwd = 2)
 segments(x0 = trend_hist, y0 = 0, y1 =  0.5, lwd = 3)
 text(trend_hist, 0.5, labels = y30hist, srt = 90, pos = 3)
 ```
 
 ### Analogies avec les testes d'hypothèses statistiques
+
 1) Modelisation statistique: e.g. réponse aux forcages externes + variabilité interne <=> tendance déterministe + bruit
-2) Formulation de l'hypothése nulle H0: e.g. la reponse aux forcages externes est contante, en particulier entre 1990 et 2020 => la tendance lineaire est nulle entre 1990 et 2020
+
+2) Formulation de l'hypothése nulle H0: e.g. la réponse aux forcages externes est constante par rapporh aux pré-industrielle, en particulier entre 1990 et 2020 => la tendance linéaire est nulle entre 1990 et 2020
+
 3) Formulation de l'hypothése alternative H1: e.g. la tendance lineaire est differente de 0 entre 1990 et 2020.
+
 4) Choix et calcul de la statistique de test: e.g coefficient de régression linéaire calculé sur les simulations historiques pour la période 1990-2020.
+
 5) Estimation de la distribution sous H0 de la statistique de test: e.g. sous H0, les simulations historiques doivent se comporter comme les simulations de controle pré-industrielles donc la distribution de la statistique de test peut être approximée par la distribution empirique des tendances lineaires sur 30 ans mesurées sur les simulations pré-industrielles.
+
 6) Calculer sous l'hypothese H0 la probabilités d'avoir une statistique de test plus extreme que celle observée (i.e. la p-value)
+
 7) Decider ou non de rejeter le test en fonction du risque alpha que l'on est prêt à accepter. Le risque alpha est le risque que l'on se trompe si on rejette H0 (à tort). En statitique, on ne contrôle pas (en general) le risque que l'on se trompe si on decide de ne pas rejetter H0.   
