@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Séance 2</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Soulivanh Thao   sthao@lsce.ipsl.fr" />
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Séance 2
+## données et outils pour l’étude des aléas climatiques
+### Soulivanh Thao <br/> <a href="mailto:sthao@lsce.ipsl.fr" class="email">sthao@lsce.ipsl.fr</a>
+### LSCE, ESTIMR
+### 2020/10/01 (updated: 2020-12-02)
+
+---
+
+# Disclaimer
+
+Je ne suis pas physicien, ni climatologue. Le cours reflète simplement ce que j'ai appris en tant que "statisticien" sur l'analyse de données climatiques. Vous en savez donc surement plus que moi sur le climat.
+
+Le cours n'est pas exhaustif et ne fait que survoler certains aspects. L'objectif est de vous familiariser avec certaines notions importante et de vous orienter vers des ressources complémentaires pous vous renseigner d'avantage de votre côté.
+
+Une grande partie est notamment inspirée des cours de [Julien Cattiaux](https://www.umr-cnrm.fr/spip.php?article629). Je vous invite grandement à les consulter.
+
+Bien sur, l'objectif de ce cours est aussi d'en discuter ensemble.
+
+C'est la premiere année que se tient ce cours (et dans un contexte un peu particulier...). Toutes les remarques dans le but de l'améliorer sont les bienvenus. En particulier, ne pas hésiter poser des questions. 
+
+---
+# Séquence 2: Données et outils statistiques
+
+- Séance 2: Pourquoi les statistiques pour étudier le climat? Avec quelles données ? + Séance pratique en R
+
+- Séance 3: Introduction aux notions statistiques de facon plus formelle (Philippe Naveau)
+
+- Séance 4: Séances pratique en R sur les effets de l'aggrégation spatiale et l'effet de la varibilité interne sur les estimations statistiques.
+
+- Séance 5: Introduction au downscaling statistique et corréction de bias par la pratique.
+
+Il y a beaucoup de pratique avec le logiciel R. Il vous faut donc l'installer ainsi que R studio.
+Vous pouvez faire [ces exercices](https://github.com/thaos/MathDACC_tutoR/blob/master/Rtuto_basics/basics_tuto_exercices.R) pour vous familiariser avec R. La correction est disponible [ici](https://github.com/thaos/MathDACC_tutoR/blob/master/Rtuto_basics/basics_tuto.R.completed).
+
+---
+# Le climat est défini de facon statistique
+
+
+
+**Climate:**
+
+&gt; Climate in a narrow sense is usually defined as the &lt;font color="blue"&gt;*average weather*&lt;/font&gt;, or more rigorously, as  &lt;font color="blue"&gt;*the statistical description*&lt;/font&gt; in terms of the  &lt;font color="blue"&gt;*mean*&lt;/font&gt; and  &lt;font color="blue"&gt;*variability*&lt;/font&gt; of relevant quantities over a period of time ranging from months to thousands or millions of years. 
+
+&gt; The classical period for  &lt;font color="blue"&gt;*averaging*&lt;/font&gt; these variables is 30 years, as defined by the World Meteorological Organization.
+
+&gt; The relevant quantities are most often surface variables such as temperature, precipitation and wind. 
+
+&gt; Climate in a wider sense is the state, including a  &lt;font color="blue"&gt;*statistical description*&lt;/font&gt;, of the climate system
+
+[IPCC, 2013: Annex III: Glossary](https://www.ipcc.ch/site/assets/uploads/2018/02/WG1AR5_AnnexIII_FINAL.pdf)
+
+---
+# Climat et météo
+
+![](Figs/climatevsmeteo.png)
+
+***Le climat est comme une distribution de probabilité et la méteo  ses réalisation.***
+
+---
+# Systèmes chaotiques
+
+**Chaotic:**
+
+&gt; A dynamical system such as the climate system, governed by nonlinear deterministic equations (see Nonlinearity), may exhibit erratic or chaotic behaviour in the sense that very small changes in the initial state of the system in time lead to large and apparently unpredictable changes in its temporal evolution. 
+
+&gt; Such chaotic behaviour limits the predictability of the state of a nonlinear dynamical system at specific future times, although changes in its statistics may still be predictable given changes in the system parameters or boundary conditions
+
+[IPCC, 2013: Annex III: Glossary](https://www.ipcc.ch/site/assets/uploads/2018/02/WG1AR5_AnnexIII_FINAL.pdf)
+
+
+---
+# Exemple: le système de Lorenz
+
+&lt;p align="center"&gt;
+&lt;img src="Figs/TwoLorenzOrbits.jpg" height="400" /&gt;
+&lt;br/&gt;
+&lt;a href="https://en.wikipedia.org/wiki/Image:TwoLorenzOrbits.jpg"&gt;from en.wikipedi.org&lt;/a&gt;
+&lt;/p&gt;
+
+
+
+---
+# Systèmes déterministes et aléas
+
+Lorsque l'on simule l'évolution du climat au 20ème, on ne connait pas assez précisément les conditions initiales de l'ère pré-industrielle. 
+
+Par exemple, la trajectoire de la température moyenne globale ne peut donc être exactement reproduite. 
+
+
+&lt;p align="center"&gt;
+&lt;img src="Figs/danda.png"  height="300" /&gt;
+&lt;br/&gt;
+&lt;a href="(https://www.ipcc.ch/site/assets/uploads/2018/02/WG1AR5_Chapter10_FINAL.pdf"&gt;IPCC AR5, Fig. 10.1&lt;/a&gt;
+&lt;/p&gt;
+
+
+---
+
+# Modélisation statisque
+
+
+En modélisation statistique, la partie du signal que l’on pense être capable de prédire est souvent supposée déterministe.  Le reste est modélisé comme du bruit, i.e. par une variable aléatoire.
+
+&lt;br/&gt;
+Exemple: étude de tendance par régression linéaire: 
+
+`$$Y = a X + b + \epsilon$$`
+avec par exemple 
+
+- `\(X\)`, le temps
+- `\(Y\)`, la temperature
+- `\(\epsilon\)`, du bruit
+
+
+Pour comprendre ce qui peut être modélisé comme un signal deterministe ou comme du bruit, il faut connaître les différentes sources de variabilité climatique.
+
+.footnote[Pour l'analyse de tendance, voir aussi [IPCC AR5, Chapter 2, Box 2.2, p 179](https://www.ipcc.ch/site/assets/uploads/2017/09/WG1AR5_Chapter02_FINAL.pdf
+)]
+---
+# Décomposition de la variabilité climatique
+ &lt;br/&gt;
+&lt;ul&gt;
+  &lt;li style="list-style-type: none;"&gt;Climat = état moyen + variabilité climatique.&lt;/li&gt; 
+  &lt;br/&gt; &lt;br/&gt;
+  &lt;li style="list-style-type: none;"&gt;Variabilité climatique = variabilité interne + forçages externes.&lt;/li&gt; 
+  &lt;br/&gt; &lt;br/&gt;
+  &lt;li style="list-style-type: none;"&gt;Forçages externes = forçages naturels + forçages anthropiques.&lt;/li&gt; 
+  &lt;br/&gt; &lt;br/&gt;
+  &lt;li style="list-style-type: none;"&gt;Variabilité interne + forçages naturels = variabilité naturelle.&lt;/li&gt; 
+  &lt;br/&gt; &lt;br/&gt;
+&lt;/ul&gt;
+ &lt;br/&gt;
+
+
+.footnote[repris de Cattiaux, Système Climatique IENM, [notes](https://www.umr-cnrm.fr/IMG/pdf/cattiaux_climat_notes_de_cours-2.pdf
+) et  [cours 3/10](https://www.umr-cnrm.fr/IMG/pdf/cattiaux_ienm_climat_03_print.pdf) (1A)]
+---
+
+# Modélisation statisque
+
+
+
+&lt;br/&gt;
+ 
+`$$\underbrace{\text{Climat}}_{aléatoire} = \underbrace{\text{état moyen} +  \text{forçages externes}}_{déterministe} + \underbrace{\text{variabilité interne}}_{aléatoire}$$`
+ &lt;br/&gt;
+ &lt;dl&gt;
+  &lt;dt&gt;**réponse du climat aux forcages externes**&lt;/dt&gt;
+  &lt;dd&gt;- considérée comme déterministe &lt;/dd&gt;
+  &lt;dd&gt;- gouvernée par de grands équilibres physiques (bilan d'énergie)&lt;/dd&gt;
+  &lt;br/&gt;&lt;br/&gt;
+  &lt;dt&gt;**variabilité interne**&lt;/dt&gt;
+  &lt;dd&gt;- ce qui modifie la répartition de l'énergie à l'intérieur du système à l'équilibre&lt;/dd&gt;
+  &lt;dd&gt;- difficile à prévoir de par son charactère chaotique&lt;/dd&gt;
+  &lt;dd&gt;- considérée comme aléatoire&lt;/dd&gt;
+&lt;/dl&gt;
+
+---
+
+
+# Différentes échelles temporelles
+
+&lt;br/&gt;
+
+&lt;p align="center"&gt;
+&lt;img src="Figs/echelle_de_variabilite.png"/&gt;
+&lt;br/&gt;
+&lt;a href="https://www.umr-cnrm.fr/IMG/pdf/cattiaux_ienm_climat_03_print.pdf"&gt;de Cattiaux, Système Climatique IENM 3/10 (1A)&lt;/a&gt;
+&lt;/p&gt;
+
+
+&lt;br/&gt;
+
+
+Par exemple, on peut modéliser des données horraires par:
+$$
+`\begin{aligned}
+\text{Climat} =  &amp;\text{moyenne } +  \\
+&amp;\color{green}{\text{tendance}} +  \color{green}{\text{cycle saisonnier moyen}} +  \color{green}{\text{cycle diurne moyen }} + \\
+&amp;\color{blue}{\text{bruit}}
+\end{aligned}`
+$$
+
+---
+# Modéliser le bruit
+
+&lt;br/&gt;
+- **Distribution**, e.g. gaussienne, uniforme...
+
+&lt;br/&gt;
+- **Dependance temporelle** (autocorrelation)
+
+  - sans dépendance, e.g [bruit blanc](https://en.wikipedia.org/wiki/White_noise#White_noise_vector)
+  
+  - avec dépendance. e.g [processus autorégressif](https://en.wikipedia.org/wiki/Autoregressive_model), [processus moving-average](https://en.wikipedia.org/wiki/Moving-average_model)
+
+&lt;br/&gt;
+- **Stationnaire**: Les propriétés statistique du bruit évoluent elle dans le temps ?
+
+---
+# Dependance temporelle
+![](S2_DataTools_files/figure-html/unnamed-chunk-1-1.svg)&lt;!-- --&gt;
+
+---
+# Stationarité ?
+![](S2_DataTools_files/figure-html/unnamed-chunk-2-1.svg)&lt;!-- --&gt;
+
+---
+# Les données
+
+Les observations
+
+Les simulations climatiques
+
+Les réanalyses
+
+---
+# Les observations
+
+&lt;p align="center"&gt;
+&lt;img src="Figs/gos-fullsize.jpg"/&gt;
+&lt;br/&gt;
+&lt;a href="https://public.wmo.int/en/about-us/vision-and-mission/wmo-integrated-global-observing-system"&gt;Source WMO&lt;/a&gt;
+&lt;/p&gt;
+
+
+
+---
+# Incertitudes dans les mesures
+
+&lt;br/&gt;
+
+
+&gt; The uncertainty in observational records encompasses
+
+&gt;  - instrumental/recording errors.
+
+&gt; - effects of representation (e.g., exposure, observing frequency or timing).
+
+&gt; - effects due to physical changes in the instrumentation (such as station relocations or new satellites).
+
+
+[IPCC AR5, Box 2.1](https://www.ipcc.ch/site/assets/uploads/2017/09/WG1AR5_Chapter02_FINAL.pdf
+)
+---
+# Erreurs instrumentales:  altimétrie
+
+&lt;p align="center"&gt;
+&lt;img src="Figs/altimetry_corrections_summary1.jpg"/&gt;
+&lt;br/&gt;
+&lt;a href="http://www.altimetry.info/radar-altimetry-tutorial/data-flow/data-processing/geophysical-corrections/"&gt;Source: altimetry.info&lt;/a&gt;
+&lt;/p&gt;
+
+
+---
+# Erreurs instrumentales:  altimétrie
+
+
+**Error budget of Envisat Altimetry Mission**
+
+Envisat Altimetry | Specified | Observed | Comments 
+------------ | :------------- | :----------- | :----------- 
+ Altimeter noise | 4.5cm | 2cm | Altimeter noise computed on post launch data
+ Sea State Bias | 2cm | 0.5cm | SSB error estimated from differences between different empirical models. Value at 2 mSWH. 
+ Ionosphere  | 0.2cm  | 0.7cm |Derived from cross-sensor comparisons
+ Dry troposphere | 0.7cm | 0.7cm | From uncertainties in ECMWF atmospheric fields used to derive the correction. Value at 2-3 hPa sea level pression. 
+ Wet troposphere | 1.4cm | 1.5cm | Comparisons with ECMWF correction.
+ Radial Orbit error| 2cm | 1.7cm | From POD operational monitoring
+
+[Source: CLS](https://earth.esa.int/documents/700255/3528455/Error_Budget_Envisat_Altimetry_Mission.pdf)
+
+---
+
+# Erreurs instrumentales:  pluviomètre 
+
+
+&lt;p align="center"&gt;
+
+&lt;strong&gt;Effet Venturi&lt;/strong&gt;
+&lt;br/&gt;
+&lt;img src="Figs/venturi.jpg"/&gt;
+&lt;/p&gt;
+
+&gt; les pertes attribuées au vent sont de l’ordre de 2 à 15% dans le cas de la pluie, 
+
+&gt; et pouvant atteindre 80% pour la neige (Sevrük, 1996). 
+
+[Thèse Olivier Mestre (2010)](http://hydrologie.org/THE/MESTRE.pdf)
+
+---
+
+# Echantillonage
+
+&lt;p align="center"&gt;
+
+&lt;strong&gt;Orbit de SWOT&lt;/strong&gt;
+&lt;br/&gt;
+&lt;img src="Figs/swot_nominal_orbit.png"/&gt;
+
+&lt;a href=https://swot.jpl.nasa.gov/resources/89/swot-science-orbit/"&gt;C. Ubelmann, CLS (left, center) and JPL/NASA (right)&lt;/a&gt;
+
+&lt;/p&gt;
+
+---
+
+# Echantillonage
+
+&lt;p align="center"&gt;
+&lt;strong&gt;Station coverage for the CRU TS dataset &lt;/strong&gt;
+&lt;br/&gt;
+&lt;img src="Figs/CRU_coverage_1.png" height="350"/&gt;
+&lt;img src="Figs/CRU_coverage_2.png" height="350"/&gt;
+&lt;br/&gt;
+
+&lt;a href="https://doi.org/10.1038/s41597-020-0453-3"&gt;Harris et al. (2020)&lt;/a&gt;
+&lt;/p&gt;
+
+---
+
+
+# Homogénéité des séries climatologiques
+&lt;br/&gt;
+
+&gt; Les séries climatologiques instrumentales sont le résultat de la superposition de deux signaux bien distincts : 
+
+&gt; − L’évolution climatique que l’on cherche à étudier.
+
+&gt; − Les ruptures dues à la modification des conditions de mesure. 
+
+&gt; Malheureusement, ces ruptures artificielles peuvent être du même ordre de grandeur que les caractéristiques climatiques que l’on veut mettre en évidence. 
+
+&gt; Les séries brutes sont la plupart du temps complètement faussées par ces anomalies, qu’il va falloir détecter, puis corriger.
+
+[Thèse Olivier Mestre (2010)](http://hydrologie.org/THE/MESTRE.pdf)
+
+---
+
+# Homogénéisation relative
+
+&lt;p align="center"&gt;
+&lt;img src="Figs/homog_bourges.png" height="450"/&gt;
+&lt;br/&gt;
+&lt;a href="http://hydrologie.org/THE/MESTRE.pdf"&gt;Thèse Olivier Mestre (2010)&lt;/a&gt;
+&lt;/p&gt;
+
+
+
+
+
+---
+# Homogénéisation relative
+
+&lt;p align="center"&gt;
+&lt;img src="Figs/homog_synthese.png" height="450"/&gt;
+&lt;br/&gt;
+&lt;a href="http://hydrologie.org/THE/MESTRE.pdf"&gt;Thèse Olivier Mestre (2010)&lt;/a&gt;
+&lt;/p&gt;
+
+---
+# Homogénéisation : effet sur les tendances 
+
+&lt;p align="center"&gt;
+
+&lt;br/&gt;
+&lt;img src="Figs/homog_map_avant.png" height="400""/&gt;
+&lt;img src="Figs/homog_map_apres.png" height="400"/&gt;
+&lt;br/&gt;
+&lt;a href="http://hydrologie.org/THE/MESTRE.pdf"&gt;Thèse Olivier Mestre (2010)&lt;/a&gt;
+&lt;br/&gt;
+&lt;/p&gt;
+
+---
+# Spatialisation des données
+
+&lt;p align="center"&gt;
+&lt;img src="Figs/CRU_coverage_small.png"/&gt;
+&lt;br/&gt;
+&lt;img src="Figs/down_arrow.png" height="50"/&gt;
+&lt;br/&gt;
+&lt;img src="Figs/cruts_gridded_small.jpg"/&gt;
+&lt;br/&gt;
+&lt;a href="https://doi.org/10.1038/s41597-020-0453-3"&gt;Harris et al. (2020)&lt;/a&gt; et 
+&lt;a href="https://www.globalclimatemonitor.org"&gt;www.globalclimatemonitor.org&lt;/a&gt;
+&lt;br/&gt;
+&lt;/p&gt;
+
+---
+# Interpolation 
+
+**Exemple: inverse distance weighting**
+
+A general form of finding an interpolated value `\(u\)` at a given point `\(x\)` based on samples `\(u_i=u(x_i)\)` for `\(i=1,2,...,N\)` using IDW is an interpolating function:
+
+`$$y(\mathbf{x}) = \begin{cases}
+ \dfrac{\sum_{i = 1}^{N}{ w_i(\mathbf{x}) y_i } }{ \sum_{i = 1}^{N}{ w_i(\mathbf{x}) } }, &amp; \text{if } d(\mathbf{x},\mathbf{x}_i) \neq 0 \text{ for all } i, \\
+ y_i, &amp; \text{if } d(\mathbf{x},\mathbf{x}_i) = 0 \text{ for some } i,
+\end{cases}$$`
+
+where
+`$$w_i(\mathbf{x}) =  \frac{1}{d(\mathbf{x},\mathbf{x}_i)^p}$$`
+
+[Source: Wikipedia](https://en.wikipedia.org/wiki/Inverse_distance_weighting)
+
+---
+# Exemple synthetique
+
+![](S2_DataTools_files/figure-html/unnamed-chunk-3-1.svg)&lt;!-- --&gt;
+
+---
+# Qualité de l'interpolation
+
+&lt;p align="center"&gt;
+&lt;strong&gt;Evaluation par cross-validation&lt;/strong&gt;
+&lt;img src="Figs/CRU_interp_MSE.png"/&gt;
+&lt;br/&gt;
+&lt;img src="Figs/CRU_interp_corr.png"/&gt;
+&lt;br/&gt;
+&lt;a href="https://doi.org/10.1038/s41597-020-0453-3"&gt;Harris et al. (2020)&lt;/a&gt; 
+&lt;br/&gt;
+&lt;/p&gt;
+
+---
+
+# Aucun jeu d'observations n'est parfait.
+
+&lt;br/&gt;
+Quelle est la précision des mesures et leur biais ?
+
+&lt;br/&gt;
+Quelle est l'echantillonnage spatiale et temporel ?
+
+&lt;br/&gt;
+Y a-t-il des ruptures dans les séries temporelles ?
+
+&lt;br/&gt;
+Comment est évaluée la qualité des données et quels sont les post-traitements appliqués ?
+
+
+---
+# Les simulations climatiques
+
+&lt;p align="center"&gt;
+&lt;strong&gt; Le système climatique &lt;/strong&gt;
+&lt;br/&gt; Quelles approximations sommes nous prêts à faire ?
+&lt;img src="Figs/IPCC_ClimateSystem.png" height="400"/&gt;
+&lt;br/&gt;
+&lt;a href="http://www.ipcc.ch/publications_and_data/ar4/wg1/en/contents.html"&gt;Source: IPCC AR4, FAQ 1.2, Figure 1. &lt;/a&gt;
+&lt;br/&gt;
+&lt;/p&gt;
+---
+
+# Quelles composantes modéliser ?
+
+&lt;p align="center"&gt;
+&lt;img src="Figs/IPCC_EvolutionComponent.png" height="500"/&gt;
+&lt;br/&gt;
+&lt;a href="http://www.ipcc.ch/publications_and_data/ar4/wg1/en/contents.html"&gt;Source: IPCC AR4, Figure 1.2 &lt;/a&gt;
+&lt;br/&gt;
+&lt;/p&gt;
+
+---
+# A quelle résolution ?
+
+&lt;p align="center"&gt;
+&lt;img src="Figs/IPCC_EvolutionResolution.png" height="500"/&gt;
+&lt;br/&gt;
+&lt;a href="http://www.ipcc.ch/publications_and_data/ar4/wg1/en/contents.html"&gt;Source: IPCC AR4, Figure 1.4 &lt;/a&gt;
+&lt;br/&gt;
+&lt;/p&gt;
+
+---
+# Et les processus sous-maille?
+
+
+
+.pull-left[
+**Paramétrage:** *Etablir des relations entre les variables à grande échelle effectivement modélisées et les effets de ces processus sous-mailles, dont on établit la moyenne pour une zone ou une durée donnée.*
+
+&lt;br/&gt;
+
+The differences between parametrizations are an important reason why climate model results differ. 
+]
+
+.pull-right[
+![](Figs/gcm_grid_ruddiman.png)
+]
+
+Sources: 
+[IPCC, 2013: Annex III: Glossary](https://www.ipcc.ch/site/assets/uploads/2018/02/WG1AR5_AnnexIII_FINAL.pdf), 
+[IPCC AR4 (2007), Chapter 8, 8.2.1.3 Parametrizations](http://www.ipcc.ch/publications_and_data/ar4/wg1/en/contents.html) et figure de 
+[Ruddiman (2007)](https://www.macmillanlearning.com/college/us/product/Earths-Climate/p/1429255250)
+
+
+---
+# Influence sur la varibilité interne
+
+&lt;p align="center"&gt;
+&lt;img src="Figs/rsta20140426f03.jpg" height="500"/&gt;
+&lt;br/&gt;
+&lt;a href="https://doi.org/10.1098/rsta.2014.0426"&gt;Sutton et al. (2015)&lt;/a&gt;
+&lt;br/&gt;
+&lt;/p&gt;
+
+
+---
+# Influence sur la sensibilité climatique
+
+
+&lt;p align="center"&gt;
+&lt;img src="Figs/IPCC_ECS_Feedbacks.png" height="450"/&gt;
+&lt;br/&gt;
+&lt;a href="https://www.ipcc.ch/site/assets/uploads/2018/02/WG1AR5_Chapter09_FINAL.pdf"&gt;IPCC AR5, Figure 9.43&lt;/a&gt;
+&lt;br/&gt;
+&lt;/p&gt;
+
+A voir également: [cours de Brian E. J. Rose, ATM 623: Climate Modeling ](https://nbviewer.jupyter.org/github/brian-rose/ClimateModeling_courseware/blob/master/Lectures/Lecture05%20--%20Climate%20system%20and%20climate%20models.ipynb)
+
+---
+# et les projections climatiques
+
+&lt;p align="center"&gt;
+&lt;img src="Figs/IPCC_RCP.png" height="450"/&gt;
+&lt;br/&gt;
+&lt;a href="https://www.ipcc.ch/site/assets/uploads/2018/02/SYR_AR5_FINAL_full.pdf"&gt;IPCC AR5, Figure SPM.6&lt;/a&gt;
+&lt;br/&gt;
+&lt;/p&gt;
+
+---
+# Décomposition de l'incertitude
+
+&lt;p align="center"&gt;
+&lt;img src="Figs/Lehner_tasTitle.png"/&gt;
+&lt;br/&gt;
+&lt;img src="Figs/Lehner_tasPlot.png"/&gt;
+&lt;br/&gt;
+&lt;img src="Figs/Lehner_prTitle.png"/&gt;
+&lt;br/&gt;
+&lt;img src="Figs/Lehner_prPlot.png"/&gt;
+&lt;br/&gt;
+&lt;a href="https://doi.org/10.5194/esd-11-491-2020"&gt;Lehner et al. (2020)&lt;/a&gt;
+&lt;br/&gt;
+&lt;/p&gt;
+
+---
+# Modèles régionaux
+
+&lt;p align="center"&gt;
+&lt;img src="Figs/Giorgi_CORDEX.png" height="450"/&gt;
+&lt;br/&gt;
+&lt;a href="https://doi.org/10.1146/annurev-environ-102014-021217"&gt;Giorgi et Gutowski Jr. (2015)&lt;/a&gt;
+&lt;br/&gt;
+&lt;/p&gt;
+
+---
+# Décomposition de l'incertitude
+
+&lt;p align="center"&gt;
+
+&lt;img src="Figs/Evin_MontBlanc_VarianceDecomp.png" height="300"/&gt;
+&lt;br/&gt;
+&lt;img src="Figs/Evin_GCM_RCM.png" height="200"/&gt;
+&lt;br/&gt;
+&lt;a href="https://doi.org/10.1175/JCLI-D-18-0606.1"&gt;Evin et al. (2019)&lt;/a&gt;
+&lt;br/&gt;
+&lt;/p&gt;
+
+---
+# Aucun modèle n'est parfait
+
+Quelles approximations est-on fait à faire, en particulier vis-à-vis de la résolution et des processus explicitement modélisés ?
+
+Où se situe les simulations d'un modèle par rapport aux autres?
+
+---
+# Reanalysis
+
+&gt; Reanalyses are estimates of historical atmospheric temperature and wind or oceanographic temperature and current, and other quantities, 
+
+&gt; created by processing past meteorological or oceanographic data using fixed state-of-the-art weather forecasting or ocean circulation models with data assimilation techniques. 
+
+&gt; Using fixed data assimilation avoids effects from the changing analysis system that occur in operational analyses. 
+
+&gt; Although continuity is improved, global reanalyses still suffer from changing coverage and biases in the observing systems.
+
+[IPCC, 2013: Annex III: Glossary](https://www.ipcc.ch/site/assets/uploads/2018/02/WG1AR5_AnnexIII_FINAL.pdf)
+
+---
+# Data assimilation
+
+&gt; DA is the approximation of the true state of some physical system at
+a given time by combining time-distributed observations with a dynamic model in an
+optimal way.
+
+[Asch et al. 2016](https://hal.inria.fr/hal-01402885)
+&lt;p align="center"&gt;
+&lt;img src="Figs/Riken_DA_Bridge.png" height="350"/&gt;
+&lt;br/&gt;
+&lt;a href="https://doi.org/10.1175/JCLI-D-18-0606.1"&gt;Source: RIKEN&lt;/a&gt;
+&lt;br/&gt;
+&lt;/p&gt;
+
+---
+# Le cycle d'assimilation
+
+Pour simuler un système chaotique, la connaissance des condition initiales est essentielle, d'où l'impornance de l'assimilation pour la prévision du temps.
+
+
+&lt;p align="center"&gt;
+&lt;img src="Figs/Tandeo_DAcycle.png"/&gt;
+&lt;br/&gt;
+&lt;a href="https://hal-imt-atlantique.archives-ouvertes.fr/hal-01867958"&gt;Tandeo et al. (2018)&lt;/a&gt;
+&lt;br/&gt;
+&lt;/p&gt;
+
+---
+
+# Plus formellement
+&lt;p align="center"&gt;
+&lt;img src="Figs/Boquet_DAmodel.png"/&gt;
+&lt;br/&gt;
+&lt;/p&gt;
+
+La physique est nécessaire pour la modélistion des opérateur `\(M\)` et `\(K\)`.
+
+La statistique est nécessaire pour la modélisation des bruits `\(\eta\)` et `\(\epsilon\)`.
+
+On cherche l'etat de l'atmosphere `\(x\)` qui minimise une fonction de coût.  Pour la 3D-VAR:
+
+`$$J(x) = \frac{1}{2} \Vert x - x^b \Vert_{B^{-1}}^2 + \Vert y - H(x) \Vert_{R^{-1}}^2$$`
+
+
+[Source: Boquet et al. (2018)]("https://sama.sciencesconf.org/data/program/sama2018_bocquet_1.pdf")
+
+
+---
+
+# Des analyses vers les réanalyes
+&gt; Integration of an invariant, modern version of a data assimilation system and numerical weather prediction model,
+over a long time period, assimilating a selection of observations
+
+
+
+Homogénéité essentielle pour l'étude du climat.
+
+- Attention aux bias du modèle et des observations
+
+- Effet de l'intégration de nouvelles sources d'observations.
+
+&lt;p align="center"&gt;
+&lt;img src="Figs/Poli_DA_ErrorEvolution.png" height="250"/&gt;
+&lt;br/&gt;
+&lt;/p&gt;
+
+[Source: Poli. 2011](https://www.ecmwf.int/sites/default/files/elibrary/2012/11694-data-assimilation-atmospheric-reanalysis.pdf),
+voir aussi [Parker (2016)](https://doi.org/10.1175/BAMS-D-14-00226.1) et la discussion qui en découle.
+
+
+---
+# Aucun jeu de données n'est parfait.
+
+
+Tous possèdent des incertitudes qui leurs sont propres.
+
+Important de sélectionner les jeux de données appropriés à sa problématique posée et d'en considérer les limites.
+
+Les statistiques peuvent être un outil privilégié pour prendre en compte les différentes sources d'incertitudes.
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title>Séance 5</title>
+    <meta charset="utf-8" />
+    <meta name="author" content="Soulivanh Thao   sthao@lsce.ipsl.fr" />
+    <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
+    <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# Séance 5
+## Introduction à la descente d’échelle statistique et la correction de bias
+### Soulivanh Thao <br/> <a href="mailto:sthao@lsce.ipsl.fr" class="email">sthao@lsce.ipsl.fr</a>
+### LSCE, ESTIMR
+### 2020/10/01 (updated: 2020-12-02)
+
+---
+
+
+# Downscaling
+
+[IPCC, 2013: Annex III: Glossary](https://www.ipcc.ch/site/assets/uploads/2018/02/WG1AR5_AnnexIII_FINAL.pdf)
+
+&gt; Downscaling is a method that derives local to regional scale (10 to 100 km) information from larger-scale models or data analyses. 
+
+&gt; Two main methods exist: dynamical downscaling and empirical/statistical downscaling. 
+
+&gt; The dynamical method uses the output of regional climate models, global models with variable spatial resolution or high-resolution global models. 
+
+&gt; The empirical/statistical methods develop statistical relationships that link the large-scale atmospheric variables with local/regional climate variables. 
+
+&gt; In all cases, the quality of the driving model remains an important limitation on the quality of the downscaled information.
+
+---
+
+# Downscaling
+![](Figs/161_1.jpg)
+---
+# Correction de biais
+
+**Biais (statistiques)** :  Soit `\(T\)` un estimateur d'un parametre `\(\theta\)`. Le bias de l'estimateur `\(T\)` est défini par 
+`$$\mathbb{E}[T - \theta] = \mathbb{E}[T] - \theta$$`
+
+[Maraun (2016)](https://doi.org/10.1007/s40641-016-0050-x)
+
+&gt; Transferring the bias concepts from statistics and forecast verification to a climate modelling context,
+
+&gt; a climate model bias can be defined as the systematic difference between a simulated climate statistic and the corresponding real-world climate statistic. 
+
+&gt; A model bias derived from model and observational data is —as the statistics it is calculated from— only an estimate of the true model bias and therefore also affected by internal climate variability.
+
+**Remarque** : le downscaling statistique peut être vu comme une forme de correction de bias où le bias est généré par la différence de résolution. 
+
+---
+# Pour l'étude des impacts
+![](Figs/bc_impacts.png)
+
+
+
+---
+
+
+# Downscaling statistique et correction de bias
+
+**Objectif** trouver une relation statistique entre `\(X\)`, la variable à downscaller/corriger  et `\(Y\)`, la variable de référence.
+
+&lt;br/&gt;
+
+Deux familles de méthode:
+
+- Perfect Prognosis : on travaille sur  les réalisations `\(x\)` et `\(y\)` des variables `\(X\)` et `\(Y\)`,
+
+- Model Output Statistics : on travaille sur loi de probabilité des variables `\(X\)` et `\(Y\)`
+
+---
+
+# Perfect Prognosis
+
+Trouver comment transformer une réalisation `\(x_i\)` en une réalisation `\(y_i\)`.
+
+Un exemple de modèle classique
+
+$$ Y = f(X) + \epsilon $$
+- approche par fonction de transfert / régression, on cherche à modéliser
+$$ \mathbb{E}[Y | X = x] =  f(x)$$
+
+- approche par générateur de temps stochastique, on cherche à modéliser la variable aléatoire
+$$ (Y | X = x) =  f(x) + \epsilon $$
+en essayant d'estimer la fontion `\(f\)` et de modéliser la distribution du bruit `\(\epsilon\)`.
+
+
+
+Les predicteurs sont supposés parfaits.
+
+On a besoin de l'appariement temporelles entre les variables `\(X_i\)` et `\(Y_i\)`.
+
+---
+
+
+# Régression linéaire simple
+
+Soit `\(Y\)` la variable locale que l'on cherche à prédire à partir de `\(X\)`, la variable à large échelle. 
+
+On modélise `\(Y\)` par régression linéaire
+
+`$$Y_i = a X_i + b + \epsilon_i$$`
+avec
+
+- `\(a\)` et `\(b\)`, les coefficents de la régression linéaire à estimer.
+- `\(\epsilon\)`, un bruit que l'on suppose souvent gaussien.
+
+On cherche les coefficients `\(\hat{a}\)` et `\(\hat{b}\)` qui minimisent la fonction de coût
+
+`$$C(a, b) =  \sum_i (Y_i - a X_i + b)^2$$`
+Pour une valeur `\(X_{new}\)`, la prédiction pour la valeur de `\(Y_{new}\)` correspondante est donnée par 
+`$$\hat{Y}_{new} = \hat{a} X_{new} + \hat{b}$$`
+
+---
+# Exemple synthetique
+
+![](S5_Downscaling_BiasCorrection_files/figure-html/unnamed-chunk-1-1.svg)&lt;!-- --&gt;
+
+---
+# Régression par plus proche voisin
+En anglais, k-nearest-neighbour regression avec `\(k = 1\)`.
+
+On définit la base d'apprentissage comme l'ensemble des couples `\((X_i, Y_i)\)` observés.
+Pour une valeur `\(X_{new}\)`, la prédiction pour la valeur de `\(Y\)` correspondante est donnée par 
+`$$\hat{Y}_{new} = Y_{i^*}$$`
+avec `$$i^* = \underset{i}{\arg\min} \quad d(X_i, X_{new})$$`
+
+où `\(d\)` désigne une distance.
+
+---
+# Exemple synthetique
+
+![](S5_Downscaling_BiasCorrection_files/figure-html/unnamed-chunk-2-1.svg)&lt;!-- --&gt;
+---
+
+
+# Model Output Statistics:
+
+Trouver comment transformer une variable aléatoire `\(X\)` en une variable aléatoire `\(Y\)`.
+
+Soit `\(X \sim F\)` et `\(Y \sim G\)`,
+
+i.e. `\(X\)` et `\(Y\)` suivent les lois de probabiltés qui sont définis respectivement par les fonctions de répartition `\(F\)` et `\(G\)`.
+
+&lt;br/&gt;
+
+On cherche une transformation `\(T\)` tel que
+
+$$ T(X) \buildrel d \over = Y \quad \Leftrightarrow \quad T(X) \sim G$$
+
+ou en tous cas que la loi de `\(T(X)\)` se rappoche de la loi de `\(Y\)`.
+
+&lt;br/&gt;
+
+**Remarque**: Il est aussi possible de ne corriger que certaines propriétés statistiques de la distribution de `\(X\)`,
+
+e.g l'espérance ou la variance.
+
+---
+
+
+# Correction de la moyenne
+La variable large échelle `\(X\)` est simplement transformée pour avoir la même esperance (moyenne) que la variable `\(Y\)`.
+
+Ainsi pour une valeur `\(X_{new}\)`, la prédiction pour la valeur de `\(Y_{new}\)` correspondante est donnée par 
+`$$\hat{Y}_{new} = X_{new} - \mathbb{E}[X] + \mathbb{E}[Y]$$`
+
+En pratique, on remplace l'esperance par la moyenne empirique
+`$$\hat{Y}_{new} = X_{new} - \bar{X} + \bar{Y}$$`
+en définissant la moyenne empirique de `\(X\)` par 
+`$$\bar{X} = \frac{1}{n} \sum_{i=1}^{n} X_i$$`
+---
+# Exemple synthetique
+![](S5_Downscaling_BiasCorrection_files/figure-html/unnamed-chunk-3-1.svg)&lt;!-- --&gt;
+
+---
+# La correction quantile-quantile
+
+Soit `\(X \sim F\)` et `\(Y \sim G\)`
+
+On cherche une transformation `\(T\)` tel que
+
+$$ T(X) \buildrel d \over = Y \quad \Leftrightarrow \quad T(X) \sim G$$
+
+Si `\(F\)` et `\(G\)` sont des fonctions de répartition continues et strictement monotones, alors 
+$$ G(Y) \buildrel d \over = U(0,1) \buildrel d \over = F(X) $$
+et 
+$$ Y  \buildrel d \over = G^{-1}(F(X)) \buildrel d \over = T(X) $$
+
+En pratique, on remplace `\(F\)` et `\(G\)` par leur estimateur empirique
+`$$\hat{F}(x) = \mathbb{P}(X &lt; x) = \frac{1}{n} \sum_{i = 1}^{n} \unicode{x1D7D9}_{\{X_i \leq x\}}$$`
+---
+# Exemple synthetique
+
+![](S5_Downscaling_BiasCorrection_files/figure-html/unnamed-chunk-4-1.svg)&lt;!-- --&gt;
+
+---
+# Erreur d'estimation
+
+
+
+```r
+n &lt;- 20
+X &lt;- rnorm(n, 0, 3)
+Y &lt;- 1.5 * X - 2 +  rnorm(n, 0, 4)
+```
+
+.pull-left[
+Echantillon 1
+![](S5_Downscaling_BiasCorrection_files/figure-html/unnamed-chunk-6-1.svg)&lt;!-- --&gt;
+]
+.pull-right[
+Echantillon 2
+![](S5_Downscaling_BiasCorrection_files/figure-html/unnamed-chunk-7-1.svg)&lt;!-- --&gt;
+]
+
+Le caractère aléatoire des données conduit à des estimations imparfaites. 
+
+---
+# Model misspecification
+
+[Wikipedia](https://en.wikipedia.org/wiki/Statistical_model_specification): *"In statistics, model specification is part of the process of building a statistical model: specification consists of selecting an appropriate functional form for the model and choosing which variables to include."*
+
+Exemple : modèle linéaire vs non-linéaire
+
+
+```r
+n &lt;- 20
+X &lt;- rnorm(n, 0, 3)
+Y &lt;- X^2 + 1.5 * X - 2 +  rnorm(n, 0, 4)
+```
+
+![](S5_Downscaling_BiasCorrection_files/figure-html/unnamed-chunk-9-1.svg)&lt;!-- --&gt;
+
+---
+# Sur-apprentissage
+
+```r
+n &lt;- 20
+X &lt;- rnorm(n, 0, 3)
+Y &lt;- 1.5 * X - 2 +  rnorm(n, 0, 4)
+```
+
+![](S5_Downscaling_BiasCorrection_files/figure-html/unnamed-chunk-11-1.svg)&lt;!-- --&gt;
+
+Le sur-apprentissage survient lorsque le modéle statistique essaie de reproduire des variations dans les données qui n'ont pas de signification, e.g. ici du bruit.
+
+Plus un modéle est flexible plus il est susceptible de sur-apprendre.
+
+
+---
+# "All models are wrong, but some are useful"
+
+[George Box (1976)](https://doi.org/10.2307/2286841):
+&gt; **2.3  Parsimony**
+
+&gt;Since all models are wrong the scientist cannot obtain a "correct" one by excessive elaboration. On the contrary following William of Occam he should seek an economical description of natural phenomena. Just as the ability to devise simple but evocative models is the signature of the great scientist so overelaboration and overparameterization is often the mark of mediocrity.
+
+&gt; **2.4  Worrying Selectively**
+
+&gt;Since all models are wrong the scientist must be alert to what is importantly wrong. It is inappropriate to be concerned about mice when there are tigers abroad.
+
+---
+
+# Pour les projections climatiques futures ?
+
+**Capacité de généralisation**
+&gt; Capacité d'un modèle, une fois entraîné, à effectuer des prédictions sur des données qui n'ont pas servies à l'entrainement.
+
+En science du climat, lorsque que l'on applique les méthodes de downscalling ou correction de bias sur les projections, on fait les hypothéses suivantes
+
+#### A2: Les prédicteurs sont pertinents et modélisés de façon réaliste par le modèle climatique projections climatiques. 
+
+L'évolution de ces prédicteurs est également simulée de manière plausible.
+
+#### A3: La relation établie par le modèle de downscaling statistique reste valide pour des conditions climatiques altérées.
+Attention à l'extrapolation de la relation apprise. Cela génère parfois des valeurs non-physiques.
+
+Exemple: la regression par plus proche voisin et la correction quantile-quantile sont des fonctions constante hors de la plage de valeurs observées.
+
+
+
+---
+
+# Pour aller plus loin
+
+Ici, nous n'avons parlé que de la correction de bias pour des variables univariés.
+
+Pour le cas univariées, il existe un grand nombre de méthodes et de variantes.
+
+Le systeme climatique est representé par un ensemble de variables qui varient à la fois dans le temps et dans l'espace. 
+
+Pour corriger plusieur variable à la fois, il faut faire appel à de la statistique multivariée.
+
+Décider des aspects à corriger: marginales, dependences spatiales, temporelles et inter-variabres. 
+
+Certaines méthodes de correction de bias modifient les tendances du changement climatiques.
+Est-ce une bonne chose ?
+
+#### Plus généralement, que souhaite-t-on préserver ou corriger du modèle de climat ?
+
+---
+
+# A garder en tête
+
+[Maraun (2016)](https://doi.org/10.1007/s40641-016-0050-x)
+&gt; Bias correction is a mere statistical post-processing and cannot overcome fundamental mis-specifications of a climate model.
+
+
+[IPCC Workshop on Regional Climate Projections and their Use in Impacts and Risk Analysis Studies](https://archive.ipcc.ch/pdf/supporting-material/RPW_WorkshopReport.pdf) 
+
+&gt; Bias correction
+(alternatively: bias adjustment or bias reduction) is a computationally inexpensive and pragmatic tool which, however, is
+also prone to misuse due to its mathematical simplicity
+
+&gt; We strongly discourage the application of BC without prior understanding of the underlying causes of model error
+and bias. In particular, it is important that users of bias-corrected data understand the source model’s
+representation of physical processes (given that BC cannot compensate for incorrect representation of physical
+processes in the model). We recommend that BC is ideally carried out in collaboration with experts aware of the
+limitations of that particular model for the considered region (e.g., the developers of that model).
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+(function() {
+  "use strict"
+  // Replace <script> tags in slides area to make them executable
+  var scripts = document.querySelectorAll(
+    '.remark-slides-area .remark-slide-container script'
+  );
+  if (!scripts.length) return;
+  for (var i = 0; i < scripts.length; i++) {
+    var s = document.createElement('script');
+    var code = document.createTextNode(scripts[i].textContent);
+    s.appendChild(code);
+    var scriptAttrs = scripts[i].attributes;
+    for (var j = 0; j < scriptAttrs.length; j++) {
+      s.setAttribute(scriptAttrs[j].name, scriptAttrs[j].value);
+    }
+    scripts[i].parentElement.replaceChild(s, scripts[i]);
+  }
+})();
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>

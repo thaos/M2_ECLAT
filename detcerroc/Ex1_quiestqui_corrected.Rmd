@@ -87,22 +87,30 @@ yearmean <-
 ```
 
 ### Calcul du cycle saisonnier moyen
-
 Ici, on calcule la valeur du cycle saisonnier moyen en un jour de l'année comme la moyenne des températures sur toutes les années pour ce jour calendaire.
-
-La variable *saisonality* est une matrice de dimension 365x11 où une ligne représente le jour de l'année et une colonne un modèle.
 
 ```{r}
 # Ne pas mettre le code, meme principe que les moyennes annuellses
-
+compute_seasonality <- function(tas, mmdd){
+  tapply(tas, mmdd, mean, na.rm = TRUE)
+}
 seasonality <-
-
+  apply(
+    tas_df,
+    2,
+    compute_seasonality,
+    mmdd = mmdd
+  )
 ```
 
 ### Calcul des anomalies
-la variable *anomalie* est une matrice de même dimension que la matrice *tas_df*.
 ```{r}
-anomalies <- 
+anomalies <- matrix(
+  as.vector(t(tas_df)) - as.vector(t(seasonality)),
+  nrow = nrow(tas_df),
+  ncol = ncol(tas_df),
+  byrow = TRUE
+)
 dimnames(anomalies) <- dimnames(tas_df)
 
 ```
@@ -114,23 +122,40 @@ ylim <- range(tas_df, na.rm = TRUE)
 par(mfrow = c(4, 3))
 apply(tas_df, 2, plot, type = "l", ylim = ylim)
 par(mfrow = c(1, 1))
-# Comparaison des séries 2 à 2.
 pairs(tas_df)
 ```
 
 ### Plot des séries de moyenne annuelle
 ```{r, fig.width = 12, fig.height = 12}
+ylim <- range(yearmean, na.rm = TRUE)
+par(mfrow = c(4, 3))
+apply(yearmean, 2, plot, type = "l", ylim = ylim)
+summary
+par(mfrow = c(1, 1))
+pairs(yearmean)
+
 
 ```
 
 ### Plot de la saisonnalité
 ```{r, fig.width = 12, fig.height = 12}
-
+ylim <- range(seasonality, na.rm = TRUE)
+par(mfrow = c(4, 3))
+apply(seasonality, 2, plot, type = "l", ylim = ylim)
+summary(seasonality)
+par(mfrow = c(1, 1))
+pairs(seasonality)
 ```
-Comment le cycle saisonnier estimer de cette facon vous parait-il ?
+Pas tres régulier... A modéliser avec un sinus cosinus ?
 
 ### Plot des anomalies
 ```{r, fig.width = 12, fig.height = 12}
+ylim <- range(anomalies, na.rm = TRUE)
+par(mfrow = c(4, 3))
+apply(anomalies, 2, plot, type = "l", ylim = ylim)
+summary(anomalies)
+par(mfrow = c(1, 1))
+pairs(anomalies)
 
 ```
 
@@ -139,16 +164,14 @@ Comment le cycle saisonnier estimer de cette facon vous parait-il ?
 ```{r, fig.width = 12, fig.height = 12}
 xlim <- range(anomalies, na.rm = TRUE)
 par(mfrow = c(4, 3))
-for(i in seq.int(ncol(anomalies))){
-   hist(anomalies[, i], xlim = xlim)
-}
-# ou avec
-# histogram <- apply(anomalies, 2, hist, xlim = xlim)
+histogram <- apply(anomalies, 2, hist, xlim = xlim)
 ```
 ### Boxplot des anomalies
 
 ```{r, fig.width = 12, fig.height = 12}
-
+xlim <- range(anomalies, na.rm = TRUE)
+par(mfrow = c(4, 3))
+histogram <- apply(anomalies, 2, boxplot, ylim = ylim)
 ```
 
 ### Plot des coefficient d'autocorrelation
@@ -159,31 +182,19 @@ apply(anomalies, 2, acf, na.action = na.pass)
 ```
 
 ### Quelques statitiques
-Calculer la moyenne *mu* et la variance *sigma* des différentes séries d'anomalies.
-
-*mu* et *sigma* sont des vecteurs de longeur 11 (nombre de modèle).
-
-Vous pouvez utiliser les fonctions *mean* et *sd* de R avec l'option *na.rm = TRUE*.
+Calculer la moyenne et la variance des différentes séries d'anomalies
 ```{r}
-# Moment d'ordre 1
-mu <- 
-  
-# Moment d'ordre 1
-sigma <- 
-
-# Moment d'ordre 3
+mu <- apply(anomalies, 2, mean, na.rm = TRUE)
+sigma <- apply(anomalies, 2, sd, na.rm = TRUE)
 skewness <- apply(
   sweep(anomalies, 2, mu, FUN = "-")^3,
   2, mean, na.rm = TRUE
 ) / sigma^3 
-
-# Moment d'ordre 2
 kurtosis <- apply(
   sweep(anomalies, 2, mu, FUN = "-")^4,
   2, mean, na.rm = TRUE
 ) / sigma^4 
 
-# Tendance linéaire
 trends <- apply(anomalies, 2, function(y){
   x <- cbind(1, seq_along(y))
   ina <- is.na(y)
@@ -193,21 +204,18 @@ trends <- apply(anomalies, 2, function(y){
 
 
 ### Distance euclidienne entre characteristiques des differentes series temporelles
-Utiliser la fonction dist pour calculer une distance entre les modéles
 ```{r}
-# Exemple: On défini la distance entre deux modèles par la distance euclidienne entre leurs séries temporelles brutes.
 d <- dist(t(tas_df)) # euclidean distances between the columns
-
-# Exemple: On défini la distance entre deux modèles par leur différence sur la moyenne.
-d <- dist(mu) 
-
-# Exemple: On défini la distance entre deux modèles par leur différence sur la moyenne.
+d <- dist(t(seasonality)) # euclidean distances between the columns
+d <- dist(t(anomalies)) # euclidean distances between the columns
+d <- dist(t(pacf_ano)) # euclidean distances between the columns
 d <- dist(trends) 
+d <- dist(cbind(mu, sigma, skewness, kurtosis)) 
 ```
 
 
 
-### Reprentation des modèles en fonction de leur distance respective avec les uns et les autres sur un plan 2d
+### Reprentation des modeles en fonction de leur distance sur un plan 2d
 ```{r}
 fit <- cmdscale(d, eig=TRUE, k=2) # k is the number of dim
 fit # view results

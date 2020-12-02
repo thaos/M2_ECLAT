@@ -12,7 +12,7 @@ When you save the notebook, an HTML file containing the code and output will be 
 The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
 
 ## Objectifs
-Le but est d'illustrer l'effet de la variabilité climatique sur l'estimation de propriétés statistiques. Pour cela, nous utiliserons une simulation piControl  et une simulation historique du modèle CNRM-CM6-1-HR pour la variable température. Nous nous intéresserons à l'estimation de la moyenne et de la tendance linéaire.
+Le but est d'illustrer l'effet de la variabilité climatique sur l'estimation de propriétés statistiques. Pour cela, nous utiliserons une simulation piControl  et une simulation historique du modèle CNRM-CM6-1-HR pour la variable température.
 
 **Simulations pré-industrielles piControl**:
 >Pre-Industrial coupled atmosphere/ocean control run. Imposes non-evolving pre-industrial conditions, which may include prescribed atmospheric concentrations or non-evolving emissions of gases, aerosols or their precursors, as well as unperturbed land use"
@@ -44,37 +44,32 @@ plot(yyyy_pi, tas_pi, col = "grey", pch = 20, cex = 0.5)
 ### Combien d'années pour estimer la moyenne de temperature ?
 Calculer la moyenne de température en fonction du nombre de pas de temps pris en compte.
 ```{r}
+# A ne pas mettre
 x <- seq_along(tas_pi)
-
-
+avg <- cumsum(tas_pi) / x
+plot(avg, type = "l")
 ```
 ### Combien d'années pour estimer l'ecart-type de la temperature temperature ?
-
-Indice: la variance empirique de $X$ peut se calculer comme la moyenne des $X^2$ moins la moyenne au carré des $X$.
+Indice la variance empirique de $X$ peut se calculer comme la moyenne des $X^2$ moins la moyenne au carré des $X$.
 ```{r}
+# A ne pas mettre
 x <- seq_along(tas_pi)
-
-
+sd <- sqrt(cumsum(tas_pi^2)/x - avg^2)
+plot(sd, type = "l")
 ```
 
 ### Quelle est l'espérance de la tendance linéaire sur ces simulations ?
 
-### Combien de jours ou d'années faut-il pour converger vers la bonne valeur ?
+### Combien d'années faut-il pour converger vers la bonne valeur ?
 ```{r}
-x <- seq_along(tas_pi)
-yearstart <- seq(365, length(x), by = 365)
-trend <- numeric(length = yearstart)
-for(i in seq_along(trend)){
- trend[i] <- lm.fit( y = tas_pi[1:i], x = cbind(1, x)[1:i, ])$coefficients[2]
-}
-# or
-# trend <- sapply(yearstart), function(i) lm.fit( y = tas_pi[1:i], x = cbind(1, x)[1:i, ])$coefficients[2])
+
+trend <- sapply(seq(365, length(x), by = 365), function(i) lm.fit( y = tas_pi[1:i], x = cbind(1, x)[1:i, ])$coefficients[2])
 plot(trend, type = "l")
 summary(trend[101:200])
 ```
 
 
-##  Comparaison entre simulations historiques et pré-industrielles de controle
+##  Comparaison entre simulations historiques et  pré-industrielles de controle
 
 Les tendances lineaire estimées sur les simulations historiques sont-elles cohérentes avec les tendances estimées sur les simulations pré-industrielles?
 
@@ -98,11 +93,11 @@ Calculer les séries temporelles des moyennes de température annuelles pour la 
 Tracer ces séries temporelles.
 
 ```{r}
-
+# Laisser les étudiants compléter
 # séries temporelles des moyennes de température annuelles pour la période pré-industrielle
-tas_byyear_pi <- 
+tas_byyear_pi <- tapply(tas_pi, yyyy_pi, mean)
 # séries temporelles des moyennes de température annuelles pour la période historique
-tas_byyear_hist <- 
+tas_byyear_hist <- tapply(tas_hist, yyyy_hist, mean)
 
 yyyy_pi_u <- unique(yyyy_pi)
 yyyy_hist_u <- unique(yyyy_hist)
@@ -111,18 +106,26 @@ ylim <- range(tas_byyear_pi, tas_byyear_hist)
 plot(yyyy_pi_u, tas_byyear_pi, col = "grey", pch = 20, cex = 0.5)
 points(yyyy_hist_u, tas_byyear_hist, col = "black", pch = 20, cex = 0.5)
 ```
-### Calcul des tendances sur les séries annuelles et les tracer sur les series temporelles.
+### Calcul des tendances sur les séries annuelles.
 ```{r, fig.width = 6, fig.height = 9}
 ylim <- range(tas_byyear_hist, tas_byyear_pi, na.rm = TRUE)
 par(mfrow = c(2, 1))
 plot(yyyy_pi_u, tas_byyear_pi, ylim = ylim)
-trend_pi <-
+trend_pi <- sapply(y30pi, function(yearmin){
+  iyears <- which(yyyy_pi_u >= yearmin & yyyy_pi_u < (yearmin + 30))
+  fit <- lm.fit( y = tas_byyear_pi[iyears], x = cbind(1, yyyy_pi_u[iyears]))
+  lines(yyyy_pi_u[iyears], fit$fitted.values)
+  fit$coefficients[2]
+})
 
 
 plot(yyyy_hist_u, tas_byyear_hist, ylim = ylim)
-trend_hist <- 
-  
-
+trend_hist <- sapply(y30hist, function(yearmin){
+  iyears <- which(yyyy_hist_u >= yearmin & yyyy_hist_u < (yearmin + 30))
+  fit <- lm.fit( y = tas_byyear_hist[iyears], x = cbind(1, yyyy_hist_u[iyears]))
+  lines(yyyy_hist_u[iyears], fit$fitted.values)
+  fit$coefficients[2]
+})
 ```
 ### Comparaison des tendances entre simulations historiques et pré-industrielles.
 
@@ -150,27 +153,41 @@ points(yyyy_hist_ma, tas_ma_hist, col = "black", pch = 20, cex = 0.5, ylim = yli
 ```
 ### Calcul des tendances sur des serie obtenues par moyenne glissante.
 ```{r, fig.width = 6, fig.height = 9}
+# A ne pas mettre
 ylim <- range(tas_ma_hist, tas_ma_pi, na.rm = TRUE)
 par(mfrow = c(2, 1))
 plot(yyyy_pi_ma, tas_ma_pi, ylim = ylim)
-trend_pi <- 
+trend_pi <- sapply(y30pi, function(yearmin){
+  iyears <- which(yyyy_pi_ma >= yearmin & yyyy_pi_ma < (yearmin + 30))
+  fit <- lm.fit( y = tas_ma_pi[iyears], x = cbind(1, yyyy_pi_ma[iyears]))
+  lines(yyyy_pi_ma[iyears], fit$fitted.values)
+  fit$coefficients[2]
+})
 
 
 plot(yyyy_hist_ma, tas_ma_hist, ylim = ylim)
-trend_hist <- 
+trend_hist <- sapply(y30hist, function(yearmin){
+  iyears <- which(yyyy_hist_ma >= yearmin & yyyy_hist_ma < (yearmin + 30))
+  fit <- lm.fit( y = tas_ma_hist[iyears], x = cbind(1, yyyy_hist_ma[iyears]))
+  lines(yyyy_hist_ma[iyears], fit$fitted.values)
+  fit$coefficients[2]
+})
 ```
 
 ### Comparaison des tendances entre simulations historiques et pré-industrielles.
-
-Quelles sont les périodes pour lesquelles il est peu probable que les tendances des simulations historiques ne soient dûes qu'à la variabilité interne? Peut on quantifier le "peu probable"?
-
+Quelles sont les périodes pour lesquelles il est peu probable que les tendances des simulations historiques ne soient dûes qu'à la variabilité interne? Peut on quantifier le "peu probable"? 
 ```{r}
-
+ic=quantile(trend_pi, probs = c(0.05, 0.95))
+plot(0, xlim = range(trend_pi, trend_hist), ylim = c(0, 1.2), yaxt = 'n', bty = 'n', pch = '', ylab = '', xlab = 'trend')
+rect(ic[1], 0, ic[2], 1, col = "grey", border = NA)
+segments(x0 = trend_pi, y0 = 0, y1 =  0.5, lwd = 3, col = "orange")
+segments(x0 = trend_hist, y0 = 0, y1 =  0.5, lwd = 3)
+text(trend_hist, 0.7, labels = y30hist, srt = 90, pos = 3)
 ```
 
 ### Analogies avec les testes d'hypothèses statistiques.
 
-1) Modélisation statistique: e.g. réponse aux forcages externes + variabilité interne <=> tendance déterministe + bruit
+1) Modelisation statistique: e.g. réponse aux forcages externes + variabilité interne <=> tendance déterministe + bruit
 
 2) Formulation de l'hypothése nulle H0: e.g. la réponse aux forcages externes est constante par rapporh aux pré-industrielle, en particulier entre 1990 et 2020 => la tendance linéaire est nulle entre 1990 et 2020
 
@@ -182,5 +199,5 @@ Quelles sont les périodes pour lesquelles il est peu probable que les tendances
 
 6) Calculer sous l'hypothese H0 la probabilités d'avoir une statistique de test plus extreme que celle observée (i.e. la p-value)
 
-7) Décider ou non de rejeter le test en fonction du risque alpha que l'on est prêt à accepter. Le risque alpha est le risque que l'on se trompe si on rejette H0 (à tort). En statitique, on ne contrôle pas (en general) le risque que l'on se trompe si on decide de ne pas rejetter H0.  
+7) Decider ou non de rejeter le test en fonction du risque alpha que l'on est prêt à accepter. Le risque alpha est le risque que l'on se trompe si on rejette H0 (à tort). En statitique, on ne contrôle pas (en general) le risque que l'on se trompe si on decide de ne pas rejetter H0.  
 

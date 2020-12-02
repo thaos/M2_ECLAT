@@ -16,13 +16,13 @@ Le but est d'illustrer les changements dans les distributions d'une serie tempor
 
 Pour cela, nous utilisons les simulations pi-control, au pas de temps journalier, du modèle CNRM-CM6-1-HR réalisées lors de l'exercice CMIP6. Nous y avons extrait les variables de température et de précipitation pour la zone géographique suivante: de 0 à 5 degrés de longitude et  de 45.18 à 49.68 degrés de latitude.
 
-Spatialement, nous aggrégeons les données pour des patchs de differentes tailles (1x1, 7x5, 11x9 points de grille) centrés autours du point de grille situé à 2.5 degrés de longitude et 47.68 degrés de latitude. L'aggrégation est realisée soit en prenant la moyenne ou le maximum sur l'ensembre des points de grille du patch.
+Spatialement, nous aggrégeons les données pour des patchs de differentes tailles (1x1, 7x5, 11x9 points de grille) centré autours du point de grille situé à 2.5 degrés de longitude et 47.68 degrés de latitude. L'aggrégation est realiser soit en prenant la moyenne ou le maximum sur l'ensembre des points de grilles du patch.
 
-Temporellement, les données à aggréger consistent soit à la journée du 15 juillet, soit au mois de juillet dans son ensemble, soit à l'ensemble de l'année. L'aggrégation est realiser soit en prenant la moyenne ou le maximum sur l'ensembre des pas de temps de la periode d'intérêt.
+Temporellement, les données à aggreger consistent soit à la journée du 15 juillet, soit au mois de juillet dans son ensemble, soit à l'ensemble de l'année. L'aggrégation est realiser soit en prenant la moyenne ou le maximum sur l'ensembre des pas de temps de la periode d'intérêt.
 
 Les données sont tout d'abord aggrégées spatialement puis temporellement. Ainsi, un type d'aggrégation spatio-temporelle donne une série  temporelle univariée au pas de temps annuel. Pour un couple d'aggregateurs spatial (moyenne/maximum) et temporelle (moyenne/maximum), les series temporelles sont stockées sous forme d'une array avec les dimensions suivantes: temps, zone d'aggrégation et période d'aggrégation.  
 
-Les distributions peuvent être représentées sous forme d'histogramme (fonction *hist*), de densité estimée par des méthodes à noyau (fonction *density*) ou par fonction de répartition empirique (fonction *ecdf*). 
+Les distributions peuvent être représentées sous forme d'histogramme (fonction hist), de densité estimée par des méthodes à noyau (fonction density) ou par fonction de répartition empirique (fonctien ecdf). 
 
 ### Chargement des packages
 ```{r}
@@ -56,7 +56,6 @@ lat <- as.numeric(colnames(tas))
 ```
 ### Tracer la série temporelle des données aggrégées
 ```{r}
-# Choisir le type de série temporrelles: varibable/aggregation spatial/aggregation temporelle
 y <- tas_smean_tmean
 ylim <- range(y)
 par(mfrow = c(3, 3))
@@ -69,38 +68,47 @@ for(i in 1:3){
 ### Visualisation des distribution
 
 Visulaliser le distributions des variables aggrégées à l'aide des fonctions R: hist, density et ecdf
-
-
 ```{r}
-# Histogrammes
-
-breaks <- hist(c(y), breaks = 30, plot = FALSE)$breaks # Définition des classes de valeur.
+y <- tas_smean_tmean
+breaks <- hist(c(y), breaks = 30, plot = FALSE)$breaks
 par(mfrow = c(3, 3))
 for(i in 1:3){
   for(j in 1:3){
     hist(y[, i, j], breaks = breaks, freq = FALSE, main = paste("spatial:", zones[i], "temporal:", periods[j])) 
+    x <- seq(min(breaks), max(breaks), length.out = 1000)
+    lines(x, dnorm(x, mean = mean(y[, i, j]), sd = sd(y[, i, j])), col = "red")
+    gev_fit <- fevd(y[, i, j], method = "Lmoments")
+    gev_param <- gev_fit$results
+    lines(x, devd(x, loc = gev_param[1], scale = gev_param[2], shape = gev_param[3]), col = "blue")
 }}
 ```
 
 ```{r}
-# Kernel density estimation.
-
 xrange <- range(c(y))
 par(mfrow = c(3, 3))
 for(i in 1:3){
   for(j in 1:3){
-
+    plot(density(y[, i, j]), xlim = xrange, main = paste("spatial:", zones[i], "temporal:", periods[j])) 
+    x <- seq(xrange[1], xrange[2], length.out = 1000)
+    lines(x, dnorm(x, mean = mean(y[, i, j]), sd = sd(y[, i, j])), col = "red")
+    gev_fit <- fevd(y[, i, j], method = "Lmoments")
+    gev_param <- gev_fit$results
+    lines(x, devd(x, loc = gev_param[1], scale = gev_param[2], shape = gev_param[3]), col = "blue")
 }}
 
 ```
 
 ```{r}
-# Fonction de répartition empirique
 xrange <- range(c(y))
 par(mfrow = c(3, 3))
 for(i in 1:3){
   for(j in 1:3){
-   
+    plot(ecdf(y[, i, j]), xlim = xrange, main = paste("spatial:", zones[i], "temporal:", periods[j]), col = "grey") 
+    x <- seq(xrange[1], xrange[2], length.out = 1000)
+    lines(x, pnorm(x, mean = mean(y[, i, j]), sd = sd(y[, i, j])), col = "red")
+    gev_fit <- fevd(y[, i, j], method = "Lmoments")
+    gev_param <- gev_fit$results
+    lines(x, pevd(x, loc = gev_param[1], scale = gev_param[2], shape = gev_param[3]), col = "blue")
 }}
 ```
 
@@ -146,38 +154,31 @@ L'hypothèse i.i.d est elle réaliste ?
 
 **Exercice :**
 
-- Calculer la moyenne et la variance en chaque point de grille du jeu de donnée initial et les représenter graphiquement avec la fonction *image.plot* du package *fields*.
+- Calculer la moyenne et la variance en chaque point de grille du jeu de donnée initial
 
 ```{r}
-# pour la moyenne
-map_mean <- 
+# Example pour la moyenne
+map_mean <- apply(tas, 1:2, mean)
 fields::image.plot(lon, lat, map_mean)
-
-# pour la variance
-map_variance <- 
-fields::image.plot(lon, lat, map_variance)
 ```
 
-- Calculer la matrice des corrélation entre les differents points de grille du jeu de donnée initial et représenter sous forme de carte la corrélation d'un point de grille avec tous les autres.
-
-La matrice de des corrélations peut se calculer avec la fonction *cor*.
-
+- Calculer la matrice de variance covariance entre les differents points de grille du jeu de donnée initial
 ```{r}
-
+# Example pour la moyenne
 tas_matrix <- matrix(aperm(tas, c(3, 1, 2)), ncol = length(lon) * length(lat))
-tas_cor <- 
+tas_cor <- cor(tas_matrix)
 # Correlation with the first grid point
 igridpoint <- 1
-fields::image.plot(lon, lat, ))
+fields::image.plot(lon, lat, matrix(tas_cor[igridpoint, ], nrow = length(lon), ncol = length(lat)))
 ```
-- Calculer les correlations temporelles pour chaque point de grille du jeu de donnée initial via la fonction *acf* de R. 
+- Calculer les correlations temporelles dans du jeu de donnée initial via la fonction "acf" de R. 
 
 ```{r, fig.width = 24, fig.height = 20}
 
 par(mfrow = c(11, 10))
 for(i in 1:11){
   for(j in 1:10){
-    plot( , main = paste("spatial:", zones[i], "temporal:", periods[j]))
+    plot(acf(pr[i, j, ], plot = FALSE), main = paste("spatial:", zones[i], "temporal:", periods[j]))
 }}
 ```
 

@@ -81,16 +81,18 @@ Le modèle appris est il aussi sur la base de test que sur la base d'apprentissa
 ```{r, fig.width = 6, fig.height = 9}
 base_app <- data.frame(X = X_app, Y = Y_app)
 base_test <- data.frame(X = X_test, Y = Y_test)
-lm_fit <- lm(, data = ) # à compléter
+lm_fit <- lm(Y ~ X, data = base_app) # à compléter
 summary(lm_fit)
 
-lm_app <- predict()  # à compléter
-lm_test <- predict()  # à compléter
+lm_app <- predict(lm_fit)  # à compléter
+lm_test<- predict(lm_fit, newdata = base_test)  # à compléter
 
 # RMSE et correlation entre valeurs prédites et réelles de Y sur base d'apprentissage
-
-
+sqrt(mean((Y_app - lm_app)^2)) # à compléter
+cor(lm_app, Y_app) # à compléter
 # RMSE et correlation entre valeurs prédites et réelles de Y sur base de test
+sqrt(mean((Y_test - lm_test)^2)) # à compléter
+cor(lm_test, Y_test) # à compléter
 
 
 # diagnostics graphiques sur bases d'apprentissage et de test
@@ -118,7 +120,41 @@ Pour cela, il faut calculer la distance entre les valeurs de X de la base d'appr
 fonction utile: which.min
 Réaliser les mêmes dignostics que pour le modèle linéaire.
 ```{r, fig.width = 6, fig.height = 9}
+nn_app <- numeric(length(Y_app))
+for( i in seq_along(nn_app)){
+  dist <- (X_app - X_app[i])^2
+  inn <- which.min(dist)
+  nn_app[i] <- Y_app[inn]
+}
 
+nn_test <- numeric(length(Y_test))
+for( i in seq_along(nn_test)){
+  dist <- (X_app - X_test[i])^2
+  inn <- which.min(dist)
+  nn_test[i] <- Y_app[inn]
+}
+
+sqrt(mean((Y_app - nn_app)^2))
+cor(nn_app, Y_app)
+sqrt(mean((Y_test - nn_test)^2))
+cor(nn_test, Y_test)
+
+par(mfrow = c(2, 1), pty = "s")
+plot(nn_app, Y_app, xlim = xylim, ylim = xylim)
+abline(b = 1, a = 0, col = "red")
+plot(nn_test, Y_test, xlim = xylim, ylim = xylim)
+abline(b = 1, a = 0, col = "red")
+
+ylim = range(Y_app - nn_app, Y_test - nn_test)
+par(mfrow = c(2, 1), pty = "m")
+plot(Y_app - nn_app, type = "l", ylim = ylim)
+plot(Y_test - nn_test, type = "l", ylim = ylim)
+
+par(mfrow = c(2, 1), pty = "s")
+qqplot(nn_app, Y_app, xlim = xylim, ylim = xylim, main = "QQ-plot")
+abline(b = 1, a = 0, col = "red")
+qqplot(nn_test, Y_test, xlim = xylim, ylim = xylim, main = "QQ-plot")
+abline(b = 1, a = 0, col = "red")
 ```
 
 ### Model Output Statistic
@@ -128,7 +164,30 @@ Appliquer la descente d'échelle par correction de la moyenne.
 Réaliser les mêmes dignostics que pour le modèles linéaires.
 
 ```{r, fig.width = 6, fig.height = 9}
+mc_app <- X_app + mean(Y_app) - mean(X_app)
+mc_test <- X_test + mean(Y_app) - mean(X_app)
 
+sqrt(mean((Y_app - mc_app)^2))
+cor(mc_app, Y_app)
+sqrt(mean((Y_test - mc_test)^2))
+cor(mc_test, Y_test)
+
+par(mfrow = c(2, 1), pty = "s")
+plot(mc_app, Y_app, xlim = xylim, ylim = xylim)
+abline(b = 1, a = 0, col = "red")
+plot(mc_test, Y_test, xlim = xylim, ylim = xylim)
+abline(b = 1, a = 0, col = "red")
+
+ylim = range(Y_app - mc_app, Y_test - mc_test)
+par(mfrow = c(2, 1), pty = "m")
+plot(Y_app - mc_app, type = "l", ylim = ylim)
+plot(Y_test - mc_test, type = "l", ylim = ylim)
+
+par(mfrow = c(2, 1), pty = "s")
+qqplot(mc_app, Y_app, xlim = xylim, ylim = xylim, main = "QQ-plot")
+abline(b = 1, a = 0, col = "red")
+qqplot(mc_test, Y_test, xlim = xylim, ylim = xylim, main = "QQ-plot")
+abline(b = 1, a = 0, col = "red")
 ```
 
 #### quantile-quantile correction
@@ -137,7 +196,30 @@ Fonctions utiles: ecdf, quantile
 Réaliser les mêmes dignostics que pour le modèles linéaires.
 
 ```{r, fig.width = 6, fig.height = 9}
+qq_app <- quantile(Y_app, probs = ecdf(X_app)(X_app))
+qq_test <- quantile(Y_app, probs = ecdf(X_app)(X_test))
 
+sqrt(mean((Y_app - qq_app)^2))
+cor(qq_app, Y_app)
+sqrt(mean((Y_test - qq_test)^2))
+cor(qq_test, Y_test)
+
+par(mfrow = c(2, 1), pty = "s")
+plot(qq_app, Y_app, xlim = xylim, ylim = xylim)
+abline(b = 1, a = 0, col = "red")
+plot(qq_test, Y_test, xlim = xylim, ylim = xylim)
+abline(b = 1, a = 0, col = "red")
+
+ylim = range(Y_app - qq_app, Y_test - qq_test)
+par(mfrow = c(2, 1), pty = "m")
+plot(Y_app - qq_app, type = "l", ylim = ylim)
+plot(Y_test - qq_test, type = "l", ylim = ylim)
+
+par(mfrow = c(2, 1), pty = "s")
+qqplot(qq_app, Y_app, xlim = xylim, ylim = xylim, main = "QQ-plot")
+abline(b = 1, a = 0, col = "red")
+qqplot(qq_test, Y_test, xlim = xylim, ylim = xylim, main = "QQ-plot")
+abline(b = 1, a = 0, col = "red")
 ```
 
 ### Summary plots
@@ -203,7 +285,44 @@ ks.test(qq_app, Y_app)
 Quelle est la méthode le plus performante sur la base de test ?
 
 ```{r, fig.width = 6, fig.height = 9}
+# Point by point
+par(pty = "s")
+plot(X_test, Y_test, xlim = xylim, ylim = xylim, pch = 20, cex = 0.5)
+points(lm_test, Y_test, xlim = xylim, ylim = xylim, pch = 20, cex = 0.5, col = 2)
+points(nn_test, Y_test, xlim = xylim, ylim = xylim, pch = 20, cex = 0.5, col = 3)
+points(mc_test, Y_test, xlim = xylim, ylim = xylim, pch = 20, cex = 0.5, col = 4)
+points(qq_test, Y_test, xlim = xylim, ylim = xylim, pch = 20, cex = 0.5, col = 5)
+abline(b = 1, a = 0, col = "red")
+legend(
+  "topleft",
+  legend = c("X", "lm", "nn", "mc", "qq"),
+  col = 1:5,
+  pch = 20
+)
 
+# distribution
+qqplot_lm <- qqplot(lm_test, Y_test, plot.it = FALSE)
+qqplot_nn <- qqplot(nn_test, Y_test, plot.it = FALSE)
+qqplot_mc <- qqplot(mc_test, Y_test, plot.it = FALSE)
+qqplot_qq <- qqplot(qq_test, Y_test, plot.it = FALSE)
+par(pty = "s")
+qqplot(X_test, Y_test, xlim = xylim, ylim = xylim, pch = 20, cex = 0.5, main = "QQ-plot")
+points(qqplot_lm$x, qqplot_lm$y, xlim = xylim, ylim = xylim, pch = 20, cex = 0.5, col = 2)
+points(qqplot_nn$x, qqplot_nn$y,, xlim = xylim, ylim = xylim, pch = 20, cex = 0.5, col = 3)
+points(qqplot_mc$x, qqplot_mc$y,, xlim = xylim, ylim = xylim, pch = 20, cex = 0.5, col = 4)
+points(qqplot_qq$x, qqplot_qq$y,, xlim = xylim, ylim = xylim, pch = 20, cex = 0.5, col = 5)
+abline(b = 1, a = 0, col = "red")
+legend(
+  "topleft",
+  legend = c("X", "lm", "nn", "mc", "qq"),
+  col = 1:5,
+  pch = 20
+)
+ks.test(X_test, Y_test)
+ks.test(lm_test, Y_test)
+ks.test(nn_test, Y_test)
+ks.test(mc_test, Y_test)
+ks.test(qq_test, Y_test)
 ```
 
 ## Bias Corretion: only MOS
@@ -230,26 +349,60 @@ Y_test <- Y[!iapp]
 
 ### Comparaison entre X et Y
 ```{r, fig.width = 6, fig.height = 9}
+# A ne pas mettre
+sqrt(mean((Y_app - X_app)^2))
+cor(X_app, Y_app)
+sqrt(mean((Y_test - X_test)^2))
+cor(X_test, Y_test)
 
+xylim <- range(X, Y, na.rm = TRUE)
+
+par(mfrow = c(2, 1), pty = "s")
+plot(X_app, Y_app, xlim = xylim, ylim = xylim)
+abline(b = 1, a = 0, col = "red")
+plot(X_test, Y_test, xlim = xylim, ylim = xylim)
+abline(b = 1, a = 0, col = "red")
+
+ylim = range(Y_app - X_app, Y_test - X_test)
+par(mfrow = c(2, 1), pty = "m")
+plot(Y_app - X_app, type = "l", ylim = ylim)
+plot(Y_test - X_test, type = "l", ylim = ylim)
+
+ylim = range(Y_app - qq_app, Y_test - qq_test)
+qqplot(X_app, Y_app, xlim = xylim, ylim = xylim, main = "QQ-plot")
+abline(b = 1, a = 0, col = "red")
+qqplot(X_test, Y_test, xlim = xylim, ylim = xylim, main = "QQ-plot")
+abline(b = 1, a = 0, col = "red")
 ```
 
 ### Model Output Statistic
-
 #### simple mean correction
-
 Réaliser une correction de bias via la méthode de correction de la moyenne.
 
 ```{r, fig.width = 6, fig.height = 9}
+# A ne pas mettre
+mc_app <- X_app + mean(Y_app) - mean(X_app)
+mc_test <- X_test + mean(Y_app) - mean(X_app)
 
-
+par(mfrow = c(2, 1), pty = "s")
+qqplot(mc_app, Y_app, xlim = xylim, ylim = xylim, main = "QQ-plot")
+abline(b = 1, a = 0, col = "red")
+qqplot(mc_test, Y_test, xlim = xylim, ylim = xylim, main = "QQ-plot")
+abline(b = 1, a = 0, col = "red")
 ```
 
 #### quantile-quantile correction
-
 Réaliser une correction de bias via la méthode quantile quantile.
-
 ```{r, fig.width = 6, fig.height = 9}
+# A ne pas mettre
+qq_app <- quantile(Y_app, probs = ecdf(X_app)(X_app))
+qq_test <- quantile(Y_app, probs = ecdf(X_app)(X_test))
 
+par(mfrow = c(2, 1), pty = "s")
+qqplot(qq_app, Y_app, xlim = xylim, ylim = xylim, main = "QQ-plot")
+abline(b = 1, a = 0, col = "red")
+qqplot(qq_test, Y_test, xlim = xylim, ylim = xylim, main = "QQ-plot")
+abline(b = 1, a = 0, col = "red")
 ```
 
 ### Summary plots
@@ -257,23 +410,57 @@ Réaliser une correction de bias via la méthode quantile quantile.
 Quelle est la méthode le plus performante sur la base d'apprentissage ?
 
 ```{r, fig.width = 6, fig.height = 9}
+# A ne pas mettre
+# distribution
+qqplot_mc <- qqplot(mc_app, Y_app, plot.it = FALSE)
+qqplot_qq <- qqplot(qq_app, Y_app, plot.it = FALSE)
 
+par(pty = "s")
+qqplot(X_app, Y_app, xlim = xylim, ylim = xylim, pch = 20, cex = 0.5, main = "QQ-plot")
+points(qqplot_mc$x, qqplot_mc$y,, xlim = xylim, ylim = xylim, pch = 20, cex = 0.5, col = 4)
+points(qqplot_qq$x, qqplot_qq$y,, xlim = xylim, ylim = xylim, pch = 20, cex = 0.5, col = 5)
+abline(b = 1, a = 0, col = "red")
+legend(
+  "topleft",
+  legend = c("X", "mc", "qq"),
+  col = c(1, 4, 5),
+  pch = 20
+)
+ks.test(X_app, Y_app)
+ks.test(mc_app, Y_app)
+ks.test(qq_app, Y_app)
 ```
 
 #### Test
 Quelle est la méthode le plus performante sur la base de test ?
 
 ```{r, fig.width = 6, fig.height = 9}
-
+# A ne pas mettre
+# distribution
+qqplot_mc <- qqplot(mc_test, Y_test, plot.it = FALSE)
+qqplot_qq <- qqplot(qq_test, Y_test, plot.it = FALSE)
+par(pty = "s")
+qqplot(X_test, Y_test, xlim = xylim, ylim = xylim, pch = 20, cex = 0.5, main = "QQ-plot")
+points(qqplot_mc$x, qqplot_mc$y,, xlim = xylim, ylim = xylim, pch = 20, cex = 0.5, col = 4)
+points(qqplot_qq$x, qqplot_qq$y,, xlim = xylim, ylim = xylim, pch = 20, cex = 0.5, col = 5)
+abline(b = 1, a = 0, col = "red")
+legend(
+  "topleft",
+  legend = c("X", "mc", "qq"),
+  col = 1:5,
+  pch = 20
+)
+ks.test(X_test, Y_test)
+ks.test(mc_test, Y_test)
+ks.test(qq_test, Y_test)
 ```
 
 
-## Perfect Prognosis: Appliquer le downscaling appris sur les réanalyses aux simulations climatiques.
+## Perfect Prognosis: Appliquer le downscaling aux simulations climatiques.
 
-Est-ce raisonnable ?
+Est-ce que c'est raisonnable ?
 
 ```{r, fig.width = 6, fig.height = 9}
-# X: IPSL-CM5A-LR_historical_r1i1p1, Y:GHCND_orly
 base_gcm <- data.frame(X = X_test, Y = Y_test)
 lm_gcm <- predict(lm_fit, newdata = base_gcm)
 nn_gcm <- numeric(length(Y_test))
@@ -308,4 +495,4 @@ ks.test(X_test, Y_test)
 ks.test(lm_test, Y_test)
 ks.test(nn_test, Y_test)
 ``` 
-## Quelles améliorations pouvez-vous proposer pour améliorer les performances en downscaling ou en correction de biais ?
+## Quelles améliorations pouvez-vous proposer ?
