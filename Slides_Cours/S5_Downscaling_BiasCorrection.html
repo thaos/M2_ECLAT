@@ -15,7 +15,7 @@ class: center, middle, inverse, title-slide
 ## Introduction à la descente d’échelle statistique et la correction de bias
 ### Soulivanh Thao <br/> <a href="mailto:sthao@lsce.ipsl.fr" class="email">sthao@lsce.ipsl.fr</a>
 ### LSCE, ESTIMR
-### 2020/10/01 (updated: 2020-12-02)
+### 2020/10/01 (updated: 2020-12-03)
 
 ---
 
@@ -147,7 +147,7 @@ Trouver comment transformer une variable aléatoire `\(X\)` en une variable alé
 
 Soit `\(X \sim F\)` et `\(Y \sim G\)`,
 
-i.e. `\(X\)` et `\(Y\)` suivent les lois de probabiltés qui sont définis respectivement par les fonctions de répartition `\(F\)` et `\(G\)`.
+i.e. `\(X\)` et `\(Y\)` suivent les lois de probabilités qui sont définis respectivement par les fonctions de répartition `\(F\)` et `\(G\)`.
 
 &lt;br/&gt;
 
@@ -155,7 +155,7 @@ On cherche une transformation `\(T\)` tel que
 
 $$ T(X) \buildrel d \over = Y \quad \Leftrightarrow \quad T(X) \sim G$$
 
-ou en tous cas que la loi de `\(T(X)\)` se rappoche de la loi de `\(Y\)`.
+ou en tous cas que la loi de `\(T(X)\)` se rapproche de la loi de `\(Y\)`.
 
 &lt;br/&gt;
 
@@ -167,12 +167,12 @@ e.g l'espérance ou la variance.
 
 
 # Correction de la moyenne
-La variable large échelle `\(X\)` est simplement transformée pour avoir la même esperance (moyenne) que la variable `\(Y\)`.
+La variable large échelle `\(X\)` est simplement transformée pour avoir la même espérance (moyenne) que la variable `\(Y\)`.
 
 Ainsi pour une valeur `\(X_{new}\)`, la prédiction pour la valeur de `\(Y_{new}\)` correspondante est donnée par 
 `$$\hat{Y}_{new} = X_{new} - \mathbb{E}[X] + \mathbb{E}[Y]$$`
 
-En pratique, on remplace l'esperance par la moyenne empirique
+En pratique, on remplace l'espérance par la moyenne empirique
 `$$\hat{Y}_{new} = X_{new} - \bar{X} + \bar{Y}$$`
 en définissant la moyenne empirique de `\(X\)` par 
 `$$\bar{X} = \frac{1}{n} \sum_{i=1}^{n} X_i$$`

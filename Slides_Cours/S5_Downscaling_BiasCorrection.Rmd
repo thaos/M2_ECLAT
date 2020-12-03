@@ -176,7 +176,7 @@ Trouver comment transformer une variable aléatoire $X$ en une variable aléatoi
 
 Soit $X \sim F$ et $Y \sim G$,
 
-i.e. $X$ et $Y$ suivent les lois de probabiltés qui sont définis respectivement par les fonctions de répartition $F$ et $G$.
+i.e. $X$ et $Y$ suivent les lois de probabilités qui sont définis respectivement par les fonctions de répartition $F$ et $G$.
 
 <br/>
 
@@ -184,7 +184,7 @@ On cherche une transformation $T$ tel que
 
 $$ T(X) \buildrel d \over = Y \quad \Leftrightarrow \quad T(X) \sim G$$
 
-ou en tous cas que la loi de $T(X)$ se rappoche de la loi de $Y$.
+ou en tous cas que la loi de $T(X)$ se rapproche de la loi de $Y$.
 
 <br/>
 
@@ -196,12 +196,12 @@ e.g l'espérance ou la variance.
 
 
 # Correction de la moyenne
-La variable large échelle $X$ est simplement transformée pour avoir la même esperance (moyenne) que la variable $Y$.
+La variable large échelle $X$ est simplement transformée pour avoir la même espérance (moyenne) que la variable $Y$.
 
 Ainsi pour une valeur $X_{new}$, la prédiction pour la valeur de $Y_{new}$ correspondante est donnée par 
 $$\hat{Y}_{new} = X_{new} - \mathbb{E}[X] + \mathbb{E}[Y]$$
 
-En pratique, on remplace l'esperance par la moyenne empirique
+En pratique, on remplace l'espérance par la moyenne empirique
 $$\hat{Y}_{new} = X_{new} - \bar{X} + \bar{Y}$$
 en définissant la moyenne empirique de $X$ par 
 $$\bar{X} = \frac{1}{n} \sum_{i=1}^{n} X_i$$
@@ -469,17 +469,17 @@ Exemple: la regression par plus proche voisin et la correction quantile-quantile
 
 # Pour aller plus loin
 
-Ici, nous n'avons parlé que de la correction de bias pour des variables univariés.
+Ici, nous n'avons parlé que de la correction de biais pour des variables univariées.
 
-Pour le cas univariées, il existe un grand nombre de méthodes et de variantes.
+Pour le cas univarié, il existe un grand nombre de méthodes et de variantes.
 
-Le systeme climatique est representé par un ensemble de variables qui varient à la fois dans le temps et dans l'espace. 
+Le système climatique est représenté par un ensemble de variables qui varient à la fois dans le temps et dans l'espace. 
 
-Pour corriger plusieur variable à la fois, il faut faire appel à de la statistique multivariée.
+Pour corriger plusieurs variable à la fois, il faut faire appel à de la statistique multivariée.
 
-Décider des aspects à corriger: marginales, dependences spatiales, temporelles et inter-variabres. 
+Décider des aspects à corriger: marginales, dépendances spatiales, temporelles et inter-variables. 
 
-Certaines méthodes de correction de bias modifient les tendances du changement climatiques.
+Certaines méthodes de correction de biais modifient les tendances du changement climatiques.
 Est-ce une bonne chose ?
 
 #### Plus généralement, que souhaite-t-on préserver ou corriger du modèle de climat ?

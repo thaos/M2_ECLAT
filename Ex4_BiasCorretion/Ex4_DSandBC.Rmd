@@ -12,7 +12,7 @@ When you save the notebook, an HTML file containing the code and output will be 
 The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
 
 ## Objectifs
-Le but est de presenter le principe de fonctionnement de la descente d'échelle statistique et de la correction. Pour cela, nous appliquerons quelques méthodes de base. Deux sont des méthodes dites de Perfect Prognosis et les deux autres de la catégorie Model Output Statstics.
+Le but est de présenter le principe de fonctionnement de la descente d'échelle statistique et de la correction. Pour cela, nous appliquerons quelques méthodes de base. Deux sont des méthodes dites de Perfect Prognosis et les deux autres de la catégorie Model Output Statstics.
 
 ## Downscalling
 
@@ -73,11 +73,17 @@ abline(b = 1, a = 0, col = "red")
 ```
 
 ### Perfect Prog
+
 #### Linear Model
-Utiliser la fonction lm pour ajuster un modéle linéaire pour expliquer Y en fonction de X
-Utiliser la fonction predict pour appliquer le modèle appris à la base d'apprentissage et de test.
+
+Utiliser la fonction lm pour ajuster un modèle linéaire pour expliquer Y en fonction de X
+
+Utiliser la fonction *predict* pour appliquer le modèle appris à la base d'apprentissage et de test.
+
 Comparer les prédictions aux vrais valeurs de Y.
+
 Le modèle appris est il aussi sur la base de test que sur la base d'apprentissage ?
+
 ```{r, fig.width = 6, fig.height = 9}
 base_app <- data.frame(X = X_app, Y = Y_app)
 base_test <- data.frame(X = X_test, Y = Y_test)
@@ -113,15 +119,21 @@ abline(b = 1, a = 0, col = "red")
 ```
 
 #### analogues / nearest-neighbour
+
 Appliquer la descente d'échelle par analogue.
+
 Pour cela, il faut calculer la distance entre les valeurs de X de la base d'apprentissage et les valeurs de X pour les quelles on souhaite prédire la valeur en Y.
-fonction utile: which.min
+
+fonction utile: *which.min*
+
 Réaliser les mêmes dignostics que pour le modèle linéaire.
+
 ```{r, fig.width = 6, fig.height = 9}
 
 ```
 
 ### Model Output Statistic
+
 #### simple mean correction
 
 Appliquer la descente d'échelle par correction de la moyenne.
@@ -132,8 +144,11 @@ Réaliser les mêmes dignostics que pour le modèles linéaires.
 ```
 
 #### quantile-quantile correction
+
 Appliquer la descente d'échelle via la correction quantile quantile.
-Fonctions utiles: ecdf, quantile
+
+Fonctions utiles: *ecdf*, *quantile*
+
 Réaliser les mêmes dignostics que pour le modèles linéaires.
 
 ```{r, fig.width = 6, fig.height = 9}
