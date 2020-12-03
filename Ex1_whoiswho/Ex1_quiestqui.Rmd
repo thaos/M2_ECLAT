@@ -14,39 +14,39 @@ The preview shows you a rendered HTML copy of the contents of the editor. Conseq
 ### Objectifs
 Dans le fichiers "Ex1_tas_df_wonames.rds" se trouvent stockees dans une matrice 11 séries temporelles de température moyenne journalière pour la période 1979-2005. Chaque ligne de la matrice correspond à une date. les 29 févriers ont été enlevés par soucis de simplicité. Chaque colonne correspond à une série temporelle. Elles sont extraites des jeux de donnees suivantes:
 
-  - les simulations historiques issues de l'exercice CMIP5 realisées par le modèle CNRM-CM5 pour le membre r1i1p1
+  - les simulations historiques issues de l'exercice CMIP5 réalisées par le modèle CNRM-CM5 pour le membre r1i1p1
   
-  - les simulations historiques issues de l'exercice CMIP5 realisées par le modèle CNRM-CM5 pour le membre r2i1p1
+  - les simulations historiques issues de l'exercice CMIP5 réalisées par le modèle CNRM-CM5 pour le membre r2i1p1
 
-  - les simulations historiques issues de l'exercice CMIP5 realisées par le modèle IPSL-CM5A-LR pour le membre r1i1p1
+  - les simulations historiques issues de l'exercice CMIP5 réalisées par le modèle IPSL-CM5A-LR pour le membre r1i1p1
 
-  - les simulations historiques issues de l'exercice CMIP5 realisées par le modèle IPSL-CM5A-LR pour le membre r2i1p1
+  - les simulations historiques issues de l'exercice CMIP5 réalisées par le modèle IPSL-CM5A-LR pour le membre r2i1p1
 
-  - les simulations historiques issues de l'exercice EUROCORDEX  realisées à une resolution de 0.44 degree par le modèle CNRM-ALADIN53_v1 forcé par le modele globale CNRM-CERFACS-CNRM-CM5 pour le membre r2i1p1
+  - les simulations historiques issues de l'exercice EUROCORDEX réalisées à une résolution de 0.44 degrés par le modèle CNRM-ALADIN53_v1 forcé par le modèle globale CNRM-CERFACS-CNRM-CM5 pour le membre r2i1p1
 
-  - les simulations historiques issues de l'exercice EUROCORDEX  realisées à une resolution de 0.11 degree par le modèle CNRM-ALADIN53_v1 forcé par le modele globale CNRM-CERFACS-CNRM-CM5 pour le membre r2i1p1
+  - les simulations historiques issues de l'exercice EUROCORDEX  réalisées à une résolution de 0.11 degrés par le modèle CNRM-ALADIN53_v1 forcé par le modèle globale CNRM-CERFACS-CNRM-CM5 pour le membre r2i1p1
 
-  - les reanalyses ERA5
+  - les réanalyses ERA5
 
-  - les reanalyses NCEP
+  - les réanalyses NCEP
 
-  - le produit d'observations EOBS sur une grille à 0.25 degrée
+  - le produit d'observations EOBS sur une grille à 0.25 degrés
 
-  - le produit d'observations EOBS sur une grille à 0.1 degrée
+  - le produit d'observations EOBS sur une grille à 0.1 degrés
 
-  - les observations de la station d'Orly issues du reseau Global Historical Climatology Network
+  - les observations de la station d'Orly issues du réseau Global Historical Climatology Network
 
 Pour les modèles, les réanalyses ou les produits grillés, les séries temporelles provienne du point de grille le plus proche de Paris.
 
-Les series temporelles sont données dans le désordre et l'objectif est de retrouver, dans la mesure du possible, le jeu de données dont elles sont extraites.
+Les séries temporelles sont données dans le désordre et l'objectif est de retrouver, dans la mesure du possible, le jeu de données dont elles sont extraites.
 
-Pour cela, il vous faudra vous renseigner sur ces jeux de donnees et identifier les différentes carateristiques (statistiques) qui vous permettront de les differencier. Il n'y a peut etre pas de solution à ce probleme, l'objectif réel de cet exercice est:
+Pour cela, il vous faudra vous renseigner sur ces jeux de données et identifier les différentes caractéristiques (statistiques) qui vous permettront de les différencier. Il n'y a peut être pas de solution à ce problème, l'objectif réel de cet exercice est:
 
-1) d'illustrer les disparites entre jeux de donnees representant le "meme" objet: ici, la température au plus proche de Paris.
+1) d'illustrer les disparités entre jeux de données représentant le "même" objet: ici, la température au plus proche de Paris.
 
-2) vous familiariser avec la manipulation des jeux de donnees sous R. 
+2) vous familiariser avec la manipulation des jeux de données sous R. 
 
-Indice: il doit etre facile de separer les jeux construits à partir d'observations des simulations des modeles climatiques. Pourquoi ?
+Indice: il doit être facile de séparer les jeux construits à partir d'observations des simulations des modèles climatiques. Pourquoi ?
 
 
 
@@ -127,7 +127,7 @@ pairs(tas_df)
 ```{r, fig.width = 12, fig.height = 12}
 
 ```
-Comment le cycle saisonnier estimer de cette facon vous parait-il ?
+Comment le cycle saisonnier estimer de cette façon vous parait-il ?
 
 ### Plot des anomalies
 ```{r, fig.width = 12, fig.height = 12}
@@ -151,7 +151,7 @@ for(i in seq.int(ncol(anomalies))){
 
 ```
 
-### Plot des coefficient d'autocorrelation
+### Plot des coefficients d'autocorrelation
 ```{r, fig.width = 12, fig.height = 12}
 pacf_ano <- apply(anomalies, 2, function(x) pacf(x, na.action = na.pass, plot = FALSE)$acf)
 par(mfrow = c(4, 3))
@@ -192,8 +192,8 @@ trends <- apply(anomalies, 2, function(y){
 ```
 
 
-### Distance euclidienne entre characteristiques des differentes series temporelles
-Utiliser la fonction dist pour calculer une distance entre les modéles
+### Distance euclidienne entre caractéristiques des differentes series temporelles
+Utiliser la fonction dist pour calculer une distance entre les modèles
 ```{r}
 # Exemple: On défini la distance entre deux modèles par la distance euclidienne entre leurs séries temporelles brutes.
 d <- dist(t(tas_df)) # euclidean distances between the columns
