@@ -60,7 +60,7 @@ Vous pouvez faire [ces exercices](https://github.com/thaos/MathDACC_tutoR/blob/m
 
 ![](Figs/climatevsmeteo.png)
 
-***Le climat est comme une distribution de probabilité et la méteo  ses réalisations.***
+***Le climat est comme une distribution de probabilité et la météo  ses réalisations.***
 
 ---
 # Systèmes chaotiques
@@ -88,7 +88,7 @@ Vous pouvez faire [ces exercices](https://github.com/thaos/MathDACC_tutoR/blob/m
 ---
 # Systèmes déterministes et aléas
 
-Lorsque l'on simule l'évolution du climat au 20ème siècle, on ne connait pas assez précisément les conditions initiales de l'ère pré-industrielle. 
+Lorsque l'on simule l'évolution du climat au 20ème siècle, on ne connaît pas assez précisément les conditions initiales de l'ère pré-industrielle. 
 
 Par exemple, la trajectoire de la température moyenne globale ne peut donc être exactement reproduite. 
 
@@ -114,11 +114,11 @@ $$Y = a X + b + \epsilon$$
 avec par exemple 
 
 - $X$, le temps
-- $Y$, la temperature
+- $Y$, la température
 - $\epsilon$, du bruit
 
 
-Pour comprendre ce qui peut être modélisé comme un signal deterministe ou comme du bruit, il faut connaître les différentes sources de variabilité climatique.
+Pour comprendre ce qui peut être modélisé comme un signal déterministe ou comme du bruit, il faut connaître les différentes sources de variabilité climatique.
 
 .footnote[Pour l'analyse de tendance, voir aussi [IPCC AR5, Chapter 2, Box 2.2, p 179](https://www.ipcc.ch/site/assets/uploads/2017/09/WG1AR5_Chapter02_FINAL.pdf
 )]
