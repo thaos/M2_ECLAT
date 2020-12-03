@@ -16,13 +16,13 @@ output:
 
 Je ne suis pas physicien, ni climatologue. Le cours reflète simplement ce que j'ai appris en tant que "statisticien" sur l'analyse de données climatiques. Vous en savez donc surement plus que moi sur le climat.
 
-Le cours n'est pas exhaustif et ne fait que survoler certains aspects. L'objectif est de vous familiariser avec certaines notions importante et de vous orienter vers des ressources complémentaires pous vous renseigner d'avantage de votre côté.
+Le cours n'est pas exhaustif et ne fait que survoler certains aspects. L'objectif est de vous familiariser avec certaines notions importante et de vous orienter vers des ressources complémentaires pous vous renseigner davantage de votre côté.
 
 Une grande partie est notamment inspirée des cours de [Julien Cattiaux](https://www.umr-cnrm.fr/spip.php?article629). Je vous invite grandement à les consulter.
 
-Bien sur, l'objectif de ce cours est aussi d'en discuter ensemble.
+Bien sûr, l'objectif de ce cours est aussi d'en discuter ensemble.
 
-C'est la premiere année que se tient ce cours (et dans un contexte un peu particulier...). Toutes les remarques dans le but de l'améliorer sont les bienvenus. En particulier, ne pas hésiter poser des questions. 
+C'est la premiere année que se tient ce cours (et dans un contexte un peu particulier...). Toutes les remarques dans le but de l'améliorer sont les bienvenues. En particulier, ne pas hésiter à poser des questions. 
 
 ---
 # Séquence 2: Données et outils statistiques
@@ -31,11 +31,11 @@ C'est la premiere année que se tient ce cours (et dans un contexte un peu parti
 
 - Séance 3: Introduction aux notions statistiques de facon plus formelle (Philippe Naveau).
 
-- Séance 4: Séances pratique en R sur les effets de l'aggrégation spatiale et l'effet de la varibilité interne sur les estimations statistiques.
+- Séance 4: Séances pratique en R sur les effets de l'aggrégation spatiale et l'effet de la variabilité interne sur les estimations statistiques.
 
-- Séance 5: Introduction au downscaling statistique et corréction de bias par la pratique.
+- Séance 5: Introduction au downscaling statistique et correction de biais par la pratique.
 
-Il y a beaucoup de pratique avec le logiciel R. Il vous faut donc l'installer ainsi que R studio.
+Il y a beaucoup de pratique avec le logiciel R. Il vous faut donc l'installer ainsi que Rstudio.
 Vous pouvez faire [ces exercices](https://github.com/thaos/MathDACC_tutoR/blob/master/Rtuto_basics/basics_tuto_exercices.R) pour vous familiariser avec R. La correction est disponible [ici](https://github.com/thaos/MathDACC_tutoR/blob/master/Rtuto_basics/basics_tuto.R.completed).
 
 ---
@@ -60,7 +60,7 @@ Vous pouvez faire [ces exercices](https://github.com/thaos/MathDACC_tutoR/blob/m
 
 ![](Figs/climatevsmeteo.png)
 
-***Le climat est comme une distribution de probabilité et la méteo  ses réalisation.***
+***Le climat est comme une distribution de probabilité et la méteo  ses réalisations.***
 
 ---
 # Systèmes chaotiques
@@ -88,7 +88,7 @@ Vous pouvez faire [ces exercices](https://github.com/thaos/MathDACC_tutoR/blob/m
 ---
 # Systèmes déterministes et aléas
 
-Lorsque l'on simule l'évolution du climat au 20ème, on ne connait pas assez précisément les conditions initiales de l'ère pré-industrielle. 
+Lorsque l'on simule l'évolution du climat au 20ème siècle, on ne connait pas assez précisément les conditions initiales de l'ère pré-industrielle. 
 
 Par exemple, la trajectoire de la température moyenne globale ne peut donc être exactement reproduite. 
 
@@ -102,7 +102,7 @@ Par exemple, la trajectoire de la température moyenne globale ne peut donc êtr
 
 ---
 
-# Modélisation statisque
+# Modélisation statistique
 
 
 En modélisation statistique, la partie du signal que l’on pense être capable de prédire est souvent supposée déterministe.  Le reste est modélisé comme du bruit, i.e. par une variable aléatoire.
@@ -178,7 +178,7 @@ $$\underbrace{\text{Climat}}_{aléatoire} = \underbrace{\text{état moyen} +  \t
 <br/>
 
 
-Par exemple, on peut modéliser des données horraires par:
+Par exemple, on peut modéliser des données horaires par:
 $$
 \begin{aligned}
 \text{Climat} =  &\text{moyenne } +  \\
@@ -194,17 +194,17 @@ $$
 - **Distribution**, e.g. gaussienne, uniforme...
 
 <br/>
-- **Dependance temporelle** (autocorrelation)
+- **Dependance temporelle** (autocorrélation)
 
   - sans dépendance, e.g [bruit blanc](https://en.wikipedia.org/wiki/White_noise#White_noise_vector)
   
   - avec dépendance. e.g [processus autorégressif](https://en.wikipedia.org/wiki/Autoregressive_model), [processus moving-average](https://en.wikipedia.org/wiki/Moving-average_model)
 
 <br/>
-- **Stationnaire**: Les propriétés statistique du bruit évoluent elle dans le temps ?
+- **Stationnaire**: Les propriétés statistique du bruit évoluent-elles dans le temps ?
 
 ---
-# Dependance temporelle
+# Dépendance temporelle
 ```{r, echo=FALSE, fig.height=5, dev='svg'}
 n <- 500
 par(mar = c(4, 4, 1, .1))
@@ -451,7 +451,7 @@ $$w_i(\mathbf{x}) =  \frac{1}{d(\mathbf{x},\mathbf{x}_i)^p}$$
 [Source: Wikipedia](https://en.wikipedia.org/wiki/Inverse_distance_weighting)
 
 ---
-# Exemple synthetique
+# Exemple synthétique
 
 ```{r, echo=FALSE, fig.height=4, dev='svg'}
 n <- 5
@@ -508,7 +508,7 @@ for( i in seq_along(X)){
 Quelle est la précision des mesures et leur biais ?
 
 <br/>
-Quelle est l'echantillonnage spatiale et temporel ?
+Quelle est l'échantillonnage spatiale et temporel ?
 
 <br/>
 Y a-t-il des ruptures dans les séries temporelles ?
@@ -650,7 +650,7 @@ A voir également: [cours de Brian E. J. Rose, ATM 623: Climate Modeling ](https
 
 Quelles approximations est-on fait à faire, en particulier vis-à-vis de la résolution et des processus explicitement modélisés ?
 
-Où se situe les simulations d'un modèle par rapport aux autres?
+Où se situent les simulations d'un modèle par rapport aux autres?
 
 ---
 # Reanalysis
@@ -683,7 +683,7 @@ optimal way.
 ---
 # Le cycle d'assimilation
 
-Pour simuler un système chaotique, la connaissance des condition initiales est essentielle, d'où l'impornance de l'assimilation pour la prévision du temps.
+Pour simuler un système chaotique, la connaissance des condition initiales est essentielle, d'où l'importance de l'assimilation pour la prévision du temps.
 
 
 <p align="center">
@@ -701,7 +701,7 @@ Pour simuler un système chaotique, la connaissance des condition initiales est 
 <br/>
 </p>
 
-La physique est nécessaire pour la modélistion des opérateur $M$ et $K$.
+La physique est nécessaire pour la modélistion des opérateurs $M$ et $K$.
 
 La statistique est nécessaire pour la modélisation des bruits $\eta$ et $\epsilon$.
 
@@ -723,7 +723,7 @@ over a long time period, assimilating a selection of observations
 
 Homogénéité essentielle pour l'étude du climat.
 
-- Attention aux bias du modèle et des observations
+- Attention aux biais du modèle et des observations
 
 - Effet de l'intégration de nouvelles sources d'observations.
 
