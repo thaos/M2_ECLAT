@@ -14,15 +14,15 @@ output:
 ---
 # Disclaimer
 
-Je ne suis pas physicien, ni climatologue. Le cours reflète simplement ce que j'ai appris en tant que "statisticien" sur l'analyse de données climatiques. Vous en savez donc surement plus que moi sur le climat.
+Je ne suis pas physicien, ni climatologue. Le cours reflète simplement ce que j'ai appris en tant que "statisticien" sur l'analyse de données climatiques. Vous en savez donc sûrement plus que moi sur le climat.
 
-Le cours n'est pas exhaustif et ne fait que survoler certains aspects. L'objectif est de vous familiariser avec certaines notions importante et de vous orienter vers des ressources complémentaires pous vous renseigner davantage de votre côté.
+Le cours n'est pas exhaustif et ne fait que survoler certains aspects. L'objectif est de vous familiariser avec certaines notions importantes et de vous orienter vers des ressources complémentaires pour vous renseigner davantage de votre côté.
 
 Une grande partie est notamment inspirée des cours de [Julien Cattiaux](https://www.umr-cnrm.fr/spip.php?article629). Je vous invite grandement à les consulter.
 
 Bien sûr, l'objectif de ce cours est aussi d'en discuter ensemble.
 
-C'est la premiere année que se tient ce cours (et dans un contexte un peu particulier...). Toutes les remarques dans le but de l'améliorer sont les bienvenues. En particulier, ne pas hésiter à poser des questions. 
+C'est la première année que se tient ce cours (et dans un contexte un peu particulier...). Toutes les remarques dans le but de l'améliorer sont les bienvenues. En particulier, ne pas hésiter à poser des questions. 
 
 ---
 # Séquence 2: Données et outils statistiques
@@ -118,7 +118,7 @@ avec par exemple
 - $\epsilon$, du bruit
 
 
-Pour comprendre ce qui peut être modélisé comme un signal déterministe ou comme du bruit, il faut connaître les différentes sources de variabilité climatique.
+<!-- Pour comprendre ce qui peut être modélisé comme un signal déterministe ou comme du bruit, il faut connaître les différentes sources de variabilité climatique. -->
 
 .footnote[Pour l'analyse de tendance, voir aussi [IPCC AR5, Chapter 2, Box 2.2, p 179](https://www.ipcc.ch/site/assets/uploads/2017/09/WG1AR5_Chapter02_FINAL.pdf
 )]
@@ -234,6 +234,35 @@ plot(X, xlab = "", ylim = ylim, main = expression(paste("MA(1), ", theta, "=0.9"
 ``` 
 
 ---
+# Fonction d'autocorrélation
+```{r, echo=FALSE, fig.height=5, dev='svg'}
+n <- 500
+par(mar = c(4, 4, 1, .1))
+layout(matrix(c(1,1,2,3,4,5), 3, 2, byrow = TRUE))
+X <- rnorm(2*n, 0, 1)
+plot(acf(X, plot = FALSE), main = "i.i.d. gaussian")
+
+ar1 <- 0.5
+X <- arima.sim(list(order=c(1,0,0), ar=ar1), n=n)*sqrt(1-ar1^2)
+plot(acf(X, plot = FALSE), main = expression(paste("AR(1), ", phi, "=0.5")))
+
+
+ar1 <- 0.9
+X <- arima.sim(list(order=c(1,0,0), ar=ar1), n=n)*sqrt(1-ar1^2)
+plot(acf(X, plot = FALSE),  main = expression(paste("AR(1), ", phi, "=0.9")))
+
+
+ar1 <- 0.5
+X <- arima.sim(list(order=c(0,0,1), ma=ar1), n=n)/sqrt(1+ar1^2)
+plot(acf(X, plot = FALSE), main = expression(paste("MA(1), ", theta, "=0.5")))
+
+
+ar1 <- 0.9
+X <- arima.sim(list(order=c(0,0,1), ma=ar1), n=n)/sqrt(1+ar1^2)
+plot(acf(X, plot = FALSE), main = expression(paste("MA(1), ", theta, "=0.9")))
+``` 
+
+---
 # Stationarité ?
 ```{r, echo=FALSE, fig.height=5, dev='svg'}
 n <- 1000
@@ -255,7 +284,7 @@ plot(X, xlab = "", , type = "l", ylim = ylim, main = "non-stationnarité en depe
 ``` 
 
 ---
-# Les données
+# Les données et leurs incertitudes.
 
 Les observations
 
@@ -491,7 +520,7 @@ for( i in seq_along(X)){
 # Qualité de l'interpolation
 
 <p align="center">
-<strong>Evaluation par cross-validation</strong>
+<strong>Evaluation par <a href="https://en.wikipedia.org/wiki/Cross-validation_(statistics)"> cross-validation </a> </strong>
 <img src="Figs/CRU_interp_MSE.png"/>
 <br/>
 <img src="Figs/CRU_interp_corr.png"/>
@@ -594,7 +623,7 @@ Sources:
 <br/>
 </p>
 
-A voir également: [cours de Brian E. J. Rose, ATM 623: Climate Modeling ](https://nbviewer.jupyter.org/github/brian-rose/ClimateModeling_courseware/blob/master/Lectures/Lecture05%20--%20Climate%20system%20and%20climate%20models.ipynb)
+A voir également: [cours de Brian E. J. Rose, ATM 623: Climate Modeling ](https://brian-rose.github.io/ClimateLaboratoryBook/courseware/sensitivity-feedback.html)
 
 ---
 # et les projections climatiques

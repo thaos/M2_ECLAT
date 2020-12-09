@@ -12,7 +12,7 @@ When you save the notebook, an HTML file containing the code and output will be 
 The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
 
 ### Objectifs
-Dans le fichiers "Ex1_tas_df_wonames.rds" se trouvent stockees dans une matrice 11 séries temporelles de température moyenne journalière pour la période 1979-2005. Chaque ligne de la matrice correspond à une date. les 29 févriers ont été enlevés par soucis de simplicité. Chaque colonne correspond à une série temporelle. Elles sont extraites des jeux de donnees suivantes:
+Dans le fichiers "Ex1_tas_df_wonames.rds" se trouvent stockées dans une matrice 11 séries temporelles de température moyenne journalière pour la période 1979-2005. Chaque ligne de la matrice correspond à une date. les 29 févriers ont été enlevés par soucis de simplicité. Chaque colonne correspond à une série temporelle. Elles sont extraites des jeux de données suivantes:
 
   - les simulations historiques issues de l'exercice CMIP5 réalisées par le modèle CNRM-CM5 pour le membre r1i1p1
   
@@ -36,7 +36,7 @@ Dans le fichiers "Ex1_tas_df_wonames.rds" se trouvent stockees dans une matrice 
 
   - les observations de la station d'Orly issues du réseau Global Historical Climatology Network
 
-Pour les modèles, les réanalyses ou les produits grillés, les séries temporelles provienne du point de grille le plus proche de Paris.
+Pour les modèles, les réanalyses ou les produits grillés, les séries temporelles proviennent du point de grille le plus proche de Paris.
 
 Les séries temporelles sont données dans le désordre et l'objectif est de retrouver, dans la mesure du possible, le jeu de données dont elles sont extraites.
 
@@ -191,12 +191,13 @@ trends <- apply(anomalies, 2, function(y){
 })
 ```
 
+### A quelles autres propriétés des séries temporelles pouvez-vous intérésser ?
 
 ### Distance euclidienne entre caractéristiques des differentes series temporelles
-Utiliser la fonction dist pour calculer une distance entre les modèles
+Utiliser la fonction *dist* pour calculer une distance entre les modèles
 ```{r}
 # Exemple: On défini la distance entre deux modèles par la distance euclidienne entre leurs séries temporelles brutes.
-d <- dist(t(tas_df)) # euclidean distances between the columns
+d <- dist(t(tas_df)) # euclidean distances between the columns of tas_df
 
 # Exemple: On défini la distance entre deux modèles par leur différence sur la moyenne.
 d <- dist(mu) 
@@ -207,7 +208,7 @@ d <- dist(trends)
 
 
 
-### Reprentation des modèles en fonction de leur distance respective avec les uns et les autres sur un plan 2d
+### Représentation des modèles en fonction de leurs distances respectives les autres modèle sur un plan 2d
 ```{r}
 fit <- cmdscale(d, eig=TRUE, k=2) # k is the number of dim
 fit # view results

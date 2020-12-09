@@ -6,6 +6,8 @@
     <meta name="author" content="Soulivanh Thao   sthao@lsce.ipsl.fr" />
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
+    <link href="libs/anchor-sections-1.0/anchor-sections.css" rel="stylesheet" />
+    <script src="libs/anchor-sections-1.0/anchor-sections.js"></script>
   </head>
   <body>
     <textarea id="source">
@@ -15,21 +17,21 @@ class: center, middle, inverse, title-slide
 ## données et outils pour l’étude des aléas climatiques
 ### Soulivanh Thao <br/> <a href="mailto:sthao@lsce.ipsl.fr" class="email">sthao@lsce.ipsl.fr</a>
 ### LSCE, ESTIMR
-### 2020/10/01 (updated: 2020-12-03)
+### 2020/10/01 (updated: 2020-12-09)
 
 ---
 
 # Disclaimer
 
-Je ne suis pas physicien, ni climatologue. Le cours reflète simplement ce que j'ai appris en tant que "statisticien" sur l'analyse de données climatiques. Vous en savez donc surement plus que moi sur le climat.
+Je ne suis pas physicien, ni climatologue. Le cours reflète simplement ce que j'ai appris en tant que "statisticien" sur l'analyse de données climatiques. Vous en savez donc sûrement plus que moi sur le climat.
 
-Le cours n'est pas exhaustif et ne fait que survoler certains aspects. L'objectif est de vous familiariser avec certaines notions importante et de vous orienter vers des ressources complémentaires pous vous renseigner davantage de votre côté.
+Le cours n'est pas exhaustif et ne fait que survoler certains aspects. L'objectif est de vous familiariser avec certaines notions importantes et de vous orienter vers des ressources complémentaires pour vous renseigner davantage de votre côté.
 
 Une grande partie est notamment inspirée des cours de [Julien Cattiaux](https://www.umr-cnrm.fr/spip.php?article629). Je vous invite grandement à les consulter.
 
 Bien sûr, l'objectif de ce cours est aussi d'en discuter ensemble.
 
-C'est la premiere année que se tient ce cours (et dans un contexte un peu particulier...). Toutes les remarques dans le but de l'améliorer sont les bienvenues. En particulier, ne pas hésiter à poser des questions. 
+C'est la première année que se tient ce cours (et dans un contexte un peu particulier...). Toutes les remarques dans le but de l'améliorer sont les bienvenues. En particulier, ne pas hésiter à poser des questions. 
 
 ---
 # Séquence 2: Données et outils statistiques
@@ -67,7 +69,7 @@ Vous pouvez faire [ces exercices](https://github.com/thaos/MathDACC_tutoR/blob/m
 
 ![](Figs/climatevsmeteo.png)
 
-***Le climat est comme une distribution de probabilité et la méteo  ses réalisations.***
+***Le climat est comme une distribution de probabilité et la météo  ses réalisations.***
 
 ---
 # Systèmes chaotiques
@@ -95,7 +97,7 @@ Vous pouvez faire [ces exercices](https://github.com/thaos/MathDACC_tutoR/blob/m
 ---
 # Systèmes déterministes et aléas
 
-Lorsque l'on simule l'évolution du climat au 20ème siècle, on ne connait pas assez précisément les conditions initiales de l'ère pré-industrielle. 
+Lorsque l'on simule l'évolution du climat au 20ème siècle, on ne connaît pas assez précisément les conditions initiales de l'ère pré-industrielle. 
 
 Par exemple, la trajectoire de la température moyenne globale ne peut donc être exactement reproduite. 
 
@@ -121,11 +123,11 @@ Exemple: étude de tendance par régression linéaire:
 avec par exemple 
 
 - `\(X\)`, le temps
-- `\(Y\)`, la temperature
+- `\(Y\)`, la température
 - `\(\epsilon\)`, du bruit
 
 
-Pour comprendre ce qui peut être modélisé comme un signal deterministe ou comme du bruit, il faut connaître les différentes sources de variabilité climatique.
+&lt;!-- Pour comprendre ce qui peut être modélisé comme un signal déterministe ou comme du bruit, il faut connaître les différentes sources de variabilité climatique. --&gt;
 
 .footnote[Pour l'analyse de tendance, voir aussi [IPCC AR5, Chapter 2, Box 2.2, p 179](https://www.ipcc.ch/site/assets/uploads/2017/09/WG1AR5_Chapter02_FINAL.pdf
 )]
@@ -211,15 +213,19 @@ $$
 - **Stationnaire**: Les propriétés statistique du bruit évoluent-elles dans le temps ?
 
 ---
-# Dependance temporelle
+# Dépendance temporelle
 ![](S2_DataTools_files/figure-html/unnamed-chunk-1-1.svg)&lt;!-- --&gt;
 
 ---
-# Stationarité ?
+# Fonction d'autocorrélation
 ![](S2_DataTools_files/figure-html/unnamed-chunk-2-1.svg)&lt;!-- --&gt;
 
 ---
-# Les données
+# Stationarité ?
+![](S2_DataTools_files/figure-html/unnamed-chunk-3-1.svg)&lt;!-- --&gt;
+
+---
+# Les données et leurs incertitudes.
 
 Les observations
 
@@ -415,15 +421,15 @@ where
 [Source: Wikipedia](https://en.wikipedia.org/wiki/Inverse_distance_weighting)
 
 ---
-# Exemple synthetique
+# Exemple synthétique
 
-![](S2_DataTools_files/figure-html/unnamed-chunk-3-1.svg)&lt;!-- --&gt;
+![](S2_DataTools_files/figure-html/unnamed-chunk-4-1.svg)&lt;!-- --&gt;
 
 ---
 # Qualité de l'interpolation
 
 &lt;p align="center"&gt;
-&lt;strong&gt;Evaluation par cross-validation&lt;/strong&gt;
+&lt;strong&gt;Evaluation par &lt;a href="https://en.wikipedia.org/wiki/Cross-validation_(statistics)"&gt; cross-validation &lt;/a&gt; &lt;/strong&gt;
 &lt;img src="Figs/CRU_interp_MSE.png"/&gt;
 &lt;br/&gt;
 &lt;img src="Figs/CRU_interp_corr.png"/&gt;
@@ -440,7 +446,7 @@ where
 Quelle est la précision des mesures et leur biais ?
 
 &lt;br/&gt;
-Quelle est l'echantillonnage spatiale et temporel ?
+Quelle est l'échantillonnage spatiale et temporel ?
 
 &lt;br/&gt;
 Y a-t-il des ruptures dans les séries temporelles ?
@@ -526,7 +532,7 @@ Sources:
 &lt;br/&gt;
 &lt;/p&gt;
 
-A voir également: [cours de Brian E. J. Rose, ATM 623: Climate Modeling ](https://nbviewer.jupyter.org/github/brian-rose/ClimateModeling_courseware/blob/master/Lectures/Lecture05%20--%20Climate%20system%20and%20climate%20models.ipynb)
+A voir également: [cours de Brian E. J. Rose, ATM 623: Climate Modeling ](https://brian-rose.github.io/ClimateLaboratoryBook/courseware/sensitivity-feedback.html)
 
 ---
 # et les projections climatiques
@@ -582,7 +588,7 @@ A voir également: [cours de Brian E. J. Rose, ATM 623: Climate Modeling ](https
 
 Quelles approximations est-on fait à faire, en particulier vis-à-vis de la résolution et des processus explicitement modélisés ?
 
-Où se situe les simulations d'un modèle par rapport aux autres?
+Où se situent les simulations d'un modèle par rapport aux autres?
 
 ---
 # Reanalysis
@@ -615,7 +621,7 @@ optimal way.
 ---
 # Le cycle d'assimilation
 
-Pour simuler un système chaotique, la connaissance des condition initiales est essentielle, d'où l'impornance de l'assimilation pour la prévision du temps.
+Pour simuler un système chaotique, la connaissance des condition initiales est essentielle, d'où l'importance de l'assimilation pour la prévision du temps.
 
 
 &lt;p align="center"&gt;
@@ -633,7 +639,7 @@ Pour simuler un système chaotique, la connaissance des condition initiales est 
 &lt;br/&gt;
 &lt;/p&gt;
 
-La physique est nécessaire pour la modélistion des opérateur `\(M\)` et `\(K\)`.
+La physique est nécessaire pour la modélistion des opérateurs `\(M\)` et `\(K\)`.
 
 La statistique est nécessaire pour la modélisation des bruits `\(\eta\)` et `\(\epsilon\)`.
 
@@ -655,7 +661,7 @@ over a long time period, assimilating a selection of observations
 
 Homogénéité essentielle pour l'étude du climat.
 
-- Attention aux bias du modèle et des observations
+- Attention aux biais du modèle et des observations
 
 - Effet de l'intégration de nouvelles sources d'observations.
 
