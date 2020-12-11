@@ -17,7 +17,7 @@ class: center, middle, inverse, title-slide
 ## données et outils pour l’étude des aléas climatiques
 ### Soulivanh Thao <br/> <a href="mailto:sthao@lsce.ipsl.fr" class="email">sthao@lsce.ipsl.fr</a>
 ### LSCE, ESTIMR
-### 2020/10/01 (updated: 2020-12-09)
+### 2020/10/01 (updated: 2020-12-11)
 
 ---
 
@@ -210,7 +210,7 @@ $$
   - avec dépendance. e.g [processus autorégressif](https://en.wikipedia.org/wiki/Autoregressive_model), [processus moving-average](https://en.wikipedia.org/wiki/Moving-average_model)
 
 &lt;br/&gt;
-- **Stationnaire**: Les propriétés statistique du bruit évoluent-elles dans le temps ?
+- **Stationnaire**: Les propriétés statistiques du bruit évoluent-elles dans le temps ?
 
 ---
 # Dépendance temporelle
@@ -639,11 +639,11 @@ Pour simuler un système chaotique, la connaissance des condition initiales est 
 &lt;br/&gt;
 &lt;/p&gt;
 
-La physique est nécessaire pour la modélistion des opérateurs `\(M\)` et `\(K\)`.
+La physique est nécessaire pour la modélistion des opérateurs `\(M\)` et `\(H\)`.
 
 La statistique est nécessaire pour la modélisation des bruits `\(\eta\)` et `\(\epsilon\)`.
 
-On cherche l'etat de l'atmosphere `\(x\)` qui minimise une fonction de coût.  Pour la 3D-VAR:
+On cherche l'état de l'atmosphère `\(x\)` qui minimise une fonction de coût.  Pour la 3D-VAR:
 
 `$$J(x) = \frac{1}{2} \Vert x - x^b \Vert_{B^{-1}}^2 + \Vert y - H(x) \Vert_{R^{-1}}^2$$`
 
@@ -680,9 +680,11 @@ voir aussi [Parker (2016)](https://doi.org/10.1175/BAMS-D-14-00226.1) et la disc
 
 Tous possèdent des incertitudes qui leurs sont propres.
 
+Il faut donc s'en accommoder.
+
 Important de sélectionner les jeux de données appropriés à sa problématique posée et d'en considérer les limites.
 
-Les statistiques peuvent être un outil privilégié pour exprimer et prendre en compte les différentes sources d'incertitudes.
+Les statistiques peuvent être un outil privilégié pour exprimer et prendre en compte ces incertitudes.
     </textarea>
 <style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
 <script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
