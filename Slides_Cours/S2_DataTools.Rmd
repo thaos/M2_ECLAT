@@ -67,9 +67,13 @@ Vous pouvez faire [ces exercices](https://github.com/thaos/MathDACC_tutoR/blob/m
 
 **Chaotic:**
 
-> A dynamical system such as the climate system, governed by nonlinear deterministic equations (see Nonlinearity), may exhibit erratic or chaotic behaviour in the sense that very small changes in the initial state of the system in time lead to large and apparently unpredictable changes in its temporal evolution. 
+> A dynamical system such as the climate system, governed by nonlinear deterministic equations, may exhibit erratic or chaotic behaviour 
 
-> Such chaotic behaviour limits the predictability of the state of a nonlinear dynamical system at specific future times, although changes in its statistics may still be predictable given changes in the system parameters or boundary conditions
+> very small changes in the initial state of the system in time lead to large and apparently unpredictable changes in its temporal evolution. 
+
+> Such chaotic behaviour limits the predictability of the state of a nonlinear dynamical system at specific future times, 
+
+> although changes in its statistics may still be predictable given changes in the system parameters or boundary conditions
 
 [IPCC, 2013: Annex III: Glossary](https://www.ipcc.ch/site/assets/uploads/2018/02/WG1AR5_AnnexIII_FINAL.pdf)
 
@@ -194,7 +198,7 @@ $$
 - **Distribution**, e.g. gaussienne, uniforme...
 
 <br/>
-- **Dependance temporelle** (autocorrélation)
+- **Dependance temporelle** (e.g. autocorrélation)
 
   - sans dépendance, e.g [bruit blanc](https://en.wikipedia.org/wiki/White_noise#White_noise_vector)
   
@@ -282,6 +286,20 @@ for(i in 2:n){
 }
 plot(X, xlab = "", , type = "l", ylim = ylim, main = "non-stationnarité en dependance temporelle")
 ``` 
+---
+# En résumé
+
+La modélisation statistique du climat est une approximation du système climatique.
+
+A quel point cette approximation doit être fidèle à la réalité?
+
+Selon l'application, choisir ce que l'on considère comme un signal déterministe ou comme du bruit:
+
+- Quel modèle pour la partie déterministe ?
+
+- Quel modèle pour le bruit ?
+
+A partir de quels jeux de données ?
 
 ---
 # Les données et leurs incertitudes.
@@ -518,6 +536,38 @@ for( i in seq_along(X)){
 
 ---
 # Qualité de l'interpolation
+<p align="center">
+  <strong>Evaluation par leave-one-out <a href="https://en.wikipedia.org/wiki/Cross-validation_(statistics)"> cross-validation </a> </strong>
+</p>
+```{r, echo=FALSE, fig.height=4, dev='svg'}
+n <- 5
+X <- c(-8, -2, 1, 4, 5, 7, 9)
+Y <- X^2
+par(mar = c(4, 4, 1, .1), mfrow = c(2, 2))
+for(iloo in c(1, 3, 5, 7)){
+  plot(X, Y, pch = 19, las = 1, xlim = c(-10, 10), ylim = c(-5, 102), cex = 2, main = "IWD interpolation for p = 1")
+  Xnew <- seq(-10, 10, by = 0.1)
+  Ynew <- numeric(length(Xnew))
+  col <- numeric(length(Xnew))
+  for( i in seq_along(Xnew)){
+    dist <- abs(X[-iloo] - Xnew[i])
+    weight <- 1/dist
+    weight <- weight/sum(weight)
+    Ynew[i] <- sum(weight * Y[-iloo])
+  }
+  lines(Xnew, Ynew, col = "orange", lty = 2)
+  lines(Xnew, Xnew^2, col = "black", lty = 2)
+  points(X[iloo], Y[iloo], col = "grey", cex = 2, pch = 19)
+  points(Xnew[Xnew == X[iloo]], Ynew[Xnew == X[iloo]], col = "orange", cex = 2, pch = 19)
+  
+  segments(X[iloo], -10, X[iloo], 110, col = "red4", lty = 2)
+  
+  text(X[iloo], Ynew[Xnew == X[iloo]], col = "red4", labels = "Ŷnew", pos = 2)
+  text(X[iloo], -5, col = "red4", labels = "Xnew", pos = 2)
+}
+``` 
+---
+# Qualité de l'interpolation
 
 <p align="center">
 <strong>Evaluation par <a href="https://en.wikipedia.org/wiki/Cross-validation_(statistics)"> cross-validation </a> </strong>
@@ -623,7 +673,7 @@ Sources:
 <br/>
 </p>
 
-A voir également: [cours de Brian E. J. Rose, ATM 623: Climate Modeling ](https://brian-rose.github.io/ClimateLaboratoryBook/courseware/sensitivity-feedback.html)
+A voir également: cours de [Brian E. J. Rose](https://brian-rose.github.io/ClimateLaboratoryBook/courseware/sensitivity-feedback.html) et de [Goosse et al.](https://www.climate.be/textbook/chapter4_node4.xml)
 
 ---
 # et les projections climatiques
@@ -716,7 +766,7 @@ Pour simuler un système chaotique, la connaissance des condition initiales est 
 
 
 <p align="center">
-<img src="Figs/Tandeo_DAcycle.png"/>
+<img src="Figs/Tandeo_DAcycle.png" height="400"/>
 <br/>
 <a href="https://hal-imt-atlantique.archives-ouvertes.fr/hal-01867958">Tandeo et al. (2018)</a>
 <br/>
@@ -736,7 +786,7 @@ La statistique est nécessaire pour la modélisation des bruits $\eta$ et $\epsi
 
 On cherche l'état de l'atmosphère $x$ qui minimise une fonction de coût.  Pour la 3D-VAR:
 
-$$J(x) = \frac{1}{2} \Vert x - x^b \Vert_{B^{-1}}^2 + \Vert y - H(x) \Vert_{R^{-1}}^2$$
+$$J(x) = \frac{1}{2} \Vert x - x^b \Vert_{Q{-1}}^2 + \Vert y - H(x) \Vert_{R^{-1}}^2$$
 
 
 [Source: Boquet et al. (2018)]("https://sama.sciencesconf.org/data/program/sama2018_bocquet_1.pdf")

@@ -17,7 +17,7 @@ class: center, middle, inverse, title-slide
 ## données et outils pour l’étude des aléas climatiques
 ### Soulivanh Thao <br/> <a href="mailto:sthao@lsce.ipsl.fr" class="email">sthao@lsce.ipsl.fr</a>
 ### LSCE, ESTIMR
-### 2020/10/01 (updated: 2020-12-11)
+### 2020/10/01 (updated: 2020-12-14)
 
 ---
 
@@ -76,9 +76,13 @@ Vous pouvez faire [ces exercices](https://github.com/thaos/MathDACC_tutoR/blob/m
 
 **Chaotic:**
 
-&gt; A dynamical system such as the climate system, governed by nonlinear deterministic equations (see Nonlinearity), may exhibit erratic or chaotic behaviour in the sense that very small changes in the initial state of the system in time lead to large and apparently unpredictable changes in its temporal evolution. 
+&gt; A dynamical system such as the climate system, governed by nonlinear deterministic equations, may exhibit erratic or chaotic behaviour 
 
-&gt; Such chaotic behaviour limits the predictability of the state of a nonlinear dynamical system at specific future times, although changes in its statistics may still be predictable given changes in the system parameters or boundary conditions
+&gt; very small changes in the initial state of the system in time lead to large and apparently unpredictable changes in its temporal evolution. 
+
+&gt; Such chaotic behaviour limits the predictability of the state of a nonlinear dynamical system at specific future times, 
+
+&gt; although changes in its statistics may still be predictable given changes in the system parameters or boundary conditions
 
 [IPCC, 2013: Annex III: Glossary](https://www.ipcc.ch/site/assets/uploads/2018/02/WG1AR5_AnnexIII_FINAL.pdf)
 
@@ -203,7 +207,7 @@ $$
 - **Distribution**, e.g. gaussienne, uniforme...
 
 &lt;br/&gt;
-- **Dependance temporelle** (autocorrélation)
+- **Dependance temporelle** (e.g. autocorrélation)
 
   - sans dépendance, e.g [bruit blanc](https://en.wikipedia.org/wiki/White_noise#White_noise_vector)
   
@@ -223,6 +227,20 @@ $$
 ---
 # Stationarité ?
 ![](S2_DataTools_files/figure-html/unnamed-chunk-3-1.svg)&lt;!-- --&gt;
+---
+# En résumé
+
+La modélisation statistique du climat est une approximation du système climatique.
+
+A quel point cette approximation doit être fidèle à la réalité?
+
+Selon l'application, choisir ce que l'on considère comme un signal déterministe ou comme du bruit:
+
+- Quel modèle pour la partie déterministe ?
+
+- Quel modèle pour le bruit ?
+
+A partir de quels jeux de données ?
 
 ---
 # Les données et leurs incertitudes.
@@ -427,6 +445,12 @@ where
 
 ---
 # Qualité de l'interpolation
+&lt;p align="center"&gt;
+  &lt;strong&gt;Evaluation par leave-one-out &lt;a href="https://en.wikipedia.org/wiki/Cross-validation_(statistics)"&gt; cross-validation &lt;/a&gt; &lt;/strong&gt;
+&lt;/p&gt;
+![](S2_DataTools_files/figure-html/unnamed-chunk-5-1.svg)&lt;!-- --&gt;
+---
+# Qualité de l'interpolation
 
 &lt;p align="center"&gt;
 &lt;strong&gt;Evaluation par &lt;a href="https://en.wikipedia.org/wiki/Cross-validation_(statistics)"&gt; cross-validation &lt;/a&gt; &lt;/strong&gt;
@@ -532,7 +556,7 @@ Sources:
 &lt;br/&gt;
 &lt;/p&gt;
 
-A voir également: [cours de Brian E. J. Rose, ATM 623: Climate Modeling ](https://brian-rose.github.io/ClimateLaboratoryBook/courseware/sensitivity-feedback.html)
+A voir également: cours de [Brian E. J. Rose](https://brian-rose.github.io/ClimateLaboratoryBook/courseware/sensitivity-feedback.html) et de [Goosse et al.](https://www.climate.be/textbook/chapter4_node4.xml)
 
 ---
 # et les projections climatiques
@@ -625,7 +649,7 @@ Pour simuler un système chaotique, la connaissance des condition initiales est 
 
 
 &lt;p align="center"&gt;
-&lt;img src="Figs/Tandeo_DAcycle.png"/&gt;
+&lt;img src="Figs/Tandeo_DAcycle.png" height="400"/&gt;
 &lt;br/&gt;
 &lt;a href="https://hal-imt-atlantique.archives-ouvertes.fr/hal-01867958"&gt;Tandeo et al. (2018)&lt;/a&gt;
 &lt;br/&gt;
@@ -645,7 +669,7 @@ La statistique est nécessaire pour la modélisation des bruits `\(\eta\)` et `\
 
 On cherche l'état de l'atmosphère `\(x\)` qui minimise une fonction de coût.  Pour la 3D-VAR:
 
-`$$J(x) = \frac{1}{2} \Vert x - x^b \Vert_{B^{-1}}^2 + \Vert y - H(x) \Vert_{R^{-1}}^2$$`
+`$$J(x) = \frac{1}{2} \Vert x - x^b \Vert_{Q{-1}}^2 + \Vert y - H(x) \Vert_{R^{-1}}^2$$`
 
 
 [Source: Boquet et al. (2018)]("https://sama.sciencesconf.org/data/program/sama2018_bocquet_1.pdf")
