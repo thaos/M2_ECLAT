@@ -63,17 +63,18 @@ mmdd <- substring(dates, 5, 8)
 ### Calcul des moyennes annuelles
 ```{r}
 # Initialisation
-yearmean <- matrix(data = NA,  nrow = length(yyyy), ncol = ncol(tas_df))
-# Calcul des moyennes annuelles pour chaque série temporelle.
-# la fonction "mean" de retourne la moyenne des valeurs contenus dans un vecteur. 
 uyyyy <- unique(yyyy)
+yearmean <- matrix(data = NA,  nrow = length(uyyyy), ncol = ncol(tas_df))
+# Calcul des moyennes annuelles pour chaque série temporelle.
+# la fonction "mean" de retourne la moyenne des valeurs contenues dans un vecteur. 
 for(j in 1:ncol(tas_df)) {
   for(i in 1:length(uyyyy)) {
     yearmean[i, j] <- mean(tas_df[uyyyy[i] == yyyy, j]) # A trouver par les étudiants
   }
 }
+rownames(yearmean) <- uyyyy
 
-# Peut être aussi calculer de la manière suivante
+# Peut être aussi calculé de la manière suivante
 compute_yearmean <- function(tas, yyyy){
   tapply(tas, yyyy, mean, na.rm = TRUE)
 }
@@ -93,14 +94,14 @@ Ici, on calcule la valeur du cycle saisonnier moyen en un jour de l'année comme
 La variable *saisonality* est une matrice de dimension 365x11 où une ligne représente le jour de l'année et une colonne un modèle.
 
 ```{r}
-# Ne pas mettre le code, meme principe que les moyennes annuellses
-
+# Ne pas mettre le code, meme principe que les moyennes annuelles
 seasonality <-
+
 
 ```
 
 ### Calcul des anomalies
-la variable *anomalie* est une matrice de même dimension que la matrice *tas_df*.
+la variable *anomalies* est une matrice de même dimension que la matrice *tas_df*.
 ```{r}
 anomalies <- 
 dimnames(anomalies) <- dimnames(tas_df)
@@ -127,7 +128,7 @@ pairs(tas_df)
 ```{r, fig.width = 12, fig.height = 12}
 
 ```
-Comment le cycle saisonnier estimer de cette façon vous parait-il ?
+Comment le cycle saisonnier estimé de cette façon vous parait-il ?
 
 ### Plot des anomalies
 ```{r, fig.width = 12, fig.height = 12}
@@ -168,7 +169,7 @@ Vous pouvez utiliser les fonctions *mean* et *sd* de R avec l'option *na.rm = TR
 # Moment d'ordre 1
 mu <- 
   
-# Moment d'ordre 1
+# Moment d'ordre 2
 sigma <- 
 
 # Moment d'ordre 3
@@ -177,7 +178,7 @@ skewness <- apply(
   2, mean, na.rm = TRUE
 ) / sigma^3 
 
-# Moment d'ordre 2
+# Moment d'ordre 4
 kurtosis <- apply(
   sweep(anomalies, 2, mu, FUN = "-")^4,
   2, mean, na.rm = TRUE
@@ -196,7 +197,7 @@ trends <- apply(anomalies, 2, function(y){
 ### Distance euclidienne entre caractéristiques des differentes series temporelles
 Utiliser la fonction *dist* pour calculer une distance entre les modèles
 ```{r}
-# Exemple: On défini la distance entre deux modèles par la distance euclidienne entre leurs séries temporelles brutes.
+# Exemple: On définit la distance entre deux modèles par la distance euclidienne entre leurs séries temporelles brutes.
 d <- dist(t(tas_df)) # euclidean distances between the columns of tas_df
 
 # Exemple: On défini la distance entre deux modèles par leur différence sur la moyenne.
