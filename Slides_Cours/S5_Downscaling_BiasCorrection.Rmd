@@ -1,6 +1,6 @@
 ---
 title: "Séance 5"
-subtitle: "Introduction à la descente d'échelle statistique et la correction de bias"
+subtitle: "Introduction à la descente d'échelle statistique et à la correction de bias"
 author: "Soulivanh Thao <br/> sthao@lsce.ipsl.fr"
 institute: "LSCE, ESTIMR"
 date: "2020/10/01 (updated: `r Sys.Date()`)"
@@ -430,7 +430,7 @@ lines(Xnew, Ynew)
 
 Le sur-apprentissage survient lorsque le modéle statistique essaie de reproduire des variations dans les données qui n'ont pas de signification, e.g. ici du bruit.
 
-Plus un modéle est flexible plus il est susceptible de sur-apprendre.
+Plus un modéle est flexible, plus il est susceptible de sur-apprendre.
 
 
 ---
