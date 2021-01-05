@@ -93,10 +93,10 @@ summary(lm_fit)
 lm_app <- predict()  # à compléter
 lm_test <- predict()  # à compléter
 
-# RMSE et correlation entre valeurs prédites et réelles de Y sur base d'apprentissage
+# RMSE et corrélation entre valeurs prédites et réelles de Y sur base d'apprentissage
 
 
-# RMSE et correlation entre valeurs prédites et réelles de Y sur base de test
+# RMSE et corrélation entre valeurs prédites et réelles de Y sur base de test
 
 
 # diagnostics graphiques sur bases d'apprentissage et de test
@@ -126,7 +126,7 @@ Pour cela, il faut calculer la distance entre les valeurs de X de la base d'appr
 
 fonction utile: *which.min*
 
-Réaliser les mêmes dignostics que pour le modèle linéaire.
+Réaliser les mêmes diagnostics que pour le modèle linéaire.
 
 ```{r, fig.width = 6, fig.height = 9}
 
@@ -149,7 +149,7 @@ Appliquer la descente d'échelle via la correction quantile quantile.
 
 Fonctions utiles: *ecdf*, *quantile*
 
-Réaliser les mêmes dignostics que pour le modèles linéaires.
+Réaliser les mêmes diagnostics que pour le modèles linéaires.
 
 ```{r, fig.width = 6, fig.height = 9}
 
@@ -195,9 +195,9 @@ qqplot_qq <- qqplot(qq_app, Y_app, plot.it = FALSE)
 par(pty = "s")
 qqplot(X_app, Y_app, xlim = xylim, ylim = xylim, pch = 20, cex = 0.5, main = "QQ-plot")
 points(qqplot_lm$x, qqplot_lm$y, xlim = xylim, ylim = xylim, pch = 20, cex = 0.5, col = 2)
-points(qqplot_nn$x, qqplot_nn$y,, xlim = xylim, ylim = xylim, pch = 20, cex = 0.5, col = 3)
-points(qqplot_mc$x, qqplot_mc$y,, xlim = xylim, ylim = xylim, pch = 20, cex = 0.5, col = 4)
-points(qqplot_qq$x, qqplot_qq$y,, xlim = xylim, ylim = xylim, pch = 20, cex = 0.5, col = 5)
+points(qqplot_nn$x, qqplot_nn$y, xlim = xylim, ylim = xylim, pch = 20, cex = 0.5, col = 3)
+points(qqplot_mc$x, qqplot_mc$y, xlim = xylim, ylim = xylim, pch = 20, cex = 0.5, col = 4)
+points(qqplot_qq$x, qqplot_qq$y, xlim = xylim, ylim = xylim, pch = 20, cex = 0.5, col = 5)
 abline(b = 1, a = 0, col = "red")
 legend(
   "topleft",
@@ -308,10 +308,10 @@ qqplot_lm <- qqplot(lm_gcm, Y_test, plot.it = FALSE)
 qqplot_nn <- qqplot(nn_gcm, Y_test, plot.it = FALSE)
 par(pty = "s")
 qqplot(X_test, Y_test, xlim = xylim, ylim = xylim, pch = 20, cex = 0.5, main = "QQ-plot")
-points(qqplot_mc$x, qqplot_mc$y,, xlim = xylim, ylim = xylim, pch = 20, cex = 0.5, col = 4)
-points(qqplot_qq$x, qqplot_qq$y,, xlim = xylim, ylim = xylim, pch = 20, cex = 0.5, col = 5)
-points(qqplot_lm$x, qqplot_lm$y,, xlim = xylim, ylim = xylim, pch = 20, cex = 0.5, col = 2)
-points(qqplot_nn$x, qqplot_nn$y,, xlim = xylim, ylim = xylim, pch = 20, cex = 0.5, col = 3)
+points(qqplot_mc$x, qqplot_mc$y, xlim = xylim, ylim = xylim, pch = 20, cex = 0.5, col = 4)
+points(qqplot_qq$x, qqplot_qq$y, xlim = xylim, ylim = xylim, pch = 20, cex = 0.5, col = 5)
+points(qqplot_lm$x, qqplot_lm$y, xlim = xylim, ylim = xylim, pch = 20, cex = 0.5, col = 2)
+points(qqplot_nn$x, qqplot_nn$y, xlim = xylim, ylim = xylim, pch = 20, cex = 0.5, col = 3)
 abline(b = 1, a = 0, col = "red")
 legend(
   "topleft",
