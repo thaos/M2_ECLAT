@@ -12,20 +12,21 @@ When you save the notebook, an HTML file containing the code and output will be 
 The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
 
 ## Objectifs
-Le but est d'illustrer les changements dans les distributions d'une serie temporelle en fonction du type d'aggregation spatio-temporelle utilisé.
+Le but est d'illustrer les changements dans les distributions d'une série temporelle en fonction du type d'aggrégation spatio-temporelle utilisé.
 
 Pour cela, nous utilisons les simulations pi-control, au pas de temps journalier, du modèle CNRM-CM6-1-HR réalisées lors de l'exercice CMIP6. Nous y avons extrait les variables de température et de précipitation pour la zone géographique suivante: de 0 à 5 degrés de longitude et  de 45.18 à 49.68 degrés de latitude.
 
-Spatialement, nous aggrégeons les données pour des patchs de differentes tailles (1x1, 7x5, 11x9 points de grille) centrés autours du point de grille situé à 2.5 degrés de longitude et 47.68 degrés de latitude. L'aggrégation est realisée soit en prenant la moyenne ou le maximum sur l'ensembre des points de grille du patch.
+Spatialement, nous agrégeons les données pour des patchs de différentes tailles (1x1, 7x5, 11x9 points de grille) centrés autours du point de grille situé à 2.5 degrés de longitude et 47.68 degrés de latitude. L'agrégation est réalisée soit en prenant la moyenne ou le maximum sur l'ensemble des points de grille du patch.
 
-Temporellement, les données à aggréger consistent soit à la journée du 15 juillet, soit au mois de juillet dans son ensemble, soit à l'ensemble de l'année. L'aggrégation est realiser soit en prenant la moyenne ou le maximum sur l'ensembre des pas de temps de la periode d'intérêt.
+Temporellement, les données sont agrégés soit sur la journée du 15 juillet, soit sur le mois de juillet dans son ensemble, soit sur l'ensemble de l'année. L'agrégation est réalisée soit en prenant la moyenne ou le maximum sur l'ensemble des pas de temps de la période d'intérêt.
 
-Les données sont tout d'abord aggrégées spatialement puis temporellement. Ainsi, un type d'aggrégation spatio-temporelle donne une série  temporelle univariée au pas de temps annuel. Pour un couple d'aggregateurs spatial (moyenne/maximum) et temporelle (moyenne/maximum), les series temporelles sont stockées sous forme d'une array avec les dimensions suivantes: temps, zone d'aggrégation et période d'aggrégation.  
+Les données sont tout d'abord agrégées spatialement puis temporellement. Ainsi, un type d'agrégation spatio-temporelle donne une série temporelle univariée au pas de temps annuel. Pour un couple d'agrégateurs spatiales (moyenne/maximum) et temporels (moyenne/maximum), les séries temporelles sont stockées sous forme d'une array avec les dimensions suivantes: temps, zone d'agrégation et période d'agrégation.  
 
-Les distributions peuvent être représentées sous forme d'histogramme (fonction *hist*), de densité estimée par des méthodes à noyau (fonction *density*) ou par fonction de répartition empirique (fonction *ecdf*). 
+Les distributions peuvent être représentées sous forme d'histogrammes (fonction *hist*), de densités estimées par des méthodes à noyau (fonction *density*) ou par des fonctions de répartition empirique (fonction *ecdf*). 
 
 ### Chargement des packages
 ```{r}
+# A installer avec install.packages("extRemes") 
 library(extRemes)
 ```
 
@@ -54,10 +55,12 @@ periods <- dimnames(tas_smax_tmax)[[3]]
 lon <- as.numeric(rownames(tas))
 lat <- as.numeric(colnames(tas))
 ```
+
 ### Tracer la série temporelle des données aggrégées
 ```{r}
-# Choisir le type de série temporelles: variable/agrégation spatial/agrégation temporelle
+# Choisir le type de série temporelle: variable/agrégation spatial/agrégation temporelle
 y <- tas_smean_tmean
+
 ylim <- range(y)
 par(mfrow = c(3, 3))
 for(i in 1:3){
@@ -136,12 +139,12 @@ où $\mu\in\mathbb{R}$ est un paramètre de position, $\sigma > 0$ un paramètre
 source : [wikipedia](https://fr.wikipedia.org/wiki/Th%C3%A9or%C3%A8me_de_Fisher-Tippett-Gnedenko)
 
 
-**Exercice :** Sur les graphiques representant les distributions empiriques, tracer les courbes de densité et de fonction de repartition sous approximation de la loi GEV. Les parametres de la loi gaussienne peuvent être estimés via la fonction 'fevd' du package 'extRemes'. La densite et la fonction de repartition de la loi GEV peuvent être respectivement calculées via les fonctions 'devd' et 'pevd' de ce même package.
+**Exercice :** Sur les graphiques représentant les distributions empiriques, tracer les courbes de densité et de fonction de répartition sous approximation de la loi GEV. Les paramètres de la loi GEV peuvent être estimés via la fonction 'fevd' du package 'extRemes'. La densité et la fonction de répartition de la loi GEV peuvent être respectivement calculées via les fonctions 'devd' et 'pevd' de ce même package.
 
 **Exercice :** Les distributions observées ressemblent-elles aux distributions théoriques ? Sinon pourquoi ?
 
 
-### Theorie vs Pratique: hypothese i.i.d (independant et identiquement distribué)
+### Theorie vs Pratique: hypothese i.i.d (independants et identiquement distribués)
 L'hypothèse i.i.d est elle réaliste ?
 
 **Exercice :**
@@ -158,7 +161,7 @@ map_variance <-
 fields::image.plot(lon, lat, map_variance)
 ```
 
-- Calculer la matrice des corrélation entre les differents points de grille du jeu de donnée initial et représenter sous forme de carte la corrélation d'un point de grille avec tous les autres.
+- Calculer la matrice des corrélation entre les différents points de grille du jeu de donnée initial et représenter sous forme de carte la corrélation d'un point de grille avec tous les autres.
 
 La matrice de des corrélations peut se calculer avec la fonction *cor*.
 
@@ -170,7 +173,9 @@ tas_cor <-
 igridpoint <- 1
 fields::image.plot(lon, lat, ))
 ```
-- Calculer les correlations temporelles pour chaque point de grille du jeu de donnée initial via la fonction *acf* de R. 
+
+
+- Calculer les corrélations temporelles pour chaque point de grille du jeu de donnée initial via la fonction *acf* de R. 
 
 ```{r, fig.width = 24, fig.height = 20}
 

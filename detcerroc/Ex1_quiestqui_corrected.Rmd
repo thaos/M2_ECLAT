@@ -63,10 +63,11 @@ mmdd <- substring(dates, 5, 8)
 ### Calcul des moyennes annuelles
 ```{r}
 # Initialisation
-yearmean <- matrix(data = NA,  nrow = length(yyyy), ncol = ncol(tas_df))
+uyyyy <- unique(yyyy)
+yearmean <- matrix(data = NA,  nrow = length(uyyyy), ncol = ncol(tas_df))
 # Calcul des moyennes annuelles pour chaque série temporelle.
 # la fonction "mean" de retourne la moyenne des valeurs contenus dans un vecteur. 
-uyyyy <- unique(yyyy)
+
 for(j in 1:ncol(tas_df)) {
   for(i in 1:length(uyyyy)) {
     yearmean[i, j] <- mean(tas_df[uyyyy[i] == yyyy, j]) # A trouver par les étudiants

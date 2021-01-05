@@ -6,16 +6,18 @@
     <meta name="author" content="Soulivanh Thao   sthao@lsce.ipsl.fr" />
     <link href="libs/remark-css-0.0.1/default.css" rel="stylesheet" />
     <link href="libs/remark-css-0.0.1/default-fonts.css" rel="stylesheet" />
+    <link href="libs/anchor-sections-1.0/anchor-sections.css" rel="stylesheet" />
+    <script src="libs/anchor-sections-1.0/anchor-sections.js"></script>
   </head>
   <body>
     <textarea id="source">
 class: center, middle, inverse, title-slide
 
 # Séance 5
-## Introduction à la descente d’échelle statistique et la correction de bias
+## Introduction à la descente d’échelle statistique et à la correction de bias
 ### Soulivanh Thao <br/> <a href="mailto:sthao@lsce.ipsl.fr" class="email">sthao@lsce.ipsl.fr</a>
 ### LSCE, ESTIMR
-### 2020/10/01 (updated: 2020-12-03)
+### 2020/10/01 (updated: 2021-01-05)
 
 ---
 
@@ -252,7 +254,7 @@ Y &lt;- 1.5 * X - 2 +  rnorm(n, 0, 4)
 
 Le sur-apprentissage survient lorsque le modéle statistique essaie de reproduire des variations dans les données qui n'ont pas de signification, e.g. ici du bruit.
 
-Plus un modéle est flexible plus il est susceptible de sur-apprendre.
+Plus un modéle est flexible, plus il est susceptible de sur-apprendre.
 
 
 ---
@@ -291,17 +293,17 @@ Exemple: la regression par plus proche voisin et la correction quantile-quantile
 
 # Pour aller plus loin
 
-Ici, nous n'avons parlé que de la correction de bias pour des variables univariés.
+Ici, nous n'avons parlé que de la correction de biais pour des variables univariées.
 
-Pour le cas univariées, il existe un grand nombre de méthodes et de variantes.
+Pour le cas univarié, il existe un grand nombre de méthodes et de variantes.
 
-Le systeme climatique est representé par un ensemble de variables qui varient à la fois dans le temps et dans l'espace. 
+Le système climatique est représenté par un ensemble de variables qui varient à la fois dans le temps et dans l'espace. 
 
-Pour corriger plusieur variable à la fois, il faut faire appel à de la statistique multivariée.
+Pour corriger plusieurs variable à la fois, il faut faire appel à de la statistique multivariée.
 
-Décider des aspects à corriger: marginales, dependences spatiales, temporelles et inter-variabres. 
+Décider des aspects à corriger: marginales, dépendances spatiales, temporelles et inter-variables. 
 
-Certaines méthodes de correction de bias modifient les tendances du changement climatiques.
+Certaines méthodes de correction de biais modifient les tendances du changement climatiques.
 Est-ce une bonne chose ?
 
 #### Plus généralement, que souhaite-t-on préserver ou corriger du modèle de climat ?
