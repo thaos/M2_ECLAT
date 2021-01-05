@@ -12,7 +12,7 @@ When you save the notebook, an HTML file containing the code and output will be 
 The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
 
 ## Objectifs
-Le but est d'illustrer l'effet de la variabilité climatique sur l'estimation de propriétés statistiques. Pour cela, nous utiliserons une simulation piControl  et une simulation historique du modèle CNRM-CM6-1-HR pour la variable température. Nous nous intéresserons à l'estimation de la moyenne et de la tendance linéaire.
+Le but est d'illustrer l'effet de la variabilité climatique sur l'estimation de propriétés statistiques. Pour cela, nous utiliserons une simulation pi-Control  et une simulation historique du modèle CNRM-CM6-1-HR pour la variable température. Nous nous intéresserons à l'estimation de la moyenne et de la tendance linéaire.
 
 **Simulations pré-industrielles piControl**:
 >Pre-Industrial coupled atmosphere/ocean control run. Imposes non-evolving pre-industrial conditions, which may include prescribed atmospheric concentrations or non-evolving emissions of gases, aerosols or their precursors, as well as unperturbed land use"
@@ -34,7 +34,7 @@ yyyy_hist <- as.numeric(substring(gsub("-", "", time_hist), 1, 4))
 ## Sur les simulations piControl
 
 ### Séries journalières
-Tracer la série temporelle des témpératures journalieres
+Tracer la série temporelle des températures journalières
 
 ```{r}
 ylim = range(tas_pi)
@@ -64,7 +64,7 @@ x <- seq_along(tas_pi)
 x <- seq_along(tas_pi)
 yearstart <- seq(365, length(x), by = 365)
 trend <- numeric(length = yearstart)
-for(i in seq_along(trend)){U
+for(i in seq_along(trend)){
  trend[i] <- lm.fit( y = tas_pi[1:i], x = cbind(1, x)[1:i, ])$coefficients[2]
 }
 # or
@@ -76,7 +76,7 @@ summary(trend[101:200])
 
 ##  Comparaison entre simulations historiques et pré-industrielles de controle
 
-Les tendances lineaire estimées sur les simulations historiques sont-elles cohérentes avec les tendances estimées sur les simulations pré-industrielles?
+Les tendances linéaire estimées sur les simulations historiques sont-elles cohérentes avec les tendances estimées sur les simulations pré-industrielles?
 
 ### Définition des periodes pour le calcul des tendances linéaires
 ```{r}
@@ -111,7 +111,7 @@ ylim <- range(tas_byyear_pi, tas_byyear_hist)
 plot(yyyy_pi_u, tas_byyear_pi, col = "grey", pch = 20, cex = 0.5)
 points(yyyy_hist_u, tas_byyear_hist, col = "black", pch = 20, cex = 0.5)
 ```
-### Calcul des tendances sur les séries annuelles et les tracer sur les series temporelles.
+### Calcul des tendances sur des périodes de 30 ans à partir des séries annuelles et les tracer sur les series temporelles.
 ```{r, fig.width = 6, fig.height = 9}
 ylim <- range(tas_byyear_hist, tas_byyear_pi, na.rm = TRUE)
 par(mfrow = c(2, 1))
@@ -126,7 +126,7 @@ trend_hist <-
 ```
 ### Comparaison des tendances entre simulations historiques et pré-industrielles.
 
-Quelles sont les périodes pour lesquelles il est peu probable que les tendances des simulations historiques ne soient dûes qu'à la variabilité internes ? Peut on quantifier le "peu probable"? 
+Quelles sont les périodes pour lesquelles il est peu probable que les tendances des simulations historiques ne soient dues qu'à la variabilité internes ? Peut on quantifier le "peu probable"? 
 
 ```{r}
 ic=quantile(trend_pi, probs = c(0.05, 0.95))
@@ -180,7 +180,7 @@ Quelles sont les périodes pour lesquelles il est peu probable que les tendances
 
 5) Estimation de la distribution sous H0 de la statistique de test: e.g. sous H0, les simulations historiques doivent se comporter comme les simulations de contrôle pré-industrielles donc la distribution de la statistique de test peut être approximée par la distribution empirique des tendances linéaires sur 30 ans mesurées sur les simulations pré-industrielles.
 
-6) Calculer sous l'hypotèse H0 la probabilités d'avoir une statistique de test plus extrême que celle observée (i.e. la p-value)
+6) Calculer sous l'hypothèse H0 la probabilités d'avoir une statistique de test plus extrême que celle observée (i.e. la p-value)
 
 7) Décider ou non de rejeter le test en fonction du risque alpha que l'on est prêt à accepter. Le risque alpha est le risque que l'on se trompe si on rejette H0 (à tort). En statistique, on ne contrôle pas (en général) le risque que l'on se trompe si on décide de ne pas rejeter H0.  
 
