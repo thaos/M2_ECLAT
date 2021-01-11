@@ -187,17 +187,17 @@ text(trend_hist, 0.7, labels = y30hist, srt = 90, pos = 3)
 
 ### Analogies avec les testes d'hypothèses statistiques.
 
-1) Modelisation statistique: e.g. réponse aux forcages externes + variabilité interne <=> tendance déterministe + bruit
+1) Modélisation statistique: e.g. réponse aux forçages externes + variabilité interne <=> tendance déterministe + bruit
 
-2) Formulation de l'hypothése nulle H0: e.g. la réponse aux forcages externes est constante par rapporh aux pré-industrielle, en particulier entre 1990 et 2020 => la tendance linéaire est nulle entre 1990 et 2020
+2) Formulation de l'hypothèse nulle H0: e.g. la réponse aux forçages externes est constante par rapport aux pré-industrielle, en particulier entre 1990 et 2020 => la tendance linéaire est nulle entre 1990 et 2020
 
-3) Formulation de l'hypothése alternative H1: e.g. la tendance lineaire est differente de 0 entre 1990 et 2020.
+3) Formulation de l'hypothèse alternative H1: e.g. la tendance linéaire est différente de 0 entre 1990 et 2020.
 
 4) Choix et calcul de la statistique de test: e.g coefficient de régression linéaire calculé sur les simulations historiques pour la période 1990-2020.
 
-5) Estimation de la distribution sous H0 de la statistique de test: e.g. sous H0, les simulations historiques doivent se comporter comme les simulations de controle pré-industrielles donc la distribution de la statistique de test peut être approximée par la distribution empirique des tendances lineaires sur 30 ans mesurées sur les simulations pré-industrielles.
+5) Estimation de la distribution sous H0 de la statistique de test: e.g. sous H0, les simulations historiques doivent se comporter comme les simulations de contrôle pré-industrielles donc la distribution de la statistique de test peut être approximée par la distribution empirique des tendances linéaires sur 30 ans mesurées sur les simulations pré-industrielles.
 
-6) Calculer sous l'hypothese H0 la probabilités d'avoir une statistique de test plus extreme que celle observée (i.e. la p-value)
+6) Calculer sous l'hypothèse H0 la probabilités d'avoir une statistique de test plus extrême que celle observée (i.e. la p-value)
 
-7) Decider ou non de rejeter le test en fonction du risque alpha que l'on est prêt à accepter. Le risque alpha est le risque que l'on se trompe si on rejette H0 (à tort). En statitique, on ne contrôle pas (en general) le risque que l'on se trompe si on decide de ne pas rejetter H0.  
+7) Décider ou non de rejeter le test en fonction du risque alpha que l'on est prêt à accepter. Le risque alpha est le risque que l'on se trompe si on rejette H0 (à tort). En statistique, on ne contrôle pas (en géneral) le risque que l'on se trompe si on décide de ne pas rejeter H0.  
 
