@@ -62,13 +62,13 @@ x <- seq_along(tas_pi)
 ### Combien de jours ou d'années faut-il pour converger vers la bonne valeur ?
 ```{r}
 x <- seq_along(tas_pi)
-yearstart <- seq(365, length(x), by = 365)
-trend <- numeric(length = yearstart)
+yearend <- seq(365, length(x), by = 365)
+trend <- numeric(length = yearend)
 for(i in seq_along(trend)){
- trend[i] <- lm.fit( y = tas_pi[1:i], x = cbind(1, x)[1:i, ])$coefficients[2]
+ trend[i] <- lm.fit( y = tas_pi[1:yearend[i]], x = cbind(1, x)[1:yearend[i], ])$coefficients[2]
 }
 # or
-# trend <- sapply(yearstart), function(i) lm.fit( y = tas_pi[1:i], x = cbind(1, x)[1:i, ])$coefficients[2])
+# trend <- sapply(yearend), function(i) lm.fit( y = tas_pi[1:i], x = cbind(1, x)[1:i, ])$coefficients[2])
 plot(trend, type = "l")
 summary(trend[101:200])
 ```
