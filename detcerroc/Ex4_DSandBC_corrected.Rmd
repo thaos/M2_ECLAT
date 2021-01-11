@@ -18,7 +18,7 @@ Le but est de presenter le principe de fonctionnement de la descente d'échelle 
 
 ### Lecture des données
 ```{r}
-tas_df <- readRDS("../Ex1_whoiswho/Ex1_tas_df.rds")
+tas_df <- readRDS("Ex1_tas_df.rds")
 
 # Downscaling
 X <- tas_df[, "ERA5"]

@@ -18,7 +18,7 @@ Le but est de présenter le principe de fonctionnement de la descente d'échelle
 
 ### Lecture des données
 ```{r}
-tas_df <- readRDS("../Ex1_whoiswho/Ex1_tas_df.rds")
+tas_df <- readRDS("Ex1_tas_df.rds")
 
 # Downscaling
 X <- tas_df[, "ERA5"]
@@ -162,9 +162,13 @@ Quelle est la méthode le plus performante sur la base d'apprentissage ?
 # Point by point
 par(pty = "s")
 plot(X_app, Y_app, xlim = xylim, ylim = xylim, pch = 20, cex = 0.5)
+# linear model
 points(lm_app, Y_app, xlim = xylim, ylim = xylim, pch = 20, cex = 0.5, col = 2)
+# nearest neighbour
 points(nn_app, Y_app, xlim = xylim, ylim = xylim, pch = 20, cex = 0.5, col = 3)
+# mean correction
 points(mc_app, Y_app, xlim = xylim, ylim = xylim, pch = 20, cex = 0.5, col = 4)
+# quantile-quantile mapping
 points(qq_app, Y_app, xlim = xylim, ylim = xylim, pch = 20, cex = 0.5, col = 5)
 abline(b = 1, a = 0, col = "red")
 legend(
