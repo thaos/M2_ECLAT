@@ -1,6 +1,8 @@
 install.packages(
-  "extRemes",
-  "fields",
-  "rmarkdown",
-  "xaringan"
+  c(
+    "extRemes",
+    "fields",
+    "rmarkdown",
+    "xaringan"
+  )
 )
