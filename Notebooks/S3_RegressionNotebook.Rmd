@@ -1,0 +1,153 @@
+---
+title: "ECLAT Intro STAT"
+output: html_notebook
+---
+
+#################
+#################
+Date january 2021   
+Author philippe.naveau@lsce.ipsl.fr 
+
+######################
+Removing old objects before starting the class
+
+```{r}
+rm(list=ls(all=TRUE))
+set.seed(2018)
+```
+
+######################
+SAMPLING WITH R 
+######################
+```{r}
+noms<-as.character(c())
+draw<-sample(noms,1)
+print(draw)
+```
+######################
+### HISTOGRAMS and density
+######################
+
+```{r}
+m<-1000
+df <-5
+sample1 <- rnorm(m)
+sample2 <- rt(m, df=df)   # * sqrt((df-2)/ df)
+cat("\n sample 1: mean  =", round(mean(sample1),2), "\t standard deviation=",round(sd(sample1),2))
+cat("\n sample 2: mean  =", round(mean(sample2),2), "\t standard deviation=",round(sd(sample2),2))
+
+
+hist(sample2,probability = T,  nclass=20, main = "Normal (blue) & student (red)",col="grey", lwd=3, ylim=c(0,.45) );box();grid(lwd = 3)
+lines(density(sample1),col="blue", lwd=3 )
+lines(density(sample2),col="red", lwd=3 )
+
+```
+
+
+
+######################
+### Home work 1 QQ PLOT 
+######################
+- 1) Simulate from an exponential distribution a sample of size n=500
+- 2) Apply its own cdf to the sample itself 
+- 3) Repeat 1) and 2) for a Gaussian with unit mean and sdev of 2 
+- 4) plot the histogram of the the sample from step 2, do the same from the sample from step 3 
+- 5) order the sample from step 2, order the sample from step 3, and do scatter plot 
+- 6) replace the exponential by an uniform in step 1, and repeat 4. 
+- 7) conclusions? 
+
+
+
+######################
+### Laws properties  
+######################
+- 1) Simulate from an unit-mean exponential distribution a sample, say X,  of size n=500
+- 2) Plot the sample
+- 3) Threshold the sample X by only taking the value above its median, and substract the median, plot the new sample
+- 4) Compare the histogram and the densities of the two samples
+ 
+ -5) Repeat steps 1-4, but with an uniform distribution
+ - 6) Repeat steps 1-4, but with a standardized normal distribution
+ 
+ 
+
+
+######################
+LINEAR REGRESSION
+######################
+Creating a simulated example  with the notations
+$$Y = \beta X + \sigma * \epsilon$$
+where the regression coefficient vector $\beta$ is unknown and the covariates (explanotory variables) are given. 
+The observational noise is represented by $\sigma * \epsilon$. 
+The inferential objective is to find $\beta$ given $X$. 
+```{r}
+n<- 100 # sample size
+X1 <- seq(from=0,to=1,length=n)
+X2<-X1*X1
+sigma<-.1; noise <- sigma*rnorm(n) # iid random variable with variance sigma^2
+
+Y <- 2 + 0.5 * X1 + X2  + noise
+
+YX<-as.data.frame(cbind(Y,X1,X2));names(YX)<-c("Y","x1","x2")
+pairs(YX)
+```
+
+Regressing only with respect to X1
+```{r}
+    reg1 <- lm(Y ~  X1, data=YX) # lm(Y ~  poly(X1,2), data=YX)
+    summary(reg1)
+		par(mfrow=c(1,2))
+		plot(X1,Y, xlab="x1",ylab="y", col="grey")
+		lines(X1, 2 + 0.5 * X1+ X2, lwd=3)
+		lines(X1, fitted(reg1), lty=3, col="blue", lwd=3)
+		
+		plot(X2,Y, xlab="x2",ylab="y", col="grey")
+    lines(X2, 2 + 0.5 * X1+ X2, lwd=3)
+		lines(X2, fitted(reg1), lty=3, col="blue", lwd=3)
+
+```
+
+--------------------------
+HOME WORK: REGRESS ON X2 
+
+
+
+-------------------------
+REGRESSION ON X1 AND X2
+
+```{r}
+    reg1 <- lm(Y ~  X1, data=YX)  
+		reg2 <- lm(Y ~  X2, data=YX) 
+		reg12 <- lm(Y ~  X1+X2, data=YX) 
+		regPoly <- lm(Y ~  poly(X1,2), data=YX)
+		summary(reg12)
+		summary(regPoly)
+```
+```{r}
+plot(X1,Y, xlab="x1",ylab="y",col="grey")
+lines(X1, 2 + 0.5 * X1 + X2, lwd=3)
+lines(X1, fitted(reg12), lty=3, col="red", lwd=3)
+
+plot(X2,Y, xlab="x2",ylab="y",col="grey")
+lines(X2, 2 + 0.5 * X1 + X2, lwd=3)
+lines(X2, fitted(reg12), lty=3, col="red", lwd=3)
+```
+
+-----------------------------
+Checking the model hypothesis
+
+```{r}
+	qqnorm(resid(reg1), xlab="regression with X1", xlim=c(-3,3),ylim = c(-0.33, 0.33))
+	qqline(resid(reg1))
+	
+		qqnorm(resid(reg2), xlab="regression with X2", xlim=c(-3,3),ylim = c(-0.33, 0.33))
+	qqline(resid(reg2))
+	
+		qqnorm(resid(reg12), xlab="regression with X1 and X2", xlim=c(-3,3),ylim = c(-0.33, 0.33))
+	qqline(resid(reg12))
+	
+	qqnorm(resid(regPoly), xlab="regression with poly(X1,2)", xlim=c(-3,3),ylim = c(-0.33, 0.33))
+	qqline(resid(regPoly))
+
+```
+
