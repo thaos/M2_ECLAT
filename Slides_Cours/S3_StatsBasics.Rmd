@@ -1,0 +1,259 @@
+---
+title: "Séance 3"
+subtitle: "Bases de statistique l'étude des aléas climatiques"
+author: "Soulivanh Thao <br/> sthao@lsce.ipsl.fr"
+institute: "LSCE, ESTIMR"
+date: "2020/10/01 (updated: `r Sys.Date()`)"
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+---
+# Séquence 2: Données et outils statistiques
+
+- Séance 2: Pourquoi les statistiques pour étudier le climat? Avec quelles données ? + Séance pratique en R.
+
+- Séance 3: Introduction aux notions statistiques de facon plus formelle
+
+- Séance 4: Séances pratique en R sur les effets de l'aggrégation spatiale et l'effet de la variabilité interne sur les estimations statistiques.
+
+- Séance 5: Introduction au downscaling statistique et correction de biais par la pratique.
+
+Il y a beaucoup de pratique avec le logiciel R. Il vous faut donc l'installer ainsi que Rstudio.
+Vous pouvez faire [ces exercices](https://github.com/thaos/MathDACC_tutoR/blob/master/Rtuto_basics/basics_tuto_exercices.R) pour vous familiariser avec R. La correction est disponible [ici](https://github.com/thaos/MathDACC_tutoR/blob/master/Rtuto_basics/basics_tuto.R.completed).
+
+---
+# Problèmes typiques
+
+- Quelle température annuelle moyenne seront nous succeptible d'observer en 2051 ?
+- Quelle température annuelle moyenne aurait-il pu faire en 2000 ?
+- Quelle est la probabilté que la température dépasse 290 K en 1950 ? en 2050 ?
+- Quelle est la probabilté que la température dépasse 320 K en 1950 ? en 2050 ?
+- Quelle seuil de temperature peut ont esperer depasser au moins une fois tous les 50 ans ?
+
+```{r, echo=FALSE, fig.height=4, dev='svg'}
+tas_stagg <- readRDS(file = "../Ex2_aggregation/tas_stagg.rds")
+tas <- readRDS(file = "../Ex2_aggregation/tas.rds")
+dates <- dimnames(tas)[[3]]
+years <- unique(as.integer(substring(dates, 1, 4)))
+
+tas_smean_tmean <- tas_stagg[[1]][[1]]  
+
+zones <- dimnames(tas_smean_tmean)[[2]]
+periods <- dimnames(tas_smean_tmean)[[3]]
+lon <- as.numeric(rownames(tas))
+lat <- as.numeric(colnames(tas))
+
+str(tas_smean_tmean)
+plot(
+  years, tas_smean_tmean[, 1, 1], #* 3600 * 24 * 365,
+  xlab = "year", ylab = "tas (K)", main = "tas, annual mean",
+  pch = 20
+  )
+```
+# Rappels sur les variables aléatoires continues
+
+
+    La distribution d'une variable aléatoire univariée et continue $X$ est entièrement déterminée par sa fonction de répartition (cumulative distribution function) 
+    $$F(x) = Pr (X \le x) $$
+    
+    on dit que x_alpha est le quantile de niveau alpha si F(x_alpha) = alpha
+    
+    Si $F$ est une function fonction continue, alors il existe une fonction positive $f$, appelé la densité de probabilité (probability density function) tel que
+    $$ Pr(a\le X\le b) = F(b) - F(a) = \int_a^b f(x)\,dx$$.
+
+
+
+# cdf and pdf
+```{r cdfpdf, echo=FALSE, fig.height=4, dev='svg'}
+par(mfrow = c(1, 2))
+x <- seq(-4, 4, by = 0.01)
+plot(
+  x, pnorm(x),
+  main = "cdf", xlab = "x", ylab = "F(x)",
+  type = "l", ylim = c(-0.1, 1)
+)
+abline(h = c(0, 1), lty = 2, col = "grey")
+xstar <- -0.5
+# xpol <- c(x[x < xstar], rep(xstar, 2))
+# ypol <- c(pnorm(x[x < xstar]), pnorm(xstar), 0)
+# polygon(xpol, ypol, col = "pink", border = NA)
+# lines(x, pnorm(x))
+segments(
+  x0 = c(xstar, xstar),
+  y0 = c(-1, pnorm(xstar)),
+  x = c(xstar, -5),
+  y = c(pnorm(xstar), pnorm(xstar)),
+  lty = 2, col = "red"
+)
+text(
+  x = c(-3.5, 0),
+  y = c(0.35, -0.07),
+  labels = c("F(a)", "a"),
+  col = "red"
+)
+
+plot(
+  x, dnorm(x),
+  main = "pdf", xlab = "x", ylab = "f(x)",
+  type = "l", ylim = c(-0.02, max(dnorm(x)))
+)
+abline(h = 0, lty = 2, col = "grey")
+xstar <- -0.5
+xpol <- c(-5, x[x < xstar], rep(xstar, 2))
+ypol <- c(0, dnorm(x[x < xstar]), dnorm(xstar), 0)
+polygon(xpol, ypol, col = "pink", border = NA)
+lines(x, dnorm(x))
+segments(
+  x0 = xstar,
+  y0 = -1,
+  x = xstar,
+  y = dnorm(xstar),
+  lty = 2, col = "red"
+)
+text(
+  x = c(-1.3, 0),
+  y = c(0.02, -0.015),
+  labels = c("F(a)", "a"),
+  col = "red"
+)
+
+```
+
+# Esperance
+# Variance
+
+# Estimateur
+
+# Multivariate
+
+dependence independance formule de bayes
+vraisemblance
+
+
+# Empirical estimator of the cdf}
+
+Let $(X_1, ..., X_n)$ be independent, identically distributed real-valued random variables with cdf $F$. The empirical distribution function is defined as
+$$ \widehat F_n(x) =  \frac{1}{n} \sum_{i=1}^n \mathbf{1}_{X_i \le x}$$
+
+\begin{figure}[htbp]
+      \centering
+      \includesvg[height=6cm]{Figures/ecdf-1.svg}
+\end{figure}
+
+\end{frame}    
+    
+\begin{frame}{Equality in distribution}
+    Real-valued random variables X and Y are equal in distribution if and only if they have the same cumulative distribution functions:
+    $$X \stackrel{d}{=} Y \Leftrightarrow \operatorname{P}(X \le x) = \operatorname{P}(Y \le x)\quad\text{for all }x$$
+    \begin{figure}[htbp]
+      \centering
+      \includesvg[height=5cm]{Figures/qqplot-1.svg}
+    \end{figure}
+\end{frame}
+
+
+# Continuous Univariate distribution
+
+
+
+# Empirical cdf
+
+```{r ecdf, echo=FALSE, fig.height=4, dev='svg'}
+par(mfrow = c(1, 2))
+x <- seq(-4, 4, by = 0.01)
+plot(
+  x, pnorm(x),
+  main = "cdf", xlab = "x", ylab = "F(x)",
+  type = "l", ylim = c(-0.1, 1)
+)
+abline(h = c(0, 1), lty = 2, col = "grey")
+xstar <- -0.5
+# xpol <- c(x[x < xstar], rep(xstar, 2))
+# ypol <- c(pnorm(x[x < xstar]), pnorm(xstar), 0)
+# polygon(xpol, ypol, col = "pink", border = NA)
+# lines(x, pnorm(x))
+segments(
+  x0 = c(xstar, xstar),
+  y0 = c(-1, pnorm(xstar)),
+  x = c(xstar, -5),
+  y = c(pnorm(xstar), pnorm(xstar)),
+  lty = 2, col = "red"
+)
+text(
+  x = c(-3.5, 0),
+  y = c(0.35, -0.07),
+  labels = c("F(a)", "a"),
+  col = "red"
+)
+
+xsample <- rnorm(20)
+plot(
+  ecdf(xsample),
+  main = "pdf", xlab = "x", ylab = "F(x)",
+  ylim = c(-0.1, 1), xlim = c(-4, 4)
+)
+segments(
+  x0 = c(xstar, xstar),
+  y0 = c(-1, ecdf(xsample)(xstar)),
+  x = c(xstar, -5),
+  y = c(ecdf(xsample)(xstar), ecdf(xsample)(xstar)),
+  lty = 2, col = "red"
+)
+text(
+  x = c(-3.5, 0),
+  y = c(ecdf(xsample)(xstar) + 0.05, -0.07),
+  labels = c("F(a)", "a"),
+  col = "red"
+)
+
+```
+
+# Empirical cdf
+
+```{r qqplot, echo=FALSE, fig.height=3, dev='svg'}
+par(mfrow = c(1, 3))
+
+
+xsample <- rnorm(20)
+xsample2 <- rnorm(20, mean = 0.05, sd = 0.99)
+xylim <- range(xsample, xsample2) + c(-0.3, 0.3)
+
+plot(
+  ecdf(xsample),
+  main = "pdf", xlab = "x", ylab = "F(x)",
+  xlim = xylim
+)
+lines(
+  ecdf(xsample2), col = "brown"
+)
+legend(
+  "bottomright", legend = c(expression('X'[1]), ylab = expression('X'[2])),
+  pch = 20, col = c("black", "brown")
+)
+qqplot(
+  xsample, xsample2,
+  xlab = expression('X'[1]), ylab = expression('X'[2]),
+  xlim = xylim, ylim = xylim,
+  pch = 20, main = "qq-plot", asp = 1
+)
+abline(a = 0, b = 1, col = "red")
+xmerged <- sort(c(xsample, xsample2))
+xmerged <- xmerged[seq(1, length(xmerged), 1)]
+# xmerged <- seq(min(xmerged), max(xmerged), length.out = 20)
+
+plot(
+  ecdf(xsample)(xmerged),
+  ecdf(xsample2)(xmerged),
+  xlab = expression('F'[X[1]]*'(x)'), ylab = expression('F'[X[2]]*'(x)'),
+  xlim = c(0, 1), ylim = c(0, 1),
+  pch = 20, main = "pp-plot", asp = 1
+)
+abline(a = 0, b = 1, col = "red")
+
+```
