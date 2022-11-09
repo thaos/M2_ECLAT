@@ -318,7 +318,7 @@ définie sur $\{z : 1 + \xi (z - \mu) / \sigma \geq 0\}$, avec $-\infty < \mu < 
 
 On utilise le fait que sous les hypothèse du théorème
 $$\mathbb{P}\{M_n \leq z \} \approx G\{ (z - b_n)/a_n \} = G^*(z),$$
-où $G^*$ est un autre membre de la familee des GEV.
+où $G^*$ est un autre membre de la famille des GEV.
 
 
 
@@ -350,9 +350,10 @@ définie sur $\{y : y > 0$ avec $(\xi y / \tilde{\sigma}) > 0 \}$
  
  - le paramètre de forme est le même que celui de la GEV associée.
  
- Le paramètre de forme  $\xi$, aussi appelé 'indice des valeurs extrêmes' charcterise le comportement de la queue de distribution: 
-- $\xi < 0$, la  distribution a une borne supérieure égale à $\mu - \tilde{\sigma} / \xi$ 
-- $\xi = 0$, la distribution a une queue à décroissance exponentielle. On interprète ce cas comme la limite de $\lim_{\xi \rightarrow 0} H(y)$
-- $\xi > 0$, la distribution est à queue lourde. 
+ - Le paramètre de forme  $\xi$, aussi appelé 'indice des valeurs extrêmes' charcterise le comportement de la queue de distribution: 
+ 
+    - $\xi < 0$, la  distribution a une borne supérieure égale à $\mu - \tilde{\sigma} / \xi$ 
+    - $\xi = 0$, la distribution a une queue à décroissance exponentielle. On interprète ce cas comme la limite de $\lim_{\xi \rightarrow 0} H(y)$
+    - $\xi > 0$, la distribution est à queue lourde. 
 
 
