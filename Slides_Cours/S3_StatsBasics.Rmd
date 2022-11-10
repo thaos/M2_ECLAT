@@ -201,6 +201,77 @@ où $\overline{X} = \frac{1}{n}\sum_{i=1}^n X_i$ est la [[moyenne empirique]].
 Cet estimateur est cependant biaisé, car $\mathbb{E}(S^2) = \frac{n-1}{n}\sigma^2$.
 
 
+
+---
+# Loi jointe de 2 variables aléatoires continues
+
+###Fonction de répartition bivariée
+$$F_{XY}(x,y) = \mathbb{P}(X\leq x,Y\leq y)$$
+
+<p align="center">
+<img src="Figs/multivariate_gaussian.svg"/>
+<br/>
+<a href="http://motion.pratt.duke.edu/RoboticSystems/Probability.html">Source Kris Hauser</a>
+</p>
+
+**Remarque : ** $F_{XY}(x, +\infty) = F_{X}(x)$
+
+
+
+---
+#Loi jointe de 2 variables aléatoires continues
+
+###Densité de probabilité bivariée
+$$f_{XY}(x,y) = \frac{\partial^2}{\partial x\,\partial y}F_{XY}(x,y)$$
+<p align="center">
+<img src="Figs/multivariate_gaussian.svg"/>
+<br/>
+<a href="http://motion.pratt.duke.edu/RoboticSystems/Probability.html">Source Kris Hauser</a>
+</p>
+
+**Remarque :**   $f_X (x) = \int_{-\infty}^\infty f_{XY}(x,y)\,\mathrm dy$
+
+<!--   $f_{X|Y}(x, y) = \frac {f_{XY}(x,y)} {f_{Y}(y)}$ --> 
+
+---
+# Dépendence et indépendance
+
+**Pour deux événements**
+
+Deux événements $A$ et $B$ sont indépendants (parfois noté $A \perp B$ or $A \perp\!\!\!\perp B$) si et seulement si 
+$$\mathrm{P}(A \cap B) = \mathrm{P}(A)\mathrm{P}(B)$$
+}
+
+---
+# Dépendence et indépendance
+
+**Deux variable aléatoires réelles**
+$X$ and $Y$ sont indépendantes si et seulement si leur fonction de répartition jointe  $F_{X,Y}(x,y) = P(X \leq x, Y \leq y)$ peut s'écrire comme 
+$$ F_{X,Y}(x,y) = F_X(x) F_Y(y) \quad \text{for all } x,y.$$
+
+
+
+De manière équivalente, si les densités de probabilité  $f_X(x)$ et  $f_Y(y)$ ainsi que la densité de probabilité jointe $f_{X,Y}(x,y)$ existent,
+
+$$ f_{X,Y}(x,y) = f_X(x) f_Y(y) \quad \text{for all } x,y.$$
+---
+# Indépendance et probabilité conditionnelle 
+
+Si $\mathbb{P}(B) \neq 0$,  la probabilité conditionnelle de l'événement $A$ sachant l'événement $B$, notée $\mathbb{P}(A\mid B)$ est définie par la relation ci-dessous :
+
+$$ \mathbb{P}(A\mid B)={\mathbb{P}(A \cap B) \over \mathbb{P}(B)} = \dfrac{P(B \mid A)P(A)}{P(B)}$$
+C'est le théorème de Bayes!
+
+Dans le cas où les évenements sont indépendants, 
+$$\mathrm{P}(A \cap B) = \mathrm{P}(A)\mathrm{P}(B) \iff \mathrm{P}(A\mid B) = \frac{\mathrm{P}(A \cap B)}{\mathrm{P}(B)} = \mathrm{P}(A).$$
+
+La probabilité $\mathrm{P}(A\mid B)$ ne dépend donc pas de $B$.
+
+---
+# Indépendance et densité conditionnelle 
+
+
+
 ---
 # Covariance
 
@@ -247,72 +318,6 @@ $$
 ---
 # Exemples de corrélation
 ![](Figs/Correlation_examples2.png)
----
-# Loi jointe de 2 variables aléatoires continues
-
-###Fonction de répartition bivariée
-$$F_{XY}(x,y) = \mathbb{P}(X\leq x,Y\leq y)$$
-
-<p align="center">
-<img src="Figs/multivariate_gaussian.svg"/>
-<br/>
-<a href="http://motion.pratt.duke.edu/RoboticSystems/Probability.html">Source Kris Hauser</a>
-</p>
-
-**Remarque : ** $F_{XY}(x, +\infty) = F_{X}(x)$
-
-
-
----
-#Loi jointe de 2 variables aléatoires continues
-
-###Densité de probabilité bivariée
-$$f_{XY}(x,y) = \frac{\partial^2}{\partial x\,\partial y}F_{XY}(x,y)$$
-<p align="center">
-<img src="Figs/multivariate_gaussian.svg"/>
-<br/>
-<a href="http://motion.pratt.duke.edu/RoboticSystems/Probability.html">Source Kris Hauser</a>
-</p>
-
-**Remarques :** 
-- $f_X (x) = \int_{-\infty}^\infty f_{XY}(x,y)\,\mathrm dy$
-- $f_{X|Y}(x, y) = \frac {f_{XY}(x,y)} {f_{Y}(y)}$
-
----
-# Dépendence et indépendance
-
-**Pour deux événements**
-
-Deux événements $A$ et $B$ sont indépendants (parfois noté $A \perp B$ or $A \perp\!\!\!\perp B$) si et seulement si 
-$$\mathrm{P}(A \cap B) = \mathrm{P}(A)\mathrm{P}(B)$$
-}
-
----
-# Dépendence et indépendance
-
-**Deux variable aléatoires réelles**
-$X$ and $Y$ sont indépendantes si et seulement si leur fonction de répartition jointe  $F_{X,Y}(x,y) = P(X \leq x, Y \leq y)$ peut s'écrire comme 
-$$ F_{X,Y}(x,y) = F_X(x) F_Y(y) \quad \text{for all } x,y.$$
-
-
-
-De manière équivalente, si les densités de probabilité  $f_X(x)$ et  $f_Y(y)$ ainsi que la densité de probabilité jointe $f_{X,Y}(x,y)$ existent,
-
-$$ f_{X,Y}(x,y) = f_X(x) f_Y(y) \quad \text{for all } x,y.$$
----
-# Indépendance et probabilité conditionnelle 
-
-Si $\mathbb{P}(B) \neq 0$,  la probabilité conditionnelle de l'événement $A$ sachant l'événement $B$, notée $\mathbb{P}(A\mid B)$ est définie par la relation ci-dessous :
-
-$$ \mathbb{P}(A\mid B)={\mathbb{P}(A \cap B) \over \mathbb{P}(B)} = \dfrac{P(B \mid A)P(A)}{P(B)}$$
-C'est le théorème de Bayes!
-
-Dans le cas où les évenements sont indépendants, 
-$$\mathrm{P}(A \cap B) = \mathrm{P}(A)\mathrm{P}(B) \iff \mathrm{P}(A\mid B) = \frac{\mathrm{P}(A \cap B)}{\mathrm{P}(B)} = \mathrm{P}(A).$$
-
-La probabilité $\mathrm{P}(A\mid B)$ ne dépend donc pas de $B$.
-
-
 ---
 # Vraisemblance
 
@@ -617,3 +622,26 @@ définie sur $\{y : y > 0$ avec $(\xi y / \tilde{\sigma}) > 0 \}$
   }
   points(x, col = col[iabove+1], cex = 3, pch = 20)
 ```
+
+
+---
+# ailure of the i.d. assumption
+ä In many situtation the i.i.d. assumption is not appropriate.
+ä In this section we will focus on situations in case of failure of the i.d. assumption;
+ä It is often the case with environmental processes which typically involve:
+1. seasonality, i.e., spring, summer, fall, winter;
+2. trends, e.g., global warming.
+---
+# Processus stochastiques et stationnarité 
+
+
+---
+# Covariable dans les parametres
+
+liens entre lois gaussienne et regressien par moindres carré    
+
+---
+# Estimateurs: bias, variance, mse
+
+---
+# diagnostiques des modèle 
