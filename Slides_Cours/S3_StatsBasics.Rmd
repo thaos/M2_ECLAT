@@ -129,16 +129,254 @@ text(
 
 ---
 # Esperance
+
+=== Variable continue à densité ===
+Si la variable aléatoire continue réelle $X$ admet une densité de probabilité $f$, son espérance est définie comme :
+$$\mathbb{E}[X] = \int_{-\infty}^\infty x f(x)\, \mathrm{d}x$$
+à condition que l'intégrale soit absolument convergente.
+
+---
+# Esperance (quelques propriétés)
+
+**Linéarité**:
+l'espérance est un opérateur linéaire. Pour deux variables aléatoires quelconques $X$ et $Y$  et pour deux nombres réels $a$ et $b$:
+$$\mathbb E[aX+bY]=a\mathbb E(X)+b\mathbb E(Y)$$
+
+
+**espérance d'une fonction d'une variable aléatoire**:
+Si $X$ est une variable aléatoire absolument continue réelle, de densité de probabilité $f$, alors l'espérance d'une fonction mesurable de $X$, $g(X)$ est:
+
+$$\mathbb E \left[ g(X) \right] =  \int_{-\infty}^\infty g(x) f(x) \mathrm{d}x$$
+
+
+
+
+---
+# Estimateur empirique de l'esperance 
+
+**Théorème (Khintchine) : loi faible des grands nombres**
+
+Soit $X_n$ une suite de variables aléatoires réelles indépendantes et identiquement distribuées(iid) admettant une espérance $\mu = \mathbb{E}[X]$.
+
+La moyenne empirique 
+$$\overline{X}_n = \frac{1}{n}\sum_{k=1}^n X_k$$
+converge en probabilité vers cette espérance : pour tout $\varepsilon > 0$, on a 
+$$\lim_{n\to+\infty} \mathbb{P}\left(\left|\overline{X}_n-\mu\right| > \varepsilon\right) = 0$$ 
+
+Ce résultat assure en particulier que la moyenne empirique est un estimateur convergent de l'espérance.
+
+**Question** Calculer l'espérance de $\overline{X}_n$
+---
 # Variance
 
-# Estimateur
 
-# Multivariate
+Dans le cas d’une variable aléatoire à densité, la variance est définie par :
+$$ \operatorname{Var}(X) = \sigma^2 =  \int_{-\infty}^\infty  (x-\mu)^2  f(x) \mathrm{d}x $$
 
-dependence independance formule de bayes
-vraisemblance
+où $f$ est la densité de probabilité de $X$ et $\mu$ son l'espérance mathématique $X$ 
 
 
+La variance d'une variable aléatoire continue {{mvar|X}} peut aussi se calculer de la façon suivante :
+$$  \operatorname{Var}(X) = \sigma^2 = \mathbb{E}[X^2] - \mu^2$$
+Si $\sigma^2$ est la variance de $X$, $\sigma$ correspond à son écart-type.
+
+
+---
+# Variance (quelques propriétés)
+
+**Transformation affine**
+$$ \operatorname{Var}(aX+b) =  a^2\operatorname{Var}(X)$$
+**Combinaison linéaire**
+Si deux variables aléatoires $X$ et $Y$ admettent une variance, alors 
+$$\operatorname{Var}(X + Y) = \operatorname{Var}(X) + \operatorname{Var}(Y) + 2 \operatorname{Cov}(X, Y)$$
+où $\operatorname{Cov}(X, Y)$ est la covariance
+
+---
+# Estimateur empirique de la variance
+Soit $X_n$ une suite de variables aléatoires réelles indépendantes et identiquement distribuées(iid),  la variance $\sigma^2$ de cette loi peut être estimée à l’aide de la variance empirique
+
+$$S^2 = \frac{1}{n}\sum_{i=1}^n(X_i-\overline{X})^2$$
+où $\overline{X} = \frac{1}{n}\sum_{i=1}^n X_i$ est la [[moyenne empirique]].
+
+Cet estimateur est cependant biaisé, car $\mathbb{E}(S^2) = \frac{n-1}{n}\sigma^2$.
+
+
+---
+# Covariance
+
+La covariance de deux variables aléatoires réelles $X$ et $Y$ ayant chacune une variance finie est définie par
+$$ \operatorname{Cov}(X,Y) = \mathbb{E}[(X-\mathbb{E}[X])\,(Y-\mathbb{E}[Y])$$
+De manière équivalente :
+$$ \operatorname{Cov}(X,Y) = \operatorname{E}(XY) - \operatorname{E}(X) \operatorname{E}(Y)$$
+
+
+**Remarque :**  La variance de $X$ est donc $\operatorname{Var}(X) = \operatorname{Cov}(X, X)$.
+
+**Question :** Comment estimer  $\operatorname{Cov}(X,Y)$ ?
+---
+# Correlation (de Pearson)
+
+Le coefficient de corrélation entre deux variables aléatoires réelles $X$ et $Y$ ayant chacune une variance finie, noté $\operatorname{Cor}(X,Y)$, ou parfois $\rho_{XY}$, ou simplement $r$,  est défini par :
+$$ r = \frac{\operatorname{Cov}(X,Y)}{\sigma_X \sigma_Y}$$
+où $\sigma_X$ et $\sigma_Y$ désignent respectivement les écarts types de $X$ et $Y$.
+
+**Question: ** Comment estimer  $\operatorname{Cor}(X,Y)$ ?
+
+
+---
+# Independance et correlation
+La valeur du coefficient de corrélation est comprise entre  −1 et  +1.
+
+Elle indique le degré de dépendance linéaire entre deux variable :
+
+- 1 correspond à une parfaite relation linéaire croissante
+
+- -1 correspond à une parfaite relation inverse décroissante. 
+
+- 0 indique une absence de relation linéaire entre les variables.
+
+
+**Attention !**
+
+$$ 
+\begin{align}
+X,Y \text{ independent} \quad & \Rightarrow \quad \rho_{X,Y} = 0 \quad (X,Y \text{ uncorrelated})\\
+\rho_{X,Y} = 0 \quad (X,Y \text{ uncorrelated})\quad & \nRightarrow \quad X,Y \text{ independent}
+\end{align}
+$$
+---
+# Exemples de corrélation
+![](Figs/Correlation_examples2.png)
+---
+# Loi jointe de 2 variables aléatoires continues
+
+###Fonction de répartition bivariée
+$$F_{XY}(x,y) = \mathbb{P}(X\leq x,Y\leq y)$$
+
+<p align="center">
+<img src="Figs/multivariate_gaussian.svg"/>
+<br/>
+<a href="http://motion.pratt.duke.edu/RoboticSystems/Probability.html">Source Kris Hauser</a>
+</p>
+
+**Remarque : ** $F_{XY}(x, +\infty) = F_{X}(x)$
+
+
+
+---
+#Loi jointe de 2 variables aléatoires continues
+
+###Densité de probabilité bivariée
+$$f_{XY}(x,y) = \frac{\partial^2}{\partial x\,\partial y}F_{XY}(x,y)$$
+<p align="center">
+<img src="Figs/multivariate_gaussian.svg"/>
+<br/>
+<a href="http://motion.pratt.duke.edu/RoboticSystems/Probability.html">Source Kris Hauser</a>
+</p>
+
+**Remarques :** 
+- $f_X (x) = \int_{-\infty}^\infty f_{XY}(x,y)\,\mathrm dy$
+- $f_{X|Y}(x, y) = \frac {f_{XY}(x,y)} {f_{Y}(y)}$
+
+---
+# Dépendence et indépendance
+
+**Pour deux événements**
+
+Deux événements $A$ et $B$ sont indépendants (parfois noté $A \perp B$ or $A \perp\!\!\!\perp B$) si et seulement si 
+$$\mathrm{P}(A \cap B) = \mathrm{P}(A)\mathrm{P}(B)$$
+}
+
+---
+# Dépendence et indépendance
+
+**Deux variable aléatoires réelles**
+$X$ and $Y$ sont indépendantes si et seulement si leur fonction de répartition jointe  $F_{X,Y}(x,y) = P(X \leq x, Y \leq y)$ peut s'écrire comme 
+$$ F_{X,Y}(x,y) = F_X(x) F_Y(y) \quad \text{for all } x,y.$$
+
+
+
+De manière équivalente, si les densités de probabilité  $f_X(x)$ et  $f_Y(y)$ ainsi que la densité de probabilité jointe $f_{X,Y}(x,y)$ existent,
+
+$$ f_{X,Y}(x,y) = f_X(x) f_Y(y) \quad \text{for all } x,y.$$
+---
+# Indépendance et probabilité conditionnelle 
+
+Si $\mathbb{P}(B) \neq 0$,  la probabilité conditionnelle de l'événement $A$ sachant l'événement $B$, notée $\mathbb{P}(A\mid B)$ est définie par la relation ci-dessous :
+
+$$ \mathbb{P}(A\mid B)={\mathbb{P}(A \cap B) \over \mathbb{P}(B)} = \dfrac{P(B \mid A)P(A)}{P(B)}$$
+C'est le théorème de Bayes!
+
+Dans le cas où les évenements sont indépendants, 
+$$\mathrm{P}(A \cap B) = \mathrm{P}(A)\mathrm{P}(B) \iff \mathrm{P}(A\mid B) = \frac{\mathrm{P}(A \cap B)}{\mathrm{P}(B)} = \mathrm{P}(A).$$
+
+La probabilité $\mathrm{P}(A\mid B)$ ne dépend donc pas de $B$.
+
+
+---
+# Vraisemblance
+
+Soit $X$ une variable aléatoire (potentiellement multivarié) ayant pour densité de probabilité $f$ dépendant d'un paramètre $\theta$. 
+
+La vraisemblance $\mathcal L$ est une fonction de $\theta$, étant donnée une réalisation $x$ de la variable aléatoire $X$:
+
+$$\mathcal L(\theta | x) = f(x; \theta)$$
+---
+# Vraisemblance
+
+Soit $X_1, ..., X_n$ des variables aléatoires i.i.d. de loi exponentielle
+
+$$f_{X_1}(x; \theta) = \left\{\begin{matrix}
+\theta e^{-\theta x} & \text{si} \; x \geqslant 0 \\
+0 & \text{si} \; x < 0
+\end{matrix}\right.$$
+
+On observe $x_1, ..., x_n$ les réalisations respectives de $X_1, ..., X_n$
+
+La vraisemblance de $x_1, ..., x_n$ s'écrit
+
+$$\begin{align}
+  \mathcal L(\theta | x_1, ..., x_n) &= f_{X_1}(x_1; \theta) \times \ldots \times f_{X_n}(x_n; \theta) \\
+  &= \theta^n e^{-\theta (x_1 + \ldots + x_n)}
+\end{align}$$
+
+---
+# Estimation par maximum de vraisemblance
+
+On cherche $\theta^*$ qui maximise la vraisemblance des données observées $\textbf x = (x_1, \ldots, x_n)$:
+
+$$\theta^* = \underset{\theta}{\mathrm{argmax}} \, \mathcal L(\theta |\textbf x)$$
+
+**Remarque**: maximiser  $\mathcal L(\theta |\textbf x)$ revient à maximiser  $\mathcal{l}(\theta | \textbf{x}) = \log  L(\theta |\textbf{x})$
+
+---
+# Exemple avec lois exponentielles i.i.d.
+
+$$\begin{align} 
+\underset{\theta}{\mathrm{argmax}} \, \mathcal L(\theta |\textbf x) &= \underset{\theta}{\mathrm{argmax}} \, \theta^n e^{-\theta (x_1 + \ldots + x_n)} \\
+&= \underset{\theta}{\mathrm{argmax}} \, \mathcal{l}(\theta |\textbf x) \\
+&= \underset{\theta}{\mathrm{argmax}} \log(\exp(n \log(\theta) -\theta (x_1 + \ldots + x_n)) \\
+&= \underset{\theta}{\mathrm{argmax}} \, n \log(\theta) -\theta (x_1 + \ldots + x_n)
+\end{align}$$
+
+$$\begin{align} 
+\frac{\mathrm d \mathcal l(\theta |\textbf x)}{\mathrm d \theta} = 0 &\implies \frac{n}{\theta} - (x_1 + \ldots + x_n) = 0 \\
+&\implies \theta = \frac{n}{(x_1 + \ldots + x_n)}
+\end{align}$$
+---
+
+# Estimateurs du maximum de vraisemblance
+
+### Propriétés
+
+
+L'estimateur obtenu par la méthode du maximum de vraisemblance est :
+
+* convergent,
+* asymptotiquement efficace, il atteint la borne de Cramér-Rao,
+* asymptotiquement distribué selon une loi normale.
+
+En revanche, il peut être biaisé en échantillon fini.
 ---
 # Empirical estimator of the cdf
 
@@ -318,9 +556,22 @@ définie sur $\{z : 1 + \xi (z - \mu) / \sigma \geq 0\}$, avec $-\infty < \mu < 
 
 On utilise le fait que sous les hypothèse du théorème
 $$\mathbb{P}\{M_n \leq z \} \approx G\{ (z - b_n)/a_n \} = G^*(z),$$
-où $G^*$ est un autre membre de la famille des GEV.
+où $G^*$ est un autre membre de la familee des GEV.
 
-
+---
+# Block maxima
+```{r blockmax, echo=FALSE, fig.height=3, dev='svg'}
+  x = rnorm(100)
+  block = rep(1:10, rep(10, 10))
+  imax = tapply(x, block, function(x) x == max(x)) |> unlist()
+  thresh = quantile(x, p = 0.9)
+  iabove = x >= thresh
+  col = c("grey", "red")
+  par(mar = c(2, 3, 0, 1))
+  plot(x, type = "n", xlab = "", ylab = "", cex.axis  = 2)
+  points(x, col = col[imax+1], cex = 3, pch = 20)
+  abline(v = 0.5 + 1:10 * 10, lty = 4, lwd = 3)
+```
 
 ---
 # Loi de pareto genéralisée
@@ -350,10 +601,19 @@ définie sur $\{y : y > 0$ avec $(\xi y / \tilde{\sigma}) > 0 \}$
  
  - le paramètre de forme est le même que celui de la GEV associée.
  
- - Le paramètre de forme  $\xi$, aussi appelé 'indice des valeurs extrêmes' charcterise le comportement de la queue de distribution: 
- 
+ - le paramètre de forme  $\xi$, aussi appelé 'indice des valeurs extrêmes' charcterise le comportement de la queue de distribution: 
     - $\xi < 0$, la  distribution a une borne supérieure égale à $\mu - \tilde{\sigma} / \xi$ 
     - $\xi = 0$, la distribution a une queue à décroissance exponentielle. On interprète ce cas comme la limite de $\lim_{\xi \rightarrow 0} H(y)$
     - $\xi > 0$, la distribution est à queue lourde. 
 
-
+---
+# Peaks over threshold
+```{r pot, echo=FALSE, fig.height=3, dev='svg'}
+  par(mar = c(2, 3, 0, 1))
+  plot(x, type = "n", xlab = "", ylab = "", cex.axis= 2)
+  abline(h = thresh, lty = 4, lwd = 3)
+  for(i in seq_along(x)){
+    if(iabove[i]) segments(i, x[i],  i, thresh, lwd = 4)
+  }
+  points(x, col = col[iabove+1], cex = 3, pch = 20)
+```
