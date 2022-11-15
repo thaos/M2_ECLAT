@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ---
 title: "Séance 3"
 subtitle: "Bases de statistique l'étude des aléas climatiques"
@@ -644,4 +645,5 @@ liens entre lois gaussienne et regressien par moindres carré
 # Estimateurs: bias, variance, mse
 
 ---
-# diagnostiques des modèle 
+# diagnostiques des modèles
+
