@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 ---
 title: "Séance 3"
 subtitle: "Bases de statistique l'étude des aléas climatiques"
@@ -27,6 +27,15 @@ output:
 
 Il y a beaucoup de pratique avec le logiciel R. Il vous faut donc l'installer ainsi que Rstudio.
 Vous pouvez faire [ces exercices](https://github.com/thaos/MathDACC_tutoR/blob/master/Rtuto_basics/basics_tuto_exercices.R) pour vous familiariser avec R. La correction est disponible [ici](https://github.com/thaos/MathDACC_tutoR/blob/master/Rtuto_basics/basics_tuto.R.completed).
+
+---
+# Séance 2: sources et références
+
+Cette séances reprend la trame et beaucoup d'éléments du chapite 2 de Coles
+
+L'autre grande partie du contenu provient simplement de wikipedia.
+
+Les autres sources sont cités au fur et à mesures des slides.
 
 ---
 # Problèmes typiques
@@ -129,9 +138,67 @@ text(
 ```
 
 ---
+# Empirical estimator of the cdf
+
+Soit $(X_1, ..., X_n)$ des variables aléatoires réelles, indépendantes et identiquement distribuées (i.i.d) ayant pour cdf $F$. On définit la fonction de répartition empirique (empirical cumulative distribution function) par 
+
+$$\widehat F_n(x) =  \frac{1}{n} \sum_{i=1}^n \mathbf{1}_{X_i \le x}$$
+
+```{r ecdf, echo=FALSE, fig.height=4, dev='svg'}
+par(mfrow = c(1, 2))
+x <- seq(-4, 4, by = 0.01)
+plot(
+  x, pnorm(x),
+  main = "cdf", xlab = "x", ylab = "F(x)",
+  type = "l", ylim = c(-0.1, 1)
+)
+abline(h = c(0, 1), lty = 2, col = "grey")
+xstar <- -0.5
+# xpol <- c(x[x < xstar], rep(xstar, 2))
+# ypol <- c(pnorm(x[x < xstar]), pnorm(xstar), 0)
+# polygon(xpol, ypol, col = "pink", border = NA)
+# lines(x, pnorm(x))
+segments(
+  x0 = c(xstar, xstar),
+  y0 = c(-1, pnorm(xstar)),
+  x = c(xstar, -5),
+  y = c(pnorm(xstar), pnorm(xstar)),
+  lty = 2, col = "red"
+)
+text(
+  x = c(-3.5, 0),
+  y = c(0.35, -0.07),
+  labels = c("F(a)", "a"),
+  col = "red"
+)
+
+xsample <- rnorm(20)
+plot(
+  ecdf(xsample),
+  main = "cdf", xlab = "x", ylab = "F(x)",
+  ylim = c(-0.1, 1), xlim = c(-4, 4)
+)
+segments(
+  x0 = c(xstar, xstar),
+  y0 = c(-1, ecdf(xsample)(xstar)),
+  x = c(xstar, -5),
+  y = c(ecdf(xsample)(xstar), ecdf(xsample)(xstar)),
+  lty = 2, col = "red"
+)
+text(
+  x = c(-3.5, 0),
+  y = c(ecdf(xsample)(xstar) + 0.05, -0.07),
+  labels = c("F(a)", "a"),
+  col = "red"
+)
+```
+
+
+---
 # Esperance
 
-=== Variable continue à densité ===
+#### Variable continue à densité
+
 Si la variable aléatoire continue réelle $X$ admet une densité de probabilité $f$, son espérance est définie comme :
 $$\mathbb{E}[X] = \int_{-\infty}^\infty x f(x)\, \mathrm{d}x$$
 à condition que l'intégrale soit absolument convergente.
@@ -139,12 +206,12 @@ $$\mathbb{E}[X] = \int_{-\infty}^\infty x f(x)\, \mathrm{d}x$$
 ---
 # Esperance (quelques propriétés)
 
-**Linéarité**:
+#### Linéarité:
 l'espérance est un opérateur linéaire. Pour deux variables aléatoires quelconques $X$ et $Y$  et pour deux nombres réels $a$ et $b$:
 $$\mathbb E[aX+bY]=a\mathbb E(X)+b\mathbb E(Y)$$
 
 
-**espérance d'une fonction d'une variable aléatoire**:
+#### Espérance d'une fonction d'une variable aléatoire:
 Si $X$ est une variable aléatoire absolument continue réelle, de densité de probabilité $f$, alors l'espérance d'une fonction mesurable de $X$, $g(X)$ est:
 
 $$\mathbb E \left[ g(X) \right] =  \int_{-\infty}^\infty g(x) f(x) \mathrm{d}x$$
@@ -155,7 +222,7 @@ $$\mathbb E \left[ g(X) \right] =  \int_{-\infty}^\infty g(x) f(x) \mathrm{d}x$$
 ---
 # Estimateur empirique de l'esperance 
 
-**Théorème (Khintchine) : loi faible des grands nombres**
+##### Théorème (Khintchine) : loi faible des grands nombres
 
 Soit $X_n$ une suite de variables aléatoires réelles indépendantes et identiquement distribuées(iid) admettant une espérance $\mu = \mathbb{E}[X]$.
 
@@ -185,23 +252,60 @@ Si $\sigma^2$ est la variance de $X$, $\sigma$ correspond à son écart-type.
 ---
 # Variance (quelques propriétés)
 
-**Transformation affine**
+##### Transformation affine
 $$ \operatorname{Var}(aX+b) =  a^2\operatorname{Var}(X)$$
-**Combinaison linéaire**
-Si deux variables aléatoires $X$ et $Y$ admettent une variance, alors 
-$$\operatorname{Var}(X + Y) = \operatorname{Var}(X) + \operatorname{Var}(Y) + 2 \operatorname{Cov}(X, Y)$$
-où $\operatorname{Cov}(X, Y)$ est la covariance
-
 ---
 # Estimateur empirique de la variance
 Soit $X_n$ une suite de variables aléatoires réelles indépendantes et identiquement distribuées(iid),  la variance $\sigma^2$ de cette loi peut être estimée à l’aide de la variance empirique
 
-$$S^2 = \frac{1}{n}\sum_{i=1}^n(X_i-\overline{X})^2$$
+$$S_n^2 = \frac{1}{n}\sum_{i=1}^n(X_i-\overline{X})^2$$
 où $\overline{X} = \frac{1}{n}\sum_{i=1}^n X_i$ est la [[moyenne empirique]].
 
-Cet estimateur est cependant biaisé, car $\mathbb{E}(S^2) = \frac{n-1}{n}\sigma^2$.
+Cet estimateur est cependant biaisé, car $\mathbb{E}(S_n^2) = \frac{n-1}{n}\sigma^2$.
 
+---
+# Période de retour
 
+On considère un évènement de type dépassement de seuil
+
+$$\{X_t > x\}$$
+où $t$ dénote une année.
+
+Soit la variable aléatoire $Y$ correspondant au nombre d'années entre deux évènements consécutifs.
+La période de retour de l’évènement $\{X_t > x\}$ est défini comme 
+
+$$ T(x) = \mathbb{E}[Y]$$
+---
+# Période de retour
+
+Dans le cas où, les variables $X_t$ sont i.i.d, alors 
+- pour tout $t$, $\mathbb{P}(X_t > x) = p_x$
+- la variable $Y$ suit une loi géométrique de paramètre $p_x$:
+$$ \mathbb{P}(Y = k) = (1-p_x)^{k-1} p_x$$
+
+On déduit 
+$$T(x) = \sum_{k = 1}^\infty k (1-p_x)^{k-1} p_x = \frac{1}{p_x}$$
+
+Dans un cadre où les $X_t$ sont i.i.d., la durée de retour est l'inverse de la probabilité de l'évènement.
+
+---
+# Niveau de retour
+
+Le niveau de retour $x_T$ associé à la période de retour $T$ est le seuil qui définie l’évènement $\{X_t > x_T\}$ qui revient en moyenne toutes les $T$ années.
+
+On peut aussi voir $\{X_t > x_T\}$ comme l'événement qui apparaît en moyenne seulement une fois sur  $T$ années.
+
+$$\mathbb{E}[\sum_{t=1}^{T} \mathbb{1}_{\{X_t > x_T\}}] = 1$$
+---
+# Niveau de retour
+
+Dans le cas  où les $X_t$ sont i.i.d.,
+$$\begin{align}
+\mathbb{E}[\sum_{t=1}^{T} \mathbb{1}_{\{X_t > x_T\}}] = 1 &\Leftrightarrow T \mathbb{P}(X_1 > x_T) = 1 \\
+&\Leftrightarrow \mathbb{P}(X_1 > x_T) = \frac{1}{T}
+\end{align}$$
+
+Autrement dit, $x_T$ est le quantile $1 -\frac{1}{T}$ de $X_t$.
 
 ---
 # Loi jointe de 2 variables aléatoires continues
@@ -222,7 +326,7 @@ $$F_{XY}(x,y) = \mathbb{P}(X\leq x,Y\leq y)$$
 ---
 #Loi jointe de 2 variables aléatoires continues
 
-###Densité de probabilité bivariée
+### Densité de probabilité bivariée
 $$f_{XY}(x,y) = \frac{\partial^2}{\partial x\,\partial y}F_{XY}(x,y)$$
 <p align="center">
 <img src="Figs/multivariate_gaussian.svg"/>
@@ -237,20 +341,20 @@ $$f_{XY}(x,y) = \frac{\partial^2}{\partial x\,\partial y}F_{XY}(x,y)$$
 ---
 # Dépendence et indépendance
 
-**Pour deux événements**
+#### Pour deux événements
 
 Deux événements $A$ et $B$ sont indépendants (parfois noté $A \perp B$ or $A \perp\!\!\!\perp B$) si et seulement si 
 $$\mathrm{P}(A \cap B) = \mathrm{P}(A)\mathrm{P}(B)$$
-}
+
 
 ---
 # Dépendence et indépendance
 
-**Deux variable aléatoires réelles**
+#### Deux variable aléatoires réelles
+
 $X$ and $Y$ sont indépendantes si et seulement si leur fonction de répartition jointe  $F_{X,Y}(x,y) = P(X \leq x, Y \leq y)$ peut s'écrire comme 
 $$ F_{X,Y}(x,y) = F_X(x) F_Y(y) \quad \text{for all } x,y.$$
-
-
+<br /> 
 
 De manière équivalente, si les densités de probabilité  $f_X(x)$ et  $f_Y(y)$ ainsi que la densité de probabilité jointe $f_{X,Y}(x,y)$ existent,
 
@@ -263,6 +367,8 @@ Si $\mathbb{P}(B) \neq 0$,  la probabilité conditionnelle de l'événement $A$ 
 $$ \mathbb{P}(A\mid B)={\mathbb{P}(A \cap B) \over \mathbb{P}(B)} = \dfrac{P(B \mid A)P(A)}{P(B)}$$
 C'est le théorème de Bayes!
 
+<br /> 
+
 Dans le cas où les évenements sont indépendants, 
 $$\mathrm{P}(A \cap B) = \mathrm{P}(A)\mathrm{P}(B) \iff \mathrm{P}(A\mid B) = \frac{\mathrm{P}(A \cap B)}{\mathrm{P}(B)} = \mathrm{P}(A).$$
 
@@ -271,6 +377,15 @@ La probabilité $\mathrm{P}(A\mid B)$ ne dépend donc pas de $B$.
 ---
 # Indépendance et densité conditionnelle 
 
+Pour deux variables aléatoire réelles $X$  and $Y$,  le théorème de Bayes s'applique également aux densités conditionelles:
+
+$$f_{X \mid  Y=y} (x) = \frac{f_{X,Y}(x,y)}{f_Y(y)} = \frac{f_{Y \mid  X=x}(y) f_X(x)}{f_Y(y)}.$$
+<br /> 
+
+$X$ et $Y$ sont indépendantes si et seulement si  
+
+$$f_{X \mid  Y=y} (x) = f_{X} (x) \quad \text{for all } x,y.$$
+
 
 
 ---
@@ -278,13 +393,32 @@ La probabilité $\mathrm{P}(A\mid B)$ ne dépend donc pas de $B$.
 
 La covariance de deux variables aléatoires réelles $X$ et $Y$ ayant chacune une variance finie est définie par
 $$ \operatorname{Cov}(X,Y) = \mathbb{E}[(X-\mathbb{E}[X])\,(Y-\mathbb{E}[Y])$$
+<br /> 
+
 De manière équivalente :
 $$ \operatorname{Cov}(X,Y) = \operatorname{E}(XY) - \operatorname{E}(X) \operatorname{E}(Y)$$
 
 
-**Remarque :**  La variance de $X$ est donc $\operatorname{Var}(X) = \operatorname{Cov}(X, X)$.
 
 **Question :** Comment estimer  $\operatorname{Cov}(X,Y)$ ?
+
+
+---
+# Covariance
+
+- La variance de $X$ est donc $\operatorname{Var}(X) = \operatorname{Cov}(X, X)$.
+
+-  Covariance d'une combinaison linéaire
+
+$$\begin{align}
+\operatorname{cov}(aX+bY, cW+dV) &= ac\,\operatorname{cov}(X,W)+ad\,\operatorname{cov}(X,V)\\
+&+bc\,\operatorname{cov}(Y,W)+bd\,\operatorname{cov}(Y,V)
+\end{align}$$
+    
+où $X$, $Y$, $W$  et $V$ sont des variables aléatoires réelles et $a$, $b$, $c$ et  $d$ sont des constantes rée    lles.
+
+
+**Question : ** Calculer la variance de $$\overline{X}_n = \frac{1}{n}\sum_{k=1}^n X_k$$ si les $X_i$ sont i.i.d.
 ---
 # Correlation (de Pearson)
 
@@ -292,6 +426,7 @@ Le coefficient de corrélation entre deux variables aléatoires réelles $X$ et 
 $$ r = \frac{\operatorname{Cov}(X,Y)}{\sigma_X \sigma_Y}$$
 où $\sigma_X$ et $\sigma_Y$ désignent respectivement les écarts types de $X$ et $Y$.
 
+<br /> 
 **Question: ** Comment estimer  $\operatorname{Cor}(X,Y)$ ?
 
 
@@ -324,6 +459,8 @@ $$
 
 Soit $X$ une variable aléatoire (potentiellement multivarié) ayant pour densité de probabilité $f$ dépendant d'un paramètre $\theta$. 
 
+<br /> 
+
 La vraisemblance $\mathcal L$ est une fonction de $\theta$, étant donnée une réalisation $x$ de la variable aléatoire $X$:
 
 $$\mathcal L(\theta | x) = f(x; \theta)$$
@@ -337,7 +474,11 @@ $$f_{X_1}(x; \theta) = \left\{\begin{matrix}
 0 & \text{si} \; x < 0
 \end{matrix}\right.$$
 
+<br /> 
+
 On observe $x_1, ..., x_n$ les réalisations respectives de $X_1, ..., X_n$
+
+<br /> 
 
 La vraisemblance de $x_1, ..., x_n$ s'écrit
 
@@ -383,61 +524,24 @@ L'estimateur obtenu par la méthode du maximum de vraisemblance est :
 * asymptotiquement distribué selon une loi normale.
 
 En revanche, il peut être biaisé en échantillon fini.
+
+
 ---
-# Empirical estimator of the cdf
+# Convergence en loi et  fonction de répartition
 
-Soit $(X_1, ..., X_n)$ des variables aléatoires réelles, indépendantes et identiquement distribuées (i.i.d) ayant pour cdf $F$. On définit la fonction de répartition empirique (empirical cumulative distribution function) par 
+Considérons:
 
-$$\widehat F_n(x) =  \frac{1}{n} \sum_{i=1}^n \mathbf{1}_{X_i \le x}$$
+- une suite $X_1$, $X_2$,  ..., $X_n$, de variables aléatoires réelles ayant respectivement pour fonction de répartition  $F_1$, $F_2$, ..., $F_n$ 
 
-```{r ecdf, echo=FALSE, fig.height=4, dev='svg'}
-par(mfrow = c(1, 2))
-x <- seq(-4, 4, by = 0.01)
-plot(
-  x, pnorm(x),
-  main = "cdf", xlab = "x", ylab = "F(x)",
-  type = "l", ylim = c(-0.1, 1)
-)
-abline(h = c(0, 1), lty = 2, col = "grey")
-xstar <- -0.5
-# xpol <- c(x[x < xstar], rep(xstar, 2))
-# ypol <- c(pnorm(x[x < xstar]), pnorm(xstar), 0)
-# polygon(xpol, ypol, col = "pink", border = NA)
-# lines(x, pnorm(x))
-segments(
-  x0 = c(xstar, xstar),
-  y0 = c(-1, pnorm(xstar)),
-  x = c(xstar, -5),
-  y = c(pnorm(xstar), pnorm(xstar)),
-  lty = 2, col = "red"
-)
-text(
-  x = c(-3.5, 0),
-  y = c(0.35, -0.07),
-  labels = c("F(a)", "a"),
-  col = "red"
-)
+- et une autre variable aléatoire réelle $X$ de fonction de répartition $F$
 
-xsample <- rnorm(20)
-plot(
-  ecdf(xsample),
-  main = "pdf", xlab = "x", ylab = "F(x)",
-  ylim = c(-0.1, 1), xlim = c(-4, 4)
-)
-segments(
-  x0 = c(xstar, xstar),
-  y0 = c(-1, ecdf(xsample)(xstar)),
-  x = c(xstar, -5),
-  y = c(ecdf(xsample)(xstar), ecdf(xsample)(xstar)),
-  lty = 2, col = "red"
-)
-text(
-  x = c(-3.5, 0),
-  y = c(ecdf(xsample)(xstar) + 0.05, -0.07),
-  labels = c("F(a)", "a"),
-  col = "red"
-)
-```
+On dit que $(X_n)_{n\ge 0}$ converge en loi vers $X$ si et seulement si 
+
+$$\lim_{n \rightarrow \infty}\ F_n(x) = F(x)$$
+
+dès que  la fonction de répartition $F$ de $X$ est continue en $x$, ou bien, de manière équivalente, dès que $\mathbb P(X=x)=0$ 
+
+**Remarque**.  Quand on utilise par exemple  la convergence en loi, on parle de théorie asymptotique.
 
 ---
 # Egalité en distribution
@@ -489,22 +593,73 @@ abline(a = 0, b = 1, col = "red")
 ```
 
 ---
-# Convergence en loi et  fonction de répartition
+# Intervalle de confiance
 
-Considérons:
 
-- une suite $X_1$, $X_2$,  ..., $X_n$, de variables aléatoires réelles ayant respectivement pour fonction de répartition  $F_1$, $F_2$, ..., $F_n$ 
+Soit $(X_1, . . . , X_n)$ un n-échantillon aléatoire et $\theta$ un paramètre inconnu de
+la loi des $X_i$.
 
-- et une autre variable aléatoire réelle $X$ de fonction de répartition $F$
+Soit $\alpha \in ]0, 1[$. S’il existe des v.a.r. $θ_{min}(X_1, . . . , Xn)$ et
+${θ_max}(X_1, . . . , X_n)$ telles que 
 
-On dit que $(X_n)_{n\ge 0}$ converge en loi vers $X$ si et seulement si 
+$$\mathbb{P} (\theta \in [\theta_{min}(X_1, . . . , X_n), \theta_{max}(X_1, . . . , X_n)]) = 1 − \alpha,$$
 
-$$\lim_{n \rightarrow \infty}\ F_n(x) = F(x)$$
+on dit alors que 
 
-dès que  la fonction de répartition $F$ de $X$ est continue en $x$, ou bien, de manière équivalente, dès que $\mathbb P(X=x)=0$ 
+$$[\theta_{min}(X_1, . . . , X_n), \theta_{max}(X_1, . . . , X_n)]$$
+est un intervalle de confiance pour $\theta$, avec un niveau de confiance de $1 − \alpha$. On le note $IC_{1−\alpha}(\theta)$.
 
-**Remark**.  Quand on utilise par exemple  la convergence en loi, on parle de théorie asymptotique.
+.footnote[
+source [wikistat](https://www.math.univ-toulouse.fr/~besse/Wikistat/pdf/st-l-inf-estim.pdf).
+]
 
+---
+# Intervalle de confiance pour l'espérance d'une loi normale
+
+Soit $(X1, . . . , Xn)$ un n-échantillon de v.a.r. de loi $\mathcal N(\mu, \sigma^2)$.
+On suppose la variance $\sigma_2$ connue et $\mu$ est estimé par la moyenne empirique
+
+$$\overline{X}_n = \frac{1}{n}\sum_{i=1}^n X_i \sim  \mathcal N(\mu, n \sigma^2)$$
+
+Il en résulte que
+
+$$\sqrt{n} \left(\frac{\overline{X}_n  − \mu}{\sigma}\right) \sim \mathcal N(0, 1)$$
+
+---
+# Quelques propriétés de la loi normale
+
+#### Stabilité par linéarité
+
+Soit $a \geq 0$, $b$ deux réels et $X\sim\mathcal N(\mu,\sigma^2)$ alors 
+
+$$aX + b \sim \mathcal N(\alpha \mu + \beta, \alpha^2 \sigma^2).$$
+
+#### Stabilité par additivité 
+
+Soit $X_1\sim \mathcal N(\mu_1,\sigma_1^2)$, $X_2\sim \mathcal N(\mu_2,\sigma_2^2)$ et $X_1$ et $X_2$ sont indépendantes, alors 
+
+$$X_1+X_2 \sim \mathcal N(\mu_1 + \mu_2, \sigma_1^2 + \sigma_2^2).$$
+---
+# Intervalle de confiance pour l'espérance d'une loi normale (suite)
+
+$$\sqrt{n} \left(\frac{\overline{X}_n  − \mu}{\sigma}\right) \sim \mathcal N(0, 1)$$
+
+donc, 
+
+$$\mathbb{P}\left(−z_{1−\alpha/2} \leq \sqrt{n} \left(\frac{\overline{X}_n  − \mu}{\sigma}\right) \leq z_{1−\alpha/2}\right) = 1 − \alpha$$
+Ceci équivaut à
+
+$$\mathbb{P}\left(\overline{X}_n −z_{1−\alpha/2} \frac{\sigma}{\sqrt{n}} \leq  \mu \leq \overline{X}_n + z_{1−\alpha/2}\right) = 1 − \alpha$$
+où $z_{1−\alpha/2}$ est le quantile ${1−\alpha/2}$ de la loi normale centrée réduite  $\mathcal N(0, 1)$
+
+
+---
+# Intervalle de confiance pour l'espérance d'une loi normale (suite)
+
+$$\mathbb{P}\left(\overline{X}_n −z_{1−\alpha/2} \frac{\sigma}{\sqrt{n}} \leq  \mu \leq \overline{X}_n + z_{1−\alpha/2}\right) = 1 − \alpha$$
+
+Ainsi quand $\sigma^2$ est connue,
+$$IC_{1−\alpha}(\mu) = \left[\overline{X}_n − z_{1−\alpha/2} \frac{\sigma}{\sqrt{n}}, \overline{X}_n + z_{1−\alpha/2} \frac{\sigma}{\sqrt{n}} \right]$$
 ---
 # Théorème Central Limite.
 
@@ -514,10 +669,25 @@ la variable aléatoire :
 $$ S_n = X_1+X_2+\ldots+X_n$$
 suit approximativement une loi normale d'espérance $\mu \times n$ et d'écart-type $\sigma\sqrt n$, notée :
 $$\mathcal N(\mu n,\sigma\sqrt n)$$
-
+.footnote[
 source : [wikiversity](https://fr.wikiversity.org/wiki/Th%C3%A9or%C3%A8me_central_limite)
+]
 
+---
+# Intervalle de confiance asymptotique de l'espérance
 
+Soit $(X1, . . . , Xn)$ un n-échantillon de v.a.r. i.i.d.
+
+Si
+- les Xi admettent une espérance $\mu$ et une variance $\sigma^2$ > 0 ,
+- on dispose d’un estimateur $S_n$ convergent de $\sigma$. C'est par exemple le cas pour $S_n = \sqrt {\frac{1}{n}\sum_{i=1}^n(X_i-\overline{X})^2}$,
+
+alors un intervalle de confiance asymptotique de $\mu$ au niveau de confiance $1 − \alpha$ est :
+
+$$IC_{1−\alpha}(\mu) = \left[\overline{X}_n − z_{1−\alpha/2} \frac{S_n}{\sqrt{n}}, \overline{X}_n + z_{1−\alpha/2} \frac{S_n}{\sqrt{n}} \right]$$
+.footnote[
+source : [Mathieu Mansuy](http://www.mathieu-mansuy.fr/pdf/ECS2-Chapitre21.pdf)
+]
 
 ---
 # Théorème de la valeur extrême.
@@ -532,8 +702,9 @@ avec
 $\left(1+\xi(x-\mu)/\sigma \right)_+=\max\left( 0 , 1+\xi(x-\mu)/\sigma \right)$
 où $\mu\in\mathbb{R}$ est un paramètre de position, $\sigma > 0$ un paramètre de dispersion et $\xi\in\mathbb{R}$ un paramètre de forme appelé ''indice des valeurs extrêmes''.
 
-
+.footnote[
 source : [wikipedia](https://fr.wikipedia.org/wiki/Th%C3%A9or%C3%A8me_de_Fisher-Tippett-Gnedenko)
+]
 
 ---
 # Loi d' extremum généralisée
@@ -563,6 +734,18 @@ définie sur $\{z : 1 + \xi (z - \mu) / \sigma \geq 0\}$, avec $-\infty < \mu < 
 On utilise le fait que sous les hypothèse du théorème
 $$\mathbb{P}\{M_n \leq z \} \approx G\{ (z - b_n)/a_n \} = G^*(z),$$
 où $G^*$ est un autre membre de la familee des GEV.
+
+**Question :** Déterminer le quantile de niveau $1-p$ d'une loi GEV de paramètres ( $\mu$,  $\sigma$, $\xi$ ).
+
+---
+# Domaines d'attraction
+
+![](Figs/EVT_DOAgalaxy.png)
+
+---
+# Domaines d'attraction et convergence
+![](Figs/EVT_convergence.png)
+
 
 ---
 # Block maxima
@@ -611,6 +794,8 @@ définie sur $\{y : y > 0$ avec $(\xi y / \tilde{\sigma}) > 0 \}$
     - $\xi < 0$, la  distribution a une borne supérieure égale à $\mu - \tilde{\sigma} / \xi$ 
     - $\xi = 0$, la distribution a une queue à décroissance exponentielle. On interprète ce cas comme la limite de $\lim_{\xi \rightarrow 0} H(y)$
     - $\xi > 0$, la distribution est à queue lourde. 
+    
+**Question :** Déterminer le quantile de niveau $1-p$ d'une loi GPD de paramètres ( $\sigma$, $\xi$ )
 
 ---
 # Peaks over threshold
@@ -626,20 +811,96 @@ définie sur $\{y : y > 0$ avec $(\xi y / \tilde{\sigma}) > 0 \}$
 
 
 ---
-# ailure of the i.d. assumption
-ä In many situtation the i.i.d. assumption is not appropriate.
-ä In this section we will focus on situations in case of failure of the i.d. assumption;
-ä It is often the case with environmental processes which typically involve:
-1. seasonality, i.e., spring, summer, fall, winter;
-2. trends, e.g., global warming.
+# Hypothèse i.i.d non vérifiée ?
+
+1. Il n'y pas indépendance entre les différents pas de temps 
+
+  $\rightarrow$ cas non-traité dans ce cours.
+
+2. La distribution évolue au file du temps (processus non-stationnaires)
+  - saisonnalité (hiver, printemps, été, automne)
+  - tendance, e.g., changement climatique.
+
 ---
-# Processus stochastiques et stationnarité 
+# Covariables dans les parametres
 
+On suppose les v.a.r. $Y_t, t=  1,\ldots, T$, indépendantes et appartenant à la même famille de loi avec des paramètres différents.
+
+<br /> 
+
+
+Prenons par exemple:
+
+$$ Y_t \sim \mathcal N(\mu_t,\sigma^2)$$
+avec $\mu_t = \alpha + \beta x_t$.
+
+<br /> 
+
+
+Par exemple, $Y_t$ peut être la température moyenne globale à l'année $t$ et $x_t$ est la concentration de gaz à effet de serre à l'année $t$. On fait ici l'hypothèse que $\mu_t$ est une fonction affine de $x_t$.
 
 ---
-# Covariable dans les parametres
+# Estimation par maximum de vraisemlance
 
-liens entre lois gaussienne et regressien par moindres carré    
+On suppose $x_t$ et $\sigma^2$ connus. On cherche à estimer les paramètres $a$ et $b$.
+On procède par maximum de vraisemblance.
+
+<br /> 
+
+La log-vraisemblance de $(y_1, ..., y_T)$ s'écrit
+
+$$\begin{align}
+\mathcal l(\alpha,  \beta| y_1, ..., y_T) &= \log f_{Y_1}(y_1; \alpha, \beta) + \ldots + \log f_{Y_n}(y_n; \alpha, \beta) \\
+&= \sum_{t = 1}^{T} \log \left(\frac{1}{\sigma\sqrt{2\pi}} \exp\left(-\frac{\left(y_t - \alpha - \beta x_t$ \right)^2}{2\sigma^2} \right)\right)\\
+&=  -n\log \left(\sigma\sqrt{2\pi}\right) - \sum_{t = 1}^{T} \frac{\left(y_t - \alpha - \beta x_t$ \right)^2}{2\sigma^2}
+\end{align}$$
+
+---
+# Lien avec la régression linéaire
+
+Maximiser la log-vraisemblance par rapport à $\alpha$ et $\beta$ revient à minimiser  la somme des écarts au carré: 
+$$\sum_{t = 1}^{T} \left(y_t - \alpha - \beta x_t \right)^2$$
+
+
+C'est le même problème que la régression linéaire simple par moindre carrée ordinaire.
+
+<!--  
+On effet, 
+$$ Y_t \sim \mathcal N(\mu_t,\sigma^2) \Leftrightarrow Y_t = \alpha + \beta x_t + \varepsilon_t$$
+
+où les $\varepsilon_t$ sont des $\mathcal N(0, 1)$ indépendantes. -->
+
+On trouve alors:
+
+- $\widehat\alpha = \bar{y} - (  \widehat\beta\,\bar{x})$
+- $\widehat\beta =  \frac{ s_{x, y} }{ s^2_{x} }$
+
+avec $\bar x$ et $\bar y$, les moyennes respectives des $x_t$ et des $y_t$, $s^2_x$ la variance empirique des $x_t$ et $s_{x, y}$, la covariance empirique des couples $(x_t, y_t)$.
+
+---
+# Vérifier l'ajustement des modèles avec covariables
+
+#### Modèle gaussien
+
+Si $Y_t \sim \mathcal N(\hat\mu_t,\hat\sigma_t^2)$ alors 
+$$\tilde{Y_t} = \frac{Y_t - \hat\mu_t}{\hat\sigma_t} \sim \mathcal N(0, 1)$$
+On peut vérifier graphiquement avec un qq-plot que les $\tilde{Y_t}$ paraissent suivre une loi normale centrée réduite.
+
+---
+# Vérifier l'ajustement des modèles avec covariables
+
+#### Modèle GEV
+
+Si $Y_t \sim \mathcal GEV(\hat\mu_t,\hat\sigma_t, \hat\xi_t)$ alors 
+$$\tilde{Y_t} = \frac{1}{\hat\xi_t} \log \left\{1 +  \hat\xi_t  \left(\frac{Y_t - \hat\mu_t}{\hat\sigma_t} \right) \right\} \sim \mathrm {Gumbel}(0, 1)$$
+avec $\mathbb P(\tilde{Y_t} < y) = \exp(-e^{-y})$
+#### Modèle GPD
+
+
+Si $Y_t \sim \mathcal GPD(\hat\sigma_t, \hat\xi_t)$ alors 
+$$\tilde{Y_t} = \frac{1}{\hat\xi_t} \log \left\{1 +  \hat\xi_t  \left(\frac{Y_t - \hat u_t}{\hat\sigma_t} \right) \right\} \sim \mathrm{Exp}(1)$$
+avec $\mathbb P(\tilde{Y_t} < y) = 1 - \exp(-y)$
+
 
 ---
 # Estimateurs: bias, variance, mse
