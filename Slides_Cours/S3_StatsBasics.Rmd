@@ -31,21 +31,24 @@ Vous pouvez faire [ces exercices](https://github.com/thaos/MathDACC_tutoR/blob/m
 ---
 # Séance 2: sources et références
 
-Cette séances reprend la trame et beaucoup d'éléments du chapite 2 de Coles
+Cette séances reprend la trame et beaucoup d'éléments du chapite 2 de
+<p align="center">
+  <img src="Figs/9781852334598-fr.jpg" width="200" align="center"/>
+</p> 
 
-L'autre grande partie du contenu provient simplement de wikipedia.
+L'autre grande partie du contenu provient simplement de Wikipedia.
 
 Les autres sources sont cités au fur et à mesures des slides.
 
 ---
 # Problèmes typiques
 
-- Quelle température annuelle moyenne seront nous susceptible d'observer en 2051 ?
-- Quelle est la probabilité que la température dépasse 290 K en 1950 ? en 2050 ?
-- Quelle est la probabilité que la température dépasse 320 K en 1950 ? en 2050 ?
+- Quelle température annuelle moyenne serons nous susceptible d'observer en 2051 ?
+- Quelle est la probabilité que la température dépasse 290K en 1950 ? en 2050 ?
+- Quelle est la probabilité que la température dépasse 320K en 1950 ? en 2050 ?
 - Quelle seuil de température peut ont espérer dépasser au moins une fois tous les 50 ans ?
 
-```{r, echo=FALSE, fig.height=4, dev='svg'}
+```{r, echo=FALSE, fig.height=3.5, dev='svg'}
 tas_stagg <- readRDS(file = "../Ex2_aggregation/tas_stagg.rds")
 tas <- readRDS(file = "../Ex2_aggregation/tas.rds")
 dates <- dimnames(tas)[[3]]
@@ -140,7 +143,7 @@ text(
 ---
 # Empirical estimator of the cdf
 
-Soit $(X_1, ..., X_n)$ des variables aléatoires réelles, indépendantes et identiquement distribuées (i.i.d) ayant pour cdf $F$. On définit la fonction de répartition empirique (empirical cumulative distribution function) par 
+Soit $(X_1, ..., X_n)$ des variables aléatoires réelles, indépendantes et identiquement distribuées (i.i.d.) ayant pour cdf $F$. On définit la fonction de répartition empirique (empirical cumulative distribution function) par 
 
 $$\widehat F_n(x) =  \frac{1}{n} \sum_{i=1}^n \mathbf{1}_{X_i \le x}$$
 
@@ -224,7 +227,7 @@ $$\mathbb E \left[ g(X) \right] =  \int_{-\infty}^\infty g(x) f(x) \mathrm{d}x$$
 
 ##### Théorème (Khintchine) : loi faible des grands nombres
 
-Soit $X_n$ une suite de variables aléatoires réelles indépendantes et identiquement distribuées(iid) admettant une espérance $\mu = \mathbb{E}[X]$.
+Soit $X_n$ une suite de variables aléatoires réelles indépendantes et identiquement distribuées(i.i.d.) admettant une espérance $\mu = \mathbb{E}[X]$.
 
 La moyenne empirique 
 $$\overline{X}_n = \frac{1}{n}\sum_{k=1}^n X_k$$
@@ -239,12 +242,15 @@ Ce résultat assure en particulier que la moyenne empirique est un estimateur co
 
 
 Dans le cas d’une variable aléatoire à densité, la variance est définie par :
-$$ \operatorname{Var}(X) = \sigma^2 =  \int_{-\infty}^\infty  (x-\mu)^2  f(x) \mathrm{d}x $$
+$$\begin{align}
+\operatorname{Var}(X) = \sigma^2  &= \mathbb{E}[(X-\mu)^2]\\
+&  = \int_{-\infty}^\infty  (x-\mu)^2  f(x) \mathrm{d}x
+\end{align}$$
 
-où $f$ est la densité de probabilité de $X$ et $\mu$ son l'espérance mathématique $X$ 
+où $f$ est la densité de probabilité de $X$ et $\mu$ l'espérance mathématique $X$ 
 
 
-La variance d'une variable aléatoire continue {{mvar|X}} peut aussi se calculer de la façon suivante :
+La variance d'une variable aléatoire continue $X$ peut aussi se calculer de la façon suivante :
 $$  \operatorname{Var}(X) = \sigma^2 = \mathbb{E}[X^2] - \mu^2$$
 Si $\sigma^2$ est la variance de $X$, $\sigma$ correspond à son écart-type.
 
@@ -263,6 +269,7 @@ où $\overline{X} = \frac{1}{n}\sum_{i=1}^n X_i$ est la [[moyenne empirique]].
 
 Cet estimateur est cependant biaisé, car $\mathbb{E}(S_n^2) = \frac{n-1}{n}\sigma^2$.
 
+
 ---
 # Période de retour
 
@@ -275,6 +282,8 @@ Soit la variable aléatoire $Y$ correspondant au nombre d'années entre deux év
 La période de retour de l’évènement $\{X_t > x\}$ est défini comme 
 
 $$ T(x) = \mathbb{E}[Y]$$
+
+
 ---
 # Période de retour
 
@@ -299,13 +308,14 @@ $$\mathbb{E}[\sum_{t=1}^{T} \mathbb{1}_{\{X_t > x_T\}}] = 1$$
 ---
 # Niveau de retour
 
-Dans le cas  où les $X_t$ sont i.i.d.,
+Dans le cas  où les $X_t$ sont identiquement distribuées,
 $$\begin{align}
 \mathbb{E}[\sum_{t=1}^{T} \mathbb{1}_{\{X_t > x_T\}}] = 1 &\Leftrightarrow T \mathbb{P}(X_1 > x_T) = 1 \\
 &\Leftrightarrow \mathbb{P}(X_1 > x_T) = \frac{1}{T}
 \end{align}$$
 
 Autrement dit, $x_T$ est le quantile $1 -\frac{1}{T}$ de $X_t$.
+
 
 ---
 # Loi jointe de 2 variables aléatoires continues
@@ -324,7 +334,7 @@ $$F_{XY}(x,y) = \mathbb{P}(X\leq x,Y\leq y)$$
 
 
 ---
-#Loi jointe de 2 variables aléatoires continues
+# Loi jointe de 2 variables aléatoires continues
 
 ### Densité de probabilité bivariée
 $$f_{XY}(x,y) = \frac{\partial^2}{\partial x\,\partial y}F_{XY}(x,y)$$
@@ -353,12 +363,12 @@ $$\mathrm{P}(A \cap B) = \mathrm{P}(A)\mathrm{P}(B)$$
 #### Deux variable aléatoires réelles
 
 $X$ and $Y$ sont indépendantes si et seulement si leur fonction de répartition jointe  $F_{X,Y}(x,y) = P(X \leq x, Y \leq y)$ peut s'écrire comme 
-$$ F_{X,Y}(x,y) = F_X(x) F_Y(y) \quad \text{for all } x,y.$$
+$$ F_{X,Y}(x,y) = F_X(x) F_Y(y) \quad \text{pour tout } x,y.$$
 <br /> 
 
 De manière équivalente, si les densités de probabilité  $f_X(x)$ et  $f_Y(y)$ ainsi que la densité de probabilité jointe $f_{X,Y}(x,y)$ existent,
 
-$$ f_{X,Y}(x,y) = f_X(x) f_Y(y) \quad \text{for all } x,y.$$
+$$ f_{X,Y}(x,y) = f_X(x) f_Y(y) \quad \text{pour tout } x,y.$$
 ---
 # Indépendance et probabilité conditionnelle 
 
@@ -384,7 +394,7 @@ $$f_{X \mid  Y=y} (x) = \frac{f_{X,Y}(x,y)}{f_Y(y)} = \frac{f_{Y \mid  X=x}(y) f
 
 $X$ et $Y$ sont indépendantes si et seulement si  
 
-$$f_{X \mid  Y=y} (x) = f_{X} (x) \quad \text{for all } x,y.$$
+$$f_{X \mid  Y=y} (x) = f_{X} (x) \quad \text{pour tout } x,y.$$
 
 
 
@@ -396,7 +406,7 @@ $$ \operatorname{Cov}(X,Y) = \mathbb{E}[(X-\mathbb{E}[X])\,(Y-\mathbb{E}[Y])$$
 <br /> 
 
 De manière équivalente :
-$$ \operatorname{Cov}(X,Y) = \operatorname{E}(XY) - \operatorname{E}(X) \operatorname{E}(Y)$$
+$$ \operatorname{Cov}(X,Y) = \mathbb{E}(XY) - \mathbb{E}(X) \mathbb{E}(Y)$$
 
 
 
@@ -409,12 +419,10 @@ $$ \operatorname{Cov}(X,Y) = \operatorname{E}(XY) - \operatorname{E}(X) \operato
 - La variance de $X$ est donc $\operatorname{Var}(X) = \operatorname{Cov}(X, X)$.
 
 -  Covariance d'une combinaison linéaire
-
 $$\begin{align}
 \operatorname{cov}(aX+bY, cW+dV) &= ac\,\operatorname{cov}(X,W)+ad\,\operatorname{cov}(X,V)\\
 &+bc\,\operatorname{cov}(Y,W)+bd\,\operatorname{cov}(Y,V)
 \end{align}$$
-    
 où $X$, $Y$, $W$  et $V$ sont des variables aléatoires réelles et $a$, $b$, $c$ et  $d$ sont des constantes rée    lles.
 
 
@@ -465,7 +473,7 @@ La vraisemblance $\mathcal L$ est une fonction de $\theta$, étant donnée une r
 
 $$\mathcal L(\theta | x) = f(x; \theta)$$
 ---
-# Vraisemblance
+# Vraisemblance (exemple)
 
 Soit $X_1, ..., X_n$ des variables aléatoires i.i.d. de loi exponentielle
 
@@ -487,12 +495,14 @@ $$\begin{align}
   &= \theta^n e^{-\theta (x_1 + \ldots + x_n)}
 \end{align}$$
 
+**Question.** Quelle est la fonction de répartition de la loi exponentielle ?
+
 ---
 # Estimation par maximum de vraisemblance
 
-On cherche $\theta^*$ qui maximise la vraisemblance des données observées $\textbf x = (x_1, \ldots, x_n)$:
+On cherche $\hat\theta$ qui maximise la vraisemblance des données observées $\textbf x = (x_1, \ldots, x_n)$:
 
-$$\theta^* = \underset{\theta}{\mathrm{argmax}} \, \mathcal L(\theta |\textbf x)$$
+$$\hat\theta = \underset{\theta}{\mathrm{argmax}} \, \mathcal L(\theta |\textbf x)$$
 
 **Remarque**: maximiser  $\mathcal L(\theta |\textbf x)$ revient à maximiser  $\mathcal{l}(\theta | \textbf{x}) = \log  L(\theta |\textbf{x})$
 
@@ -592,6 +602,7 @@ plot(
 abline(a = 0, b = 1, col = "red")
 ```
 
+
 ---
 # Intervalle de confiance
 
@@ -600,7 +611,7 @@ Soit $(X_1, . . . , X_n)$ un n-échantillon aléatoire et $\theta$ un paramètre
 la loi des $X_i$.
 
 Soit $\alpha \in ]0, 1[$. S’il existe des v.a.r. $θ_{min}(X_1, . . . , Xn)$ et
-${θ_max}(X_1, . . . , X_n)$ telles que 
+$θ_{max}(X_1, . . . , X_n)$ telles que 
 
 $$\mathbb{P} (\theta \in [\theta_{min}(X_1, . . . , X_n), \theta_{max}(X_1, . . . , X_n)]) = 1 − \alpha,$$
 
@@ -609,6 +620,9 @@ on dit alors que
 $$[\theta_{min}(X_1, . . . , X_n), \theta_{max}(X_1, . . . , X_n)]$$
 est un intervalle de confiance pour $\theta$, avec un niveau de confiance de $1 − \alpha$. On le note $IC_{1−\alpha}(\theta)$.
 
+
+**Remarque.** Un interval de confiance est une variable aléatoire.
+
 .footnote[
 source [wikistat](https://www.math.univ-toulouse.fr/~besse/Wikistat/pdf/st-l-inf-estim.pdf).
 ]
@@ -616,7 +630,7 @@ source [wikistat](https://www.math.univ-toulouse.fr/~besse/Wikistat/pdf/st-l-inf
 ---
 # Intervalle de confiance pour l'espérance d'une loi normale
 
-Soit $(X1, . . . , Xn)$ un n-échantillon de v.a.r. de loi $\mathcal N(\mu, \sigma^2)$.
+Soit $(X1, . . . , Xn)$ un n-échantillon i.i.d.  de variables aléatoires réelles de loi $\mathcal N(\mu, \sigma^2)$.
 On suppose la variance $\sigma_2$ connue et $\mu$ est estimé par la moyenne empirique
 
 $$\overline{X}_n = \frac{1}{n}\sum_{i=1}^n X_i \sim  \mathcal N(\mu, n \sigma^2)$$
@@ -667,16 +681,30 @@ Si $X_1,X_2,\ldots,X_n$ sont des variables aléatoires réelles indépendantes d
 
 la variable aléatoire :
 $$ S_n = X_1+X_2+\ldots+X_n$$
-suit approximativement une loi normale d'espérance $\mu \times n$ et d'écart-type $\sigma\sqrt n$, notée :
+suit approximativement une loi normale d'espérance $\mu n$ et d'écart-type $\sigma\sqrt n$, notée :
 $$\mathcal N(\mu n,\sigma\sqrt n)$$
 .footnote[
 source : [wikiversity](https://fr.wikiversity.org/wiki/Th%C3%A9or%C3%A8me_central_limite)
 ]
 
 ---
+# CLT: exercice
+
+Dans le logiciel  R, 
+
+1. Simuler un échantillon de n=30 variables uniformes sur [0, 1].
+
+2. Calculer la moyenne de cette échantillon.
+
+3. Répeter la même opération B=300 fois pour avoir un échantillon de B moyennes.
+
+4. Cette échantillon de B moyennes vous parait-il suivre une loi normal ?
+
+5. Que se passe-t'il si on augmente n ?
+---
 # Intervalle de confiance asymptotique de l'espérance
 
-Soit $(X1, . . . , Xn)$ un n-échantillon de v.a.r. i.i.d.
+Soit $(X_1, . . . , X_n)$ un n-échantillon de variables aléatoires réelles i.i.d.
 
 Si
 - les Xi admettent une espérance $\mu$ et une variance $\sigma^2$ > 0 ,
@@ -689,22 +717,6 @@ $$IC_{1−\alpha}(\mu) = \left[\overline{X}_n − z_{1−\alpha/2} \frac{S_n}{\s
 source : [Mathieu Mansuy](http://www.mathieu-mansuy.fr/pdf/ECS2-Chapitre21.pdf)
 ]
 
----
-# Théorème de la valeur extrême.
-
-Soit $X_1,X_2\ldots, X_n\ldots$ une séquence de variables indépendantes et identiquement distribuées et $M_n=\max\{X_1,\ldots,X_n\}$. Si une séquence de paires de nombres réels $(a_n, b_n)$ existe telle que $a_n>0$ et
-$$\lim_{n \to \infty}P\left(\frac{M_n-b_n}{a_n}\leq x\right) = F(x)$$,
-où $F$ est une fonction de distribution non dégénérée, alors la distribution limite $F$ appartient à la famille des lois de Gumbel, lois de Fréchet, ou des lois de Weibull. Ces familles peuvent être regroupées dans la classe des lois d'extremum généralisées de fonction de répartition:
-
-$$F(x;\mu,\sigma,\xi) = \exp\left\{-\left[1+\xi\left(\frac{x-\mu}{\sigma}\right)\right]_+^{-1/\xi}\right\}$$
-
-avec
-$\left(1+\xi(x-\mu)/\sigma \right)_+=\max\left( 0 , 1+\xi(x-\mu)/\sigma \right)$
-où $\mu\in\mathbb{R}$ est un paramètre de position, $\sigma > 0$ un paramètre de dispersion et $\xi\in\mathbb{R}$ un paramètre de forme appelé ''indice des valeurs extrêmes''.
-
-.footnote[
-source : [wikipedia](https://fr.wikipedia.org/wiki/Th%C3%A9or%C3%A8me_de_Fisher-Tippett-Gnedenko)
-]
 
 ---
 # Loi d' extremum généralisée
@@ -745,8 +757,6 @@ où $G^*$ est un autre membre de la familee des GEV.
 ---
 # Domaines d'attraction et convergence
 ![](Figs/EVT_convergence.png)
-
-
 ---
 # Block maxima
 ```{r blockmax, echo=FALSE, fig.height=3, dev='svg'}
@@ -761,6 +771,21 @@ où $G^*$ est un autre membre de la familee des GEV.
   points(x, col = col[imax+1], cex = 3, pch = 20)
   abline(v = 0.5 + 1:10 * 10, lty = 4, lwd = 3)
 ```
+
+---
+# Block maxima : exercice
+
+Dans le logiciel  R, 
+
+1. Simuler un échantillon de n=30 variables exponentielles
+
+2. Calculer le maxmimum de cette échantillon.
+
+3. Répeter la même opération B=300 fois pour avoir un échantillon de B maxima.
+
+4. Cette échantillon de B moyennes vous parait-il suivre une loi GEV ?
+
+5. Que se passe-t'il si on augmente n ?
 
 ---
 # Loi de pareto genéralisée
@@ -809,9 +834,22 @@ définie sur $\{y : y > 0$ avec $(\xi y / \tilde{\sigma}) > 0 \}$
   points(x, col = col[iabove+1], cex = 3, pch = 20)
 ```
 
+---
+# Peaks over threshold: Exercice
+
+Dans le logiciel  R, 
+
+1. Simuler un échantillon de n=30 000 variables gaussiennes centrées réduites
+
+2. Garder seulement les réalisations supérieures à u = 1.
+
+3. Ces dernières paraissent elle venir d'une loi GDP ?
+
+4. Refaire le même exercice avec u = 2
+
 
 ---
-# Hypothèse i.i.d non vérifiée ?
+# Hypothèse i.i.d. non vérifiée ?
 
 1. Il n'y pas indépendance entre les différents pas de temps 
 
@@ -820,7 +858,10 @@ définie sur $\{y : y > 0$ avec $(\xi y / \tilde{\sigma}) > 0 \}$
 2. La distribution évolue au file du temps (processus non-stationnaires)
   - saisonnalité (hiver, printemps, été, automne)
   - tendance, e.g., changement climatique.
+  
+Pour la non-stationnarité, une solution est de travaillé sur des sous-période que l'on peut considérer comme stationnaires.
 
+Ou, on peut essayer d'intégrer la non-stationnarité dans la modélisation.
 ---
 # Covariables dans les parametres
 
@@ -903,8 +944,74 @@ avec $\mathbb P(\tilde{Y_t} < y) = 1 - \exp(-y)$
 
 
 ---
+# Pouvez maintenant traiter ces questions ?
+
+- Quelle température annuelle moyenne serons nous susceptible d'observer en 2051 ?
+- Quelle est la probabilité que la température dépasse 290K en 1950 ? en 2050 ?
+- Quelle est la probabilité que la température dépasse 320K en 1950 ? en 2050 ?
+- Quelle seuil de température peut ont espérer dépasser au moins une fois tous les 50 ans ?
+
+```{r, echo=FALSE, fig.height=3.5, dev='svg'}
+tas_stagg <- readRDS(file = "../Ex2_aggregation/tas_stagg.rds")
+tas <- readRDS(file = "../Ex2_aggregation/tas.rds")
+dates <- dimnames(tas)[[3]]
+years <- unique(as.integer(substring(dates, 1, 4)))
+
+tas_smean_tmean <- tas_stagg[[1]][[1]]  
+
+zones <- dimnames(tas_smean_tmean)[[2]]
+periods <- dimnames(tas_smean_tmean)[[3]]
+lon <- as.numeric(rownames(tas))
+lat <- as.numeric(colnames(tas))
+
+plot(
+  years, tas_smean_tmean[, 1, 1], #* 3600 * 24 * 365,
+  xlab = "year", ylab = "tas (K)", main = "tas, annual mean",
+  pch = 20
+  )
+```
+
+---
+# Quelques précautions
+
+> "All models are wrong, but some are useful." - George Box (1976)
+
+Les modèles ne sont que des approximations. 
+
+En particulier,  
+
+- On simplifie souvent le probème pour faciliter la modélisation : .e.g. hyothèse d'indépendance.
+
+- On se base sur des propriétés asymptotiques: attention à la vitesse de convergence.
+
+- Attention à l'extrapolation des ajustements des modèles avec covariables: ce n'est pas parce qu'on observe une tendance (linéaire) qu'elle se poursuivra dans le futur.
+
+Donc, il faut expliciter clairement les hypothèses du modèle utilisé et les prendre en compte pour l'interprétation des résultats.
+---
 # Estimateurs: bias, variance, mse
 
 ---
 # diagnostiques des modèles
 
+---
+
+
+<!--
+---
+ 
+# Théorème de la valeur extrême.
+
+Soit $X_1,X_2\ldots, X_n\ldots$ une séquence de variables indépendantes et identiquement distribuées et $M_n=\max\{X_1,\ldots,X_n\}$. Si une séquence de paires de nombres réels $(a_n, b_n)$ existe telle que $a_n>0$ et
+$$\lim_{n \to \infty}P\left(\frac{M_n-b_n}{a_n}\leq x\right) = F(x)$$,
+où $F$ est une fonction de distribution non dégénérée, alors la distribution limite $F$ appartient à la famille des lois de Gumbel, lois de Fréchet, ou des lois de Weibull. Ces familles peuvent être regroupées dans la classe des lois d'extremum généralisées de fonction de répartition:
+
+$$F(x;\mu,\sigma,\xi) = \exp\left\{-\left[1+\xi\left(\frac{x-\mu}{\sigma}\right)\right]_+^{-1/\xi}\right\}$$
+
+avec
+$\left(1+\xi(x-\mu)/\sigma \right)_+=\max\left( 0 , 1+\xi(x-\mu)/\sigma \right)$
+où $\mu\in\mathbb{R}$ est un paramètre de position, $\sigma > 0$ un paramètre de dispersion et $\xi\in\mathbb{R}$ un paramètre de forme appelé ''indice des valeurs extrêmes''.
+
+.footnote[
+source : [wikipedia](https://fr.wikipedia.org/wiki/Th%C3%A9or%C3%A8me_de_Fisher-Tippett-Gnedenko)
+]
+-->
