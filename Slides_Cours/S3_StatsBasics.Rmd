@@ -21,7 +21,7 @@ output:
 
 - Séance 3: Introduction aux notions statistiques de façon plus formelle
 
-- Séance 4: Séances pratique en R sur les effets de l'aggrégation spatiale et l'effet de la variabilité interne sur les estimations statistiques.
+- Séance 4: Séances pratique en R sur les effets de l’agrégation spatiale et l'effet de la variabilité interne sur les estimations statistiques.
 
 - Séance 5: Introduction au downscaling statistique et correction de biais par la pratique.
 
@@ -31,14 +31,14 @@ Vous pouvez faire [ces exercices](https://github.com/thaos/MathDACC_tutoR/blob/m
 ---
 # Séance 2: sources et références
 
-Cette séances reprend la trame et beaucoup d'éléments du chapite 2 de
+Cette séances reprend la trame et beaucoup d'éléments du chapitre 2 de
 <p align="center">
   <img src="Figs/9781852334598-fr.jpg" width="200" align="center"/>
 </p> 
 
 L'autre grande partie du contenu provient simplement de Wikipedia.
 
-Les autres sources sont cités au fur et à mesures des slides.
+Les autres sources sont citées au fur et à mesures des slides.
 
 ---
 # Problèmes typiques
@@ -67,6 +67,16 @@ plot(
   pch = 20
   )
 ```
+
+---
+# Objectifs de la séance
+
+- Introduire quelques outils de base pour commencer/essayer de répondre à ces questions.
+
+- Présentation non-exhaustive et superficielle.
+
+- A vous de creuser d'avantage les sujets etde nous questionner d'avantage si besoin.
+
 
 ---
 # Rappels sur les variables aléatoires continues
@@ -207,12 +217,13 @@ $$\mathbb{E}[X] = \int_{-\infty}^\infty x f(x)\, \mathrm{d}x$$
 à condition que l'intégrale soit absolument convergente.
 
 ---
-# Esperance (quelques propriétés)
+# Esperance: quelques propriétés
 
 #### Linéarité:
 l'espérance est un opérateur linéaire. Pour deux variables aléatoires quelconques $X$ et $Y$  et pour deux nombres réels $a$ et $b$:
 $$\mathbb E[aX+bY]=a\mathbb E(X)+b\mathbb E(Y)$$
 
+</br>
 
 #### Espérance d'une fonction d'une variable aléatoire:
 Si $X$ est une variable aléatoire absolument continue réelle, de densité de probabilité $f$, alors l'espérance d'une fonction mesurable de $X$, $g(X)$ est:
@@ -236,7 +247,7 @@ $$\lim_{n\to+\infty} \mathbb{P}\left(\left|\overline{X}_n-\mu\right| > \varepsil
 
 Ce résultat assure en particulier que la moyenne empirique est un estimateur convergent de l'espérance.
 
-**Question** Calculer l'espérance de $\overline{X}_n$
+**Questions** Calculer l'espérance de $\overline{X}_n$ ? $\widehat F_n(x)$ converge-t-il vers  $F(x)$ ?
 ---
 # Variance
 
@@ -256,16 +267,16 @@ Si $\sigma^2$ est la variance de $X$, $\sigma$ correspond à son écart-type.
 
 
 ---
-# Variance (quelques propriétés)
+# Variance: quelques propriétés
 
 ##### Transformation affine
 $$ \operatorname{Var}(aX+b) =  a^2\operatorname{Var}(X)$$
 ---
 # Estimateur empirique de la variance
-Soit $X_n$ une suite de variables aléatoires réelles indépendantes et identiquement distribuées(iid),  la variance $\sigma^2$ de cette loi peut être estimée à l’aide de la variance empirique
+Soit $X_n$ une suite de variables aléatoires réelles indépendantes et identiquement distribuées (i.i.d.),  la variance $\sigma^2$ de cette loi peut être estimée à l’aide de la variance empirique
 
 $$S_n^2 = \frac{1}{n}\sum_{i=1}^n(X_i-\overline{X})^2$$
-où $\overline{X} = \frac{1}{n}\sum_{i=1}^n X_i$ est la [[moyenne empirique]].
+où $\overline{X} = \frac{1}{n}\sum_{i=1}^n X_i$ est la moyenne empirique.
 
 Cet estimateur est cependant biaisé, car $\mathbb{E}(S_n^2) = \frac{n-1}{n}\sigma^2$.
 
@@ -311,7 +322,8 @@ $$\mathbb{E}[\sum_{t=1}^{T} \mathbb{1}_{\{X_t > x_T\}}] = 1$$
 Dans le cas  où les $X_t$ sont identiquement distribuées,
 $$\begin{align}
 \mathbb{E}[\sum_{t=1}^{T} \mathbb{1}_{\{X_t > x_T\}}] = 1 &\Leftrightarrow T \mathbb{P}(X_1 > x_T) = 1 \\
-&\Leftrightarrow \mathbb{P}(X_1 > x_T) = \frac{1}{T}
+&\Leftrightarrow \mathbb{P}(X_1 > x_T) = \frac{1}{T}\\
+&\Leftrightarrow \mathbb{P}(X_1 \leq x_T) = 1 - \frac{1}{T}
 \end{align}$$
 
 Autrement dit, $x_T$ est le quantile $1 -\frac{1}{T}$ de $X_t$.
@@ -374,7 +386,7 @@ $$ f_{X,Y}(x,y) = f_X(x) f_Y(y) \quad \text{pour tout } x,y.$$
 
 Si $\mathbb{P}(B) \neq 0$,  la probabilité conditionnelle de l'événement $A$ sachant l'événement $B$, notée $\mathbb{P}(A\mid B)$ est définie par la relation ci-dessous :
 
-$$ \mathbb{P}(A\mid B)={\mathbb{P}(A \cap B) \over \mathbb{P}(B)} = \dfrac{P(B \mid A)P(A)}{P(B)}$$
+$$ \mathbb{P}(A\mid B)={\mathbb{P}(A \cap B) \over \mathbb{P}(B)} = \dfrac{P(B \mid A)P(A)}{P(B)}.$$
 C'est le théorème de Bayes!
 
 <br /> 
@@ -402,19 +414,20 @@ $$f_{X \mid  Y=y} (x) = f_{X} (x) \quad \text{pour tout } x,y.$$
 # Covariance
 
 La covariance de deux variables aléatoires réelles $X$ et $Y$ ayant chacune une variance finie est définie par
-$$ \operatorname{Cov}(X,Y) = \mathbb{E}[(X-\mathbb{E}[X])\,(Y-\mathbb{E}[Y])$$
+$$ \operatorname{Cov}(X,Y) = \mathbb{E}[(X-\mathbb{E}[X])\,(Y-\mathbb{E}[Y]).$$
 <br /> 
 
-De manière équivalente :
-$$ \operatorname{Cov}(X,Y) = \mathbb{E}(XY) - \mathbb{E}(X) \mathbb{E}(Y)$$
+De manière équivalente,
+$$ \operatorname{Cov}(X,Y) = \mathbb{E}(XY) - \mathbb{E}(X) \mathbb{E}(Y).$$
 
+<br /> 
 
 
 **Question :** Comment estimer  $\operatorname{Cov}(X,Y)$ ?
 
 
 ---
-# Covariance
+# Covariance: quelques propriétés
 
 - La variance de $X$ est donc $\operatorname{Var}(X) = \operatorname{Cov}(X, X)$.
 
@@ -423,12 +436,12 @@ $$\begin{align}
 \operatorname{cov}(aX+bY, cW+dV) &= ac\,\operatorname{cov}(X,W)+ad\,\operatorname{cov}(X,V)\\
 &+bc\,\operatorname{cov}(Y,W)+bd\,\operatorname{cov}(Y,V)
 \end{align}$$
-où $X$, $Y$, $W$  et $V$ sont des variables aléatoires réelles et $a$, $b$, $c$ et  $d$ sont des constantes rée    lles.
+où $X$, $Y$, $W$  et $V$ sont des variables aléatoires réelles et $a$, $b$, $c$ et  $d$ sont des constantes réelles.
 
 
 **Question : ** Calculer la variance de $$\overline{X}_n = \frac{1}{n}\sum_{k=1}^n X_k$$ si les $X_i$ sont i.i.d.
 ---
-# Correlation (de Pearson)
+# Correlation de Pearson
 
 Le coefficient de corrélation entre deux variables aléatoires réelles $X$ et $Y$ ayant chacune une variance finie, noté $\operatorname{Cor}(X,Y)$, ou parfois $\rho_{XY}$, ou simplement $r$,  est défini par :
 $$ r = \frac{\operatorname{Cov}(X,Y)}{\sigma_X \sigma_Y}$$
@@ -462,6 +475,11 @@ $$
 ---
 # Exemples de corrélation
 ![](Figs/Correlation_examples2.png)
+
+.footnote[
+source Denis Boigelot](https://commons.wikimedia.org/wiki/File:Correlation_examples2.svg).
+]
+
 ---
 # Vraisemblance
 
@@ -556,7 +574,7 @@ dès que  la fonction de répartition $F$ de $X$ est continue en $x$, ou bien, d
 ---
 # Egalité en distribution
 
-Deux variables aléatoires réelles X et Y sont égale en distribution si et seulement si elles ont la même fonction de répartition :
+Deux variables aléatoires réelles X et Y sont égales en distribution si et seulement si elles ont la même fonction de répartition :
     
 $$X \stackrel{d}{=} Y \Leftrightarrow \operatorname{P}(X \le x) = \operatorname{P}(Y \le x)\quad\text{for all }x$$
 Pour comparer deux échantillons, on peut se baser sur les diagnostiques graphiques suivants :
@@ -571,7 +589,7 @@ xylim <- range(xsample, xsample2) + c(-0.3, 0.3)
 
 plot(
   ecdf(xsample),
-  main = "pdf", xlab = "x", ylab = "F(x)",
+  main = "cdf", xlab = "x", ylab = "F(x)",
   xlim = xylim
 )
 lines(
@@ -668,6 +686,54 @@ où $z_{1−\alpha/2}$ est le quantile ${1−\alpha/2}$ de la loi normale centr�
 
 
 ---
+$$\mathbb{P}\left(−z_{1−\alpha/2} \leq \sqrt{n} \left(\frac{\overline{X}_n  − \mu}{\sigma}\right) \leq z_{1−\alpha/2}\right) = 1 − \alpha$$
+
+```{r ic_n01, echo=FALSE, fig.height=6, dev='svg'}
+
+x <- seq(-4, 4, by = 0.01)
+plot(
+  x, dnorm(x),
+  main = "pdf", xlab = "x", ylab = "f(x)",
+  type = "l", ylim = c(-0.02, max(dnorm(x)))
+)
+abline(h = 0, lty = 2, col = "grey")
+xstar <- qnorm(0.95)
+xpol <- c(-5, x[x < -xstar], rep(-xstar, 2))
+ypol <- c(0, dnorm(x[x < -xstar]), dnorm(-xstar), 0)
+polygon(xpol, ypol, col = "pink", border = NA)
+xpol <- c(5, rev(x[x > xstar]), rep(xstar, 2))
+ypol <- c(0, rev(dnorm(x[x > xstar])), dnorm(xstar), 0)
+polygon(xpol, ypol, col = "pink", border = NA)
+lines(x, dnorm(x))
+segments(
+  x0 = -xstar,
+  y0 = -1,
+  x = -xstar,
+  y = dnorm(-xstar),
+  lty = 2, col = "red"
+)
+text(
+  x = c(-xstar-0.3, -xstar+0.4),
+  y = c(0.02, -0.015),
+  labels = c(expression(paste(alpha,"/2")),  expression("-z"[1-alpha/2])),
+  col = "red"
+)
+segments(
+  x0 = xstar,
+  y0 = -1,
+  x = xstar,
+  y = dnorm(xstar),
+  lty = 2, col = "red"
+)
+text(
+  x = c(xstar+0.3, xstar-0.4),
+  y = c(0.02, -0.015),
+  labels = c(expression(paste(alpha, "/2")), expression("z"[1-alpha/2])),
+  col = "red"
+)
+```
+
+---
 # Intervalle de confiance pour l'espérance d'une loi normale (suite)
 
 $$\mathbb{P}\left(\overline{X}_n −z_{1−\alpha/2} \frac{\sigma}{\sqrt{n}} \leq  \mu \leq \overline{X}_n + z_{1−\alpha/2}\right) = 1 − \alpha$$
@@ -700,7 +766,7 @@ Dans le logiciel  R,
 
 4. Cette échantillon de B moyennes vous parait-il suivre une loi normal ?
 
-5. Que se passe-t'il si on augmente n ?
+5. Que se passe-t-il si on augmente n ?
 ---
 # Intervalle de confiance asymptotique de l'espérance
 
@@ -779,13 +845,13 @@ Dans le logiciel  R,
 
 1. Simuler un échantillon de n=30 variables exponentielles
 
-2. Calculer le maxmimum de cette échantillon.
+2. Calculer le maximum de cette échantillon.
 
-3. Répeter la même opération B=300 fois pour avoir un échantillon de B maxima.
+3. Répéter la même opération B=300 fois pour avoir un échantillon de B maxima.
 
 4. Cette échantillon de B moyennes vous parait-il suivre une loi GEV ?
 
-5. Que se passe-t'il si on augmente n ?
+5. Que se passe-t-il si on augmente n ?
 
 ---
 # Loi de pareto genéralisée
@@ -797,7 +863,7 @@ $$(X - u) | (X > u) $$
 where X has a distribution function $F$
 
 **Theorem**
-Si lorsque  $n \rightarrow \infty$, $M_n = max\{X_1 , ... , X_n\}$ converge en distribution vers $G$ appartenant à la famille GEV, alors pour $u$ assez grand,  la fonction de répartition de  $(X - u) | (X > u) $  peut être approximée par 
+Si lorsque  $n \rightarrow \infty$, $M_n = max\{X_1 , ... , X_n\}$ converge en distribution vers $G$ appartenant à la famille GEV, alors pour $u$ assez grand,  la fonction de répartition de  $(X - u) | (X > u)$  peut être approximée par 
 
 $$H(y) = 1 - \left(1 + \frac{\xi y}{\tilde{\sigma}} \right)^{-1/\xi}$$
 
@@ -809,13 +875,13 @@ définie sur $\{y : y > 0$ avec $(\xi y / \tilde{\sigma}) > 0 \}$
 ---
 # Loi de pareto genéralisée
 
- **Remark**.  On a une correspondance avec les paramétrés da la distribution GEV
+ **Remarques**.  On a une correspondance avec les paramétrés da la distribution GEV
  
  - $\tilde{\sigma} =  \sigma + \xi (u - \mu)$  
  
  - le paramètre de forme est le même que celui de la GEV associée.
  
- - le paramètre de forme  $\xi$, aussi appelé 'indice des valeurs extrêmes' charcterise le comportement de la queue de distribution: 
+ - le paramètre de forme  $\xi$, aussi appelé 'indice des valeurs extrêmes', caractérise le comportement de la queue de distribution: 
     - $\xi < 0$, la  distribution a une borne supérieure égale à $\mu - \tilde{\sigma} / \xi$ 
     - $\xi = 0$, la distribution a une queue à décroissance exponentielle. On interprète ce cas comme la limite de $\lim_{\xi \rightarrow 0} H(y)$
     - $\xi > 0$, la distribution est à queue lourde. 
@@ -859,13 +925,13 @@ Dans le logiciel  R,
   - saisonnalité (hiver, printemps, été, automne)
   - tendance, e.g., changement climatique.
   
-Pour la non-stationnarité, une solution est de travaillé sur des sous-période que l'on peut considérer comme stationnaires.
+Pour la non-stationnarité, une solution est de travailler sur des sous-périodes que l'on peut considérer comme stationnaires.
 
-Ou, on peut essayer d'intégrer la non-stationnarité dans la modélisation.
+On peut aussi essayer d'intégrer la non-stationnarité dans la modélisation.
 ---
 # Covariables dans les parametres
 
-On suppose les v.a.r. $Y_t, t=  1,\ldots, T$, indépendantes et appartenant à la même famille de loi avec des paramètres différents.
+On suppose les variables aléatoires réelles, $Y_t, t=  1,\ldots, T$, indépendantes et appartenant à la même famille de loi mais avec  des valeurs de paramètres différentes.
 
 <br /> 
 
@@ -899,7 +965,7 @@ $$\begin{align}
 ---
 # Lien avec la régression linéaire
 
-Maximiser la log-vraisemblance par rapport à $\alpha$ et $\beta$ revient à minimiser  la somme des écarts au carré: 
+Maximiser la log-vraisemblance par rapport à $\alpha$ et $\beta$ revient à minimiser  la somme des écarts au carré : 
 $$\sum_{t = 1}^{T} \left(y_t - \alpha - \beta x_t \right)^2$$
 
 
@@ -911,7 +977,7 @@ $$ Y_t \sim \mathcal N(\mu_t,\sigma^2) \Leftrightarrow Y_t = \alpha + \beta x_t 
 
 où les $\varepsilon_t$ sont des $\mathcal N(0, 1)$ indépendantes. -->
 
-On trouve alors:
+On trouve alors :
 
 - $\widehat\alpha = \bar{y} - (  \widehat\beta\,\bar{x})$
 - $\widehat\beta =  \frac{ s_{x, y} }{ s^2_{x} }$
@@ -980,24 +1046,18 @@ Les modèles ne sont que des approximations.
 
 En particulier,  
 
-- On simplifie souvent le probème pour faciliter la modélisation : .e.g. hyothèse d'indépendance.
+- On simplifie souvent le problème pour faciliter la modélisation : .e.g. hypothèse d'indépendance.
 
 - On se base sur des propriétés asymptotiques: attention à la vitesse de convergence.
 
-- Attention à l'extrapolation des ajustements des modèles avec covariables: ce n'est pas parce qu'on observe une tendance (linéaire) qu'elle se poursuivra dans le futur.
+- Attention à l'extrapolation des modèles avec covariables: e.g. ce n'est pas parce qu'on observe une tendance (linéaire) qu'elle se poursuivra dans le futur.
 
 Donc, il faut expliciter clairement les hypothèses du modèle utilisé et les prendre en compte pour l'interprétation des résultats.
----
-# Estimateurs: bias, variance, mse
 
----
-# diagnostiques des modèles
-
----
 
 
 <!--
----
+
  
 # Théorème de la valeur extrême.
 
