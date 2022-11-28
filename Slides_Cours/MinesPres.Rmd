@@ -11,6 +11,7 @@ output:
       highlightStyle: github
       highlightLines: true
       countIncrementalSlides: false
+  
 ---
 # Disclaimer
 
@@ -382,7 +383,7 @@ Comment l'appréhendez, le décrire, le visualizez ?
 Quelles sont les principaux "mode de variabilité" ? quelles sont les différentes échelles de temps et d'espaces
 
 ---
-
+# Differentes échelles spatio-temporelles
 <p align="center">
 <img src="Figs/MinesParisTech/space_time_scale.jpg"/>
 <br/>
@@ -392,6 +393,7 @@ Quelles sont les principaux "mode de variabilité" ? quelles sont les différent
 
 --- 
 # Mode de variabilité
+
 > Structure spatio temporelle sous
 jacente privilégiant une configuration spatiale et une variation temporelle, qui
 contribue à la prise en compte des grandes caractéristiques de la variance et
@@ -401,6 +403,7 @@ d’un indice climatique associé.
 
 --- 
 # Téléconnexion
+
 > Téléconnexion Association statistique de variables climatiques entre des
 zones géographiques fixes, éloignées les unes des autres. Les téléconnexions
 découlent de vastes structures spatiales, notamment les modes couplés, à
@@ -973,3 +976,244 @@ Il faut donc s'en accommoder.
 Important de sélectionner les jeux de données appropriés à sa problématique posée et d'en considérer les limites.
 
 Les statistiques peuvent être un outil privilégié pour exprimer et prendre en compte ces incertitudes.
+
+
+---
+# Detection et attribution du changement climatique
+
+#### Détection:
+> le processus consistant à démontrer que le climat ou un système sous l’effet du climat a changé selon certains critères statistiquement définis, sans donner la raison de
+ce changement. Un changement déterminé est détecté dans les observations s’il
+est établi que sa probabilité d’occurrence par un hasard découlant uniquement
+de la variabilité interne est faible – inférieure à 10 % par exemple. 
+
+#### Attribution
+> le processus consistant à évaluer les contributions relatives des différents
+facteurs déterminants d’un changement ou d’un phénomène, en précisant un
+degré de confiance statistique (Hegerl et al., 2010).
+
+.footnote[[IPCC AR5, Glossaire](https://www.ipcc.ch/site/assets/uploads/2018/08/WGI_AR5_glossary_FR.pdf
+
+
+---
+# Attribution et causalité
+
+Determiner s'il y a un lien de causalité entre les activités humaines et les variations du climat: notions d'intervention et de countrefactuel</p><br>
+
+
+.pull-left[
+	.center[
+	  <font color="purple"> <strong>factual world</strong> </font>
+    <img src="Figs/DA/climate_dag.png" height="200" align="center"> 
+  ]
+]
+.pull-rigt[
+	.center[
+	  <font color="green"> <strong> counterfactual world     </strong></font>
+  	<img src="Figs/DA/climate_counterfactual_dag.png" height="200" align="center"> 
+  ]
+]
+
+			
+<br><br>
+
+
+.footnote[[Hannart et al. 2016.](https://doi.org/10.1175/BAMS-D-14-00034.1)]
+
+
+---
+# Importance des modèle de climat en D&A 
+
+#### Counterfactual
+Jamais observé en pratique
+
+
+#### Intervention 
+Nécessite un groupe expérimental et un groupe de controle: impossible avec une seule Terre
+
+#### Solution ? 
+Utiliser les modèles de climats pour faire des expériences contrôlées.   
+.center[
+  <img src="Figs/DA/téléchargement.jpeg" height="150" align="center"> 
+]
+
+---
+#  Definir l'événement
+1. Define the climate variable of interest. <em>e.g. temperature, precipitation, ... </em> 
+
+2. Define the spatio-temporal aggregation. 	<em>e.g. maximum over Europe of 10-day temperature averages</em> 
+
+3. Define the conditioning. <em>e.g. only during JJA, only for NAO+ circulation type, ...</em> 
+4. Define the statistics. <em>.e.g. typically,  probability of threshold exceedances</em> 
+
+.center[<img src="Figs/DA/extreme_da_3.png" height="200" align="center">] 
+
+
+.footnote[
+  Pour en savoir plus: [Cattiaux, J. and A. Ribes, 2018](https://doi.org/10.1175/BAMS-D-17-0281.1) 
+]
+
+---
+# Estimer la probabilité d'un événement
+					
+1. Run climate simulations for the factual and counterfactual world. 
+
+2. Estimate the probability of the event in both world, $p_1$  and $p_0$:
+  <br>
+  - by counting the number of event that occured in the simulations, <br>
+		<em> may require a very large ensemble simulations to have an accurate estimate. </em>
+
+	- by fitting a statistical model    
+		<em> require to make an assumption about the statistical distribution </em>
+		
+		
+---
+#  Choice of the statistical distribution
+
+Approximer la distribution (théorie asymptotique):
+
+- Central Limit Theorem: <em>sum, average</em> -> Gaussian distribution.
+
+- Extreme Value Theory:
+  - <em> block maxima </em> ->  Generalized extreme value distribution (GEV)<br>
+		<img src="Figs/DA/blockmaxima.png" height="120">
+								
+	- <em> peak over threshold </em> -> Generalized Pareto distribution (GPD)<br>    
+		<img src="Figs/DA/peakovethreshold.png" height="120">
+						
+.footnot[Source: [Coles, 2001](http://dx.doi.org/10.1007/978-1-4471-3675-0)]
+
+
+---
+# Loi d' extremum généralisée
+
+Generalized Extreme Value distribution (GEV)
+					
+$$M_n = max\{X_1 , ... , X_n\},$$
+où $X_l, ... , X_n$, est une séquence de variables aléatoires indépendantes et de fonction de répartition $F$.
+
+**Theorem**
+					
+Si il existe  une séquence de constantes $\{a_n > 0\}$ et  $\{b_n\}$ tel que
+$$\mathbb{P}\{(M_n - b_n)/a_n \leq z \} \rightarrow G(z) \text{ as } n \rightarrow \infty $$  
+
+où  $G$ une fonction de répartition non-dégénérée, alors $G$ appartient à famille des distributions GEV
+
+$$G(z) = \exp\left\{-\left[1 + \xi \left(\frac{z - \mu}{\sigma}\right)\right]^{-1/\xi}\right\},$$
+
+définie sur $\{z : 1 + \xi (z - \mu) / \sigma \geq 0\}$, avec $-\infty < \mu < \infty$, $\sigma > 0$ et 	$-\infty < \xi < \infty$
+
+
+---
+# Loi de pareto genéralisée
+
+Generalized Pareto Distribution (GPD)
+
+$$(X - u) | (X > u) $$
+
+where X has a distribution function $F$
+
+**Theorem**
+Si lorsque  $n \rightarrow \infty$, $M_n = max\{X_1 , ... , X_n\}$ converge en distribution vers $G$ appartenant à la famille GEV, alors pour $u$ assez grand,  la fonction de répartition de  $(X - u) | (X > u)$  peut être approximée par 
+
+$$H(y) = 1 - \left(1 + \frac{\xi y}{\tilde{\sigma}} \right)^{-1/\xi}$$
+
+définie sur $\{y : y > 0$ avec $(\xi y / \tilde{\sigma}) > 0 \}$
+
+
+---
+# Loi de pareto genéralisée
+
+ **Remarques**.  On a une correspondance avec les paramétrés da la distribution GEV
+ 
+ - $\tilde{\sigma} =  \sigma + \xi (u - \mu)$  
+ 
+ - le paramètre de forme est le même que celui de la GEV associée.
+ 
+ - le paramètre de forme  $\xi$, aussi appelé 'indice des valeurs extrêmes', caractérise le comportement de la queue de distribution: 
+    - $\xi < 0$, la  distribution a une borne supérieure égale à $\mu - \tilde{\sigma} / \xi$ 
+    - $\xi = 0$, la distribution a une queue à décroissance exponentielle. On interprète ce cas comme la limite de $\lim_{\xi \rightarrow 0} H(y)$
+    - $\xi > 0$, la distribution est à queue lourde. 
+    
+    
+---
+# Cas d'étude: vague de chaleur de juillet 2019 Heatwave (Robin et Ribes, 2020)</h2>
+
+<h3> Variable of interest,  $Y$ </h3>
+					<p style="margin-left:2em">
+					Maximum annuelle des temperatures moyennes sur 3 jours sur la France (42–51∘ N, 5∘ W–10∘ E) <br>
+					Les températures sont exprimées en termes d'anomalies par rapport à la climatologie de  1961-1990.
+					</p>
+
+<h3> Event definition </h3>
+					<p style="margin-left:2em">
+					$$\{Y \geq u\}$$ where $u = 4.98 K$, l'anomalie maximum des temperatures moyénees sur 3 jours observée en juillet 2019.
+					</p>
+					
+
+---
+# Data 
+
+Simulations from CNRM-CM5 model in the context of the Coupled Model Intercomparison Project 5 (CMIP5). 
+
+Data are extracted for the experiences: 
+
+- <strong>historical</strong>, corresponding to the climate in the factual world (1850-2005)
+
+- <strong>rcp8.5</strong>, corresponding to climate projections for the future of the factual world(2006-2100)
+
+
+<strong> Remark. </strong> In this study, no "historical-nat" simulations are used to represent the <font color="green"><strong> counterfactual world </strong></font> 
+ 
+					
+---
+# Statistical Model for $Y$
+
+In the <font color="purple"><strong>factual world</strong></font>, 
+
+
+$$Y_t \sim  \mathrm{GEV} \{ \mu(t) = \mu_0 + \mu_1 \color{green}{X_{all}}(t), \sigma(t) = \exp(\sigma_0 + \sigma_1 \color{green}{X_{all}}(t)), \xi(t) = \xi_0\}$$ 
+where $\color{purple}{X_{all}}$ is the determimistic response of a climate variable $X$ to all external forcings. $X$ which is assumed to be representative of climate change magnitude over time.
+
+$$X(t) = \color{purple}{X_{all}}(t) + \epsilon_t = \color{red}{X_{ant}}(t) + \color{green}{X_{nat}}(t) + \epsilon_t$$
+
+where $\epsilon_t$ is a noise representing climate internal variability.
+
+In the <font color="green"><strong>counterfactual world</strong></font>, 
+
+$$Y_t \sim  \mathrm{GEV} \{ \mu(t) = \mu_0 + \mu_1 \color{green}{X_{nat}}(t), \sigma(t) = \exp(\sigma_0 + \sigma_1 \color{green}{X_{nat}}(t)), \xi(t) = \xi_0\}$$ 
+
+---
+# Décomposition de la  covariable $X$
+$X_{ant}$ est la réponse de la température moyennne en Europe aux forcages anthropiques. $X_{ant}$ est modélisé par une spline.
+
+$X_{nat}$ est obtenue par un modèle de climat simpifié (Energy Balance Model, [Geoffroy et al. 2013](https://doi.org/10.1175/JCLI-D-12-00196.1))
+
+![](Figs/DA/ascmo-6-205-2020-f04-web.jpg)
+
+---
+# Ajustement du modèle GEV pour $Y$
+
+![](Figs/DA/ascmo-6-205-2020-f05.png)
+
+
+--- 
+# Comparaison entre $p_0$ et $p_1$
+
+![](Figs/DA/ascmo-6-205-2020-f07.png)
+
+---
+# Et les observations ?
+
+paradigm known as models are statistically indistinguishable from the truth
+In more detail, we assume that (for i = 1, …, m)
+θ_i ~ N(μ_m, Σm), and \hatθ_i∣θ_i  ~N(θi,Σθ,i)leading to
+ˆθi~N(μm,Σm+Σθ,i)
+
+-> cette syntese multibodel sert de prior pour les obersavions
+
+Y(o)
+
++ formules de bayes.
+
+
