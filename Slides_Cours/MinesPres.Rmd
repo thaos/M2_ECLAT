@@ -992,7 +992,7 @@ de la variabilité interne est faible – inférieure à 10 % par exemple.
 facteurs déterminants d’un changement ou d’un phénomène, en précisant un
 degré de confiance statistique (Hegerl et al., 2010).
 
-.footnote[[IPCC AR5, Glossaire](https://www.ipcc.ch/site/assets/uploads/2018/08/WGI_AR5_glossary_FR.pdf
+.footnote[[IPCC AR5, Glossaire](https://www.ipcc.ch/site/assets/uploads/2018/08/WGI_AR5_glossary_FR.pdf)]
 
 
 ---
@@ -1004,13 +1004,13 @@ Determiner s'il y a un lien de causalité entre les activités humaines et les v
 .pull-left[
 	.center[
 	  <font color="purple"> <strong>factual world</strong> </font>
-    <img src="Figs/DA/climate_dag.png" height="200" align="center"> 
+    <img src="Figs/DA/climate_dag.png" height="250" align="center"> 
   ]
 ]
 .pull-rigt[
 	.center[
 	  <font color="green"> <strong> counterfactual world     </strong></font>
-  	<img src="Figs/DA/climate_counterfactual_dag.png" height="200" align="center"> 
+  	<img src="Figs/DA/climate_counterfactual_dag.png" height="250" align="center"> 
   ]
 ]
 
@@ -1020,7 +1020,6 @@ Determiner s'il y a un lien de causalité entre les activités humaines et les v
 
 .footnote[[Hannart et al. 2016.](https://doi.org/10.1175/BAMS-D-14-00034.1)]
 
-
 ---
 # Importance des modèle de climat en D&A 
 
@@ -1029,7 +1028,7 @@ Jamais observé en pratique
 
 
 #### Intervention 
-Nécessite un groupe expérimental et un groupe de controle: impossible avec une seule Terre
+Nécessite un groupe expérimental et un groupe de contrôle: impossible avec une seule Terre
 
 #### Solution ? 
 Utiliser les modèles de climats pour faire des expériences contrôlées.   
@@ -1038,15 +1037,111 @@ Utiliser les modèles de climats pour faire des expériences contrôlées.
 ]
 
 ---
+# Comparer des distributions
+
+
+.center[
+    <img src="Figs/DA/detection.png" height="250" align="center"> 
+  	<img src="Figs/DA/attribution.png" height="250" align="center"> 
+]
+
+
+---
+# à travers différents obsvervables
+
+.center[
+  <img src="Figs/DA/mean_da2.png" height="250" align="center"> 
+  <img src="Figs/DA/extreme_da_3.png" height="250" align="center"> 
+]
+
+---
+# D&A des tendances long-termes
+
+1.  Montrer que le signal n’est pas cohérent avec le seule variabilité interne. (détection)
+
+2.  Montrer que le signal est cohérent avec la réponse attendue à un
+ensemble de causes qui contient i (cohérence avec les causes).
+
+3.  Montrer que le signal n’est pas cohérent avec la réponse attendue sans les
+causes i (autres causes possibles ?).    
+
+---
+# Avec les mains 
+
+![](Figs/DA/DA_IPCC.png)
+---
+# Le modèle statistique classique 
+
+$$Y^* = \mu + \sum_{i = n}^N \beta_i X_i^*$$
+où $Y^*$ est la réponse forcée du climat à l'ensemble des forçages.
+$X_i^*$ est la réponse du climat au forçage $i$.
+
+On fait donc l'hypothèse d'additivité des réponses aux différents forçages (pas d'interraction par exemple)
+
+
+---
+# Le modèle statistique classique 
+
+$$Y^* = \mu + \sum_{i = n}^N \beta_i X_i^*$$
+
+On observe en pratique:
+$$\left\{
+    \begin{array}{ll}
+       Y = Y^* + \varepsilon_y \\
+       X_i = X_i^* + \varepsilon_{x_i} \quad \text{pour } i = 1, ..., N.\\
+    \end{array}
+\right.$$
+
+$Y$ l'état du climat à un instant donnée, donc influencé par la variabilité interne $\varepsilon_y$. $Y$ sont des observations.
+
+$X_i$ est une réponse au forçages $i$ simulé par un modèle climat, qui est donc aussi influencé par la variabilité interne $\varepsilon_{x_i}$
+
+C'est donc un modèle de type "Errors-in-variables models" 
+
+---
+# Interpreter les coefficients $\beta_i$:
+
+$$Y^* = \mu + \sum_{i = n}^N \beta_i X_i^*$$
+Test pour la détection du forçage anthropique:
+
+$$\left\{
+    \begin{array}{ll}
+       H_0 : & \beta_i = 0  \text{pour } i = 1, ..., N.\\
+       H_1 : & \beta_{ant} > 0, \quad \beta_i = 0  \quad \text{pour } i \neq. ant.
+    \end{array}
+\right.$$
+
+
+Test de cohérence:
+$$\left\{
+    \begin{array}{ll}
+       H_0 : & \beta_i = 1  \text{pour } i = 1, ..., N.\\
+       H_1 : & \text{il existe au moins un } \    beta_{i} \neq 1.
+    \end{array}
+\right.$$
+
+Test des autres causes plausibles:
+$$\left\{
+    \begin{array}{ll}
+       H_0 : & \beta_{ant} = 0 \\
+       H_1 : & \beta_{ant} > 0 
+    \end{array}
+\right.$$
+
+---
+# Attribution d'événements météorologiques
+
+.center[<img src="Figs/DA/extreme_da_3.png" height="500" align="center">] 
+
+---
 #  Definir l'événement
 1. Define the climate variable of interest. <em>e.g. temperature, precipitation, ... </em> 
 
 2. Define the spatio-temporal aggregation. 	<em>e.g. maximum over Europe of 10-day temperature averages</em> 
 
 3. Define the conditioning. <em>e.g. only during JJA, only for NAO+ circulation type, ...</em> 
-4. Define the statistics. <em>.e.g. typically,  probability of threshold exceedances</em> 
 
-.center[<img src="Figs/DA/extreme_da_3.png" height="200" align="center">] 
+4. Define the statistics. <em>.e.g. typically,  probability of threshold exceedances</em> 
 
 
 .footnote[
