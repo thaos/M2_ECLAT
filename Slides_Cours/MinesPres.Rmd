@@ -408,7 +408,11 @@ Quelles sont les principaux "mode de variabilité" ? quelles sont les différent
 </p>
 
 
+<<<<<<< HEAD
 ---
+=======
+--- 
+>>>>>>> 710e2cd3a11e59cedff1a73e4d08f41844703dc4
 # Mode de variabilité
 
 > Structure spatio temporelle sous
