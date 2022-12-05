@@ -1,5 +1,4 @@
 ---
-
 title: "Overview"
 subtitle: "Statistique pour l'étude du climat"
 institute: "LSCE, ESTIMR"
@@ -12,29 +11,48 @@ output:
       highlightLines: true
       countIncrementalSlides: false
   
----
-# Disclaimer
 
-Je ne suis pas physicien, ni climatologue. Le cours reflète simplement ce que j'ai appris en tant que "statisticien" sur l'analyse de données climatiques. Vous en savez donc sûrement plus que moi sur le climat.
-
-Le cours n'est pas exhaustif et ne fait que survoler certains aspects. L'objectif est de vous familiariser avec certaines notions importantes et de vous orienter vers des ressources complémentaires pour vous renseigner davantage de votre côté.
-
-Une grande partie est notamment inspirée des cours de [Julien Cattiaux](https://www.umr-cnrm.fr/spip.php?article629). Je vous invite grandement à les consulter.
-
-Bien sûr, l'objectif de ce cours est aussi d'en discuter ensemble.
-
-C'est la première année que se tient ce cours (et dans un contexte un peu particulier...). Toutes les remarques dans le but de l'améliorer sont les bienvenues. En particulier, ne pas hésiter à poser des questions. 
 
 ---
 # Plan du jour
 
-- Etude du climat: pourquoi les statistisques ?
+- Etude du climat: pourquoi les statistiques ?
 
 - Focus sur deux domaines de la climatologie statistique:
   - La correction de biais
   - La détection et attribution du changement climatique
 
-- TP si le temps le permets
+- TP si le temps le permet
+
+```{r, load_refs, include=FALSE, cache=FALSE}
+library(RefManageR)
+BibOptions(check.entries = FALSE,
+           bib.style = "authoryear",
+           style = "markdown",
+           hyperlink = TRUE,
+           dashed = TRUE,
+           max.names = 1,
+           longnamesfirst = FALSE)
+myBib <- ReadBib("./biblio.bib", check = FALSE)
+```
+
+---
+# Avant propos
+
+
+Master en statistiques + thèse à CLS en sciences de environnent + Post-doc au CNRM
+
+Ingénieur de recherche au LSCE (Laboratoire des Sciences du Climat et de l’Environnement)
+
+Je travaille avec les chercheurs de l’équipe ESTIMR: 
+Extrêmes : Statistiques, Impacts et Régionalisation
+
+Ce cours reflète mon expérience personnelle dans les sciences du climat. Donc pas un cours exhaustif et surement avec des lacunes.
+
+Merci donc aux différentes rencontres qui m'ont permit d'alimenter ce cours.
+
+Une grande partie est notamment inspirée des cours de [Julien Cattiaux](https://www.umr-cnrm.fr/spip.php?article629). 
+
 
 
 ---
@@ -141,7 +159,7 @@ Par exemple, la trajectoire de la température moyenne globale ne peut donc êtr
 # Systèmes déterministes et aléas
 
 <p align="center">
-<img src="Figs/MinesParisTech/climatesim_chaos.png"  height="300" />
+<img src="Figs/MinesParisTech/climatesim_chaos.png"  height="500" />
 <br/>
 <a href="https://journals.ametsoc.org/view/journals/bams/96/8/bams-d-13-00255.1.xml">credits: Kay et al., “The Community Earth System Model (CESM) Large Ensemble Project: A Community Resource for Studying Climate Change in
 the Presence of Internal Climate Variability.”
@@ -239,7 +257,7 @@ $$
 <p align="center">
 <img src="Figs/MinesParisTech/init_vs_boundary.png"/>
 <br/>
-<a href="https://www.umr-cnrm.fr/IMG/pdf/cattiaux_ienm_climat_03_print.pdf">de Cattiaux, Système Climatique IENM 3/10 (1A)</a>
+<a href="IPCC"</a>
 </p>
 
 ---
@@ -247,7 +265,7 @@ $$
 <p align="center">
 <img src="Figs/MinesParisTech/bilan_energie.png"/>
 <br/>
-<a href="">source:IPCC AR6 & @YannWeb </a>
+<a href="">source:IPCC  </a>
 </p>
 
 
@@ -274,7 +292,7 @@ $$
 <p align="center">
 <img src="Figs/MinesParisTech/forcages_bilan.jpeg" height="500" />
 <br/>
-<a href="">source:IPCC AR6 & @YannWeb </a>
+<a href="">source:IPCC AR6  </a>
 </p>
 
 ---
@@ -387,7 +405,6 @@ Quelles sont les principaux "mode de variabilité" ? quelles sont les différent
 <p align="center">
 <img src="Figs/MinesParisTech/space_time_scale.jpg"/>
 <br/>
-<a href="https://public.wmo.int/en/about-us/vision-and-mission/wmo-integrated-global-observing-system">Source WMO</a>
 </p>
 
 
@@ -689,6 +706,7 @@ for( i in seq_along(X)){
 <p align="center">
   <strong>Evaluation par leave-one-out <a href="https://en.wikipedia.org/wiki/Cross-validation_(statistics)"> cross-validation </a> </strong>
 </p>
+
 ```{r, echo=FALSE, fig.height=4, dev='svg'}
 n <- 5
 X <- c(-8, -2, 1, 4, 5, 7, 9)
@@ -716,6 +734,7 @@ for(iloo in c(1, 3, 5, 7)){
   text(X[iloo], -5, col = "red4", labels = "Xnew", pos = 2)
 }
 ``` 
+
 ---
 # Qualité de l'interpolation
 
@@ -961,7 +980,7 @@ Homogénéité essentielle pour l'étude du climat.
 <br/>
 </p>
 
-[Source: Poli. 2011](https://www.ecmwf.int/sites/default/files/elibrary/2012/11694-data-assimilation-atmospheric-reanalysis.pdf),
+[Source: Poli (2011)](https://www.ecmwf.int/sites/default/files/elibrary/2012/11694-data-assimilation-atmospheric-reanalysis.pdf),
 voir aussi [Parker (2016)](https://doi.org/10.1175/BAMS-D-14-00226.1) et la discussion qui en découle.
 
 
@@ -977,6 +996,24 @@ Important de sélectionner les jeux de données appropriés à sa problématique
 
 Les statistiques peuvent être un outil privilégié pour exprimer et prendre en compte ces incertitudes.
 
+
+---
+# Detection et attribution du changement climatique
+
+### Objectifs
+
+Présenter la problématique de la détection et attribution
+
+Présenter quelques facons de répondre à ce type de problématique
+
+En grande partie, on parlera des travaux de
+ - l'équipe ESTIMR du LSCE <\br>   
+ *Pascal Yiou, Davide Faranda, Philippe Naveau, Robert Vautard* 
+ - l'équipe AMACS du CNRM <\br>
+ *Aurelien Ribes, Julien Cattiaux*
+
+Pour creuser d'avantage voir les publications des deux équipe, 
+en particulier ceux d'Aurelien Ribes, notamment sa thèse.
 
 ---
 # Detection et attribution du changement climatique
@@ -1018,7 +1055,7 @@ Determiner s'il y a un lien de causalité entre les activités humaines et les v
 <br><br>
 
 
-.footnote[[Hannart et al. 2016.](https://doi.org/10.1175/BAMS-D-14-00034.1)]
+.footnote[source: [Hannart et al. 2016.](https://doi.org/10.1175/BAMS-D-14-00034.1)]
 
 ---
 # Importance des modèle de climat en D&A 
@@ -1047,7 +1084,7 @@ Utiliser les modèles de climats pour faire des expériences contrôlées.
 
 
 ---
-# à travers différents obsvervables
+# A travers différents obsvervables
 
 .center[
   <img src="Figs/DA/mean_da2.png" height="250" align="center"> 
@@ -1056,6 +1093,8 @@ Utiliser les modèles de climats pour faire des expériences contrôlées.
 
 ---
 # D&A des tendances long-termes
+
+</br>
 
 1.  Montrer que le signal n’est pas cohérent avec le seule variabilité interne. (détection)
 
@@ -1071,6 +1110,9 @@ causes i (autres causes possibles ?).
 ![](Figs/DA/DA_IPCC.png)
 ---
 # Le modèle statistique classique 
+
+</br>
+
 
 $$Y^* = \mu + \sum_{i = n}^N \beta_i X_i^*$$
 où $Y^*$ est la réponse forcée du climat à l'ensemble des forçages.
@@ -1094,9 +1136,9 @@ $$\left\{
 
 $Y$ l'état du climat à un instant donnée, donc influencé par la variabilité interne $\varepsilon_y$. $Y$ sont des observations.
 
-$X_i$ est une réponse au forçages $i$ simulé par un modèle climat, qui est donc aussi influencé par la variabilité interne $\varepsilon_{x_i}$
+$X_i$ est une réponse au forçages $i$ simulé par un modèle climat, qui est donc aussi influencé par la variabilité interne $\varepsilon_{x_i}$.
 
-C'est donc un modèle de type "Errors-in-variables models" 
+C'est donc un modèle de type "**Errors-in-variables models**" 
 
 ---
 # Interpreter les coefficients $\beta_i$:
@@ -1106,7 +1148,7 @@ Test pour la détection du forçage anthropique:
 
 $$\left\{
     \begin{array}{ll}
-       H_0 : & \beta_i = 0  \text{pour } i = 1, ..., N.\\
+       H_0 : & \beta_i = 0 \quad \text{pour } i = 1, ..., N.\\
        H_1 : & \beta_{ant} > 0, \quad \beta_i = 0  \quad \text{pour } i \neq. ant.
     \end{array}
 \right.$$
@@ -1115,8 +1157,8 @@ $$\left\{
 Test de cohérence:
 $$\left\{
     \begin{array}{ll}
-       H_0 : & \beta_i = 1  \text{pour } i = 1, ..., N.\\
-       H_1 : & \text{il existe au moins un } \    beta_{i} \neq 1.
+       H_0 : & \beta_i = 1 \quad  \text{pour } i = 1, ..., N.\\
+       H_1 : & \text{il existe au moins un } \beta_{i} \neq 1.
     \end{array}
 \right.$$
 
@@ -1134,14 +1176,18 @@ $$\left\{
 .center[<img src="Figs/DA/extreme_da_3.png" height="500" align="center">] 
 
 ---
-#  Definir l'événement
-1. Define the climate variable of interest. <em>e.g. temperature, precipitation, ... </em> 
+#  Définir l'événement
 
-2. Define the spatio-temporal aggregation. 	<em>e.g. maximum over Europe of 10-day temperature averages</em> 
+</br>
 
-3. Define the conditioning. <em>e.g. only during JJA, only for NAO+ circulation type, ...</em> 
 
-4. Define the statistics. <em>.e.g. typically,  probability of threshold exceedances</em> 
+1. Définir la variable climatique d'intérêt. <em>e.g. temperature, precipitation, ... </em> 
+
+2. Définir le degré d'aggrégation spatiale et temporelle. 	<em>e.g. maximum en  Europe de moyenne sur 10 jours des température</em> 
+
+3. Définir le conditionnement. <em>e.g. seulement en été, ou pour la circulation atmosphérique de type NAO+, ...</em> 
+
+4. Définir la statistique d'intérêt. <em>.e.g. dépassement de seuil</em> 
 
 
 .footnote[
@@ -1150,16 +1196,18 @@ $$\left\{
 
 ---
 # Estimer la probabilité d'un événement
-					
-1. Run climate simulations for the factual and counterfactual world. 
 
-2. Estimate the probability of the event in both world, $p_1$  and $p_0$:
+</br>
+
+1. Simuler le climat dans le monde factuel et contrefactuel. 
+
+2. Estimer la probabilité de l'événement dans les deux mondes, $p_1$  and $p_0$:
   <br>
-  - by counting the number of event that occured in the simulations, <br>
-		<em> may require a very large ensemble simulations to have an accurate estimate. </em>
+  - En comptant le nombre d'événements apparaissant dans les  simulations, <br>
+		<em> demande un large ensemble de simulation pour avoir une estimation précise. </em>
 
-	- by fitting a statistical model    
-		<em> require to make an assumption about the statistical distribution </em>
+	- En ajustant un modèle statistique    
+		<em> demande de faire des hypothèses sur la distribution des données. </em>
 		
 		
 ---
@@ -1187,7 +1235,7 @@ Generalized Extreme Value distribution (GEV)
 $$M_n = max\{X_1 , ... , X_n\},$$
 où $X_l, ... , X_n$, est une séquence de variables aléatoires indépendantes et de fonction de répartition $F$.
 
-**Theorem**
+**Théorème.**
 					
 Si il existe  une séquence de constantes $\{a_n > 0\}$ et  $\{b_n\}$ tel que
 $$\mathbb{P}\{(M_n - b_n)/a_n \leq z \} \rightarrow G(z) \text{ as } n \rightarrow \infty $$  
@@ -1206,10 +1254,10 @@ Generalized Pareto Distribution (GPD)
 
 $$(X - u) | (X > u) $$
 
-where X has a distribution function $F$
+où X a pour fonction de répartition $F$
 
-**Theorem**
-Si lorsque  $n \rightarrow \infty$, $M_n = max\{X_1 , ... , X_n\}$ converge en distribution vers $G$ appartenant à la famille GEV, alors pour $u$ assez grand,  la fonction de répartition de  $(X - u) | (X > u)$  peut être approximée par 
+**Théorème.**
+Si lorsque  $n \rightarrow \infty$, $M_n = \max\{X_1 , ... , X_n\}$ converge en distribution vers $G$ appartenant à la famille GEV, alors pour $u$ assez grand,  la fonction de répartition de  $(X - u) | (X > u)$  peut être approximée par 
 
 $$H(y) = 1 - \left(1 + \frac{\xi y}{\tilde{\sigma}} \right)^{-1/\xi}$$
 
@@ -1232,83 +1280,675 @@ définie sur $\{y : y > 0$ avec $(\xi y / \tilde{\sigma}) > 0 \}$
     
     
 ---
-# Cas d'étude: vague de chaleur de juillet 2019 Heatwave (Robin et Ribes, 2020)</h2>
+# Cas d'étude: vague de chaleur de 2003 `r Citep(myBib, "ribes_describing_2020")` 
 
 <h3> Variable of interest,  $Y$ </h3>
 					<p style="margin-left:2em">
-					Maximum annuelle des temperatures moyennes sur 3 jours sur la France (42–51∘ N, 5∘ W–10∘ E) <br>
+					Température moyenne sur le mois de juillet dans la région de Paris, i.e. [45N - 50N] x [0E -5E] <br>
 					Les températures sont exprimées en termes d'anomalies par rapport à la climatologie de  1961-1990.
 					</p>
 
 <h3> Event definition </h3>
 					<p style="margin-left:2em">
-					$$\{Y \geq u\}$$ where $u = 4.98 K$, l'anomalie maximum des temperatures moyénees sur 3 jours observée en juillet 2019.
+				  $$\{Y \geq u\}$$ where $u = +5.38^{\circ}$C, l'anomalie de température observée en aout 2003.
 					</p>
 					
 
 ---
-# Data 
+# Données
 
-Simulations from CNRM-CM5 model in the context of the Coupled Model Intercomparison Project 5 (CMIP5). 
+Simulations du modèles  CNRM-CM5  réalisées dans le cadre du projet "Coupled Model Intercomparison Project 5" (CMIP5). 
 
-Data are extracted for the experiences: 
+On extrait les données des expériences: 
 
-- <strong>historical</strong>, corresponding to the climate in the factual world (1850-2005)
+- <strong>historical</strong>, pour représenter le climat du monde factuel (1850-2005)
 
-- <strong>rcp8.5</strong>, corresponding to climate projections for the future of the factual world(2006-2100)
+- <strong>rcp8.5</strong>, qui sont des projections climatiques pour le future climat du monde factuel (2006-2100)
 
 
-<strong> Remark. </strong> In this study, no "historical-nat" simulations are used to represent the <font color="green"><strong> counterfactual world </strong></font> 
+<strong> Remark. </strong> Dans cette étude, pas de simulations "historical-nat" pour représenter le  <font color="green"><strong> monde countrefactuel  </strong></font> 
  
 					
 ---
 # Statistical Model for $Y$
 
-In the <font color="purple"><strong>factual world</strong></font>, 
+Pour le <font color="purple"><strong>monde factuel</strong></font>, 
 
 
-$$Y_t \sim  \mathrm{GEV} \{ \mu(t) = \mu_0 + \mu_1 \color{green}{X_{all}}(t), \sigma(t) = \exp(\sigma_0 + \sigma_1 \color{green}{X_{all}}(t)), \xi(t) = \xi_0\}$$ 
-where $\color{purple}{X_{all}}$ is the determimistic response of a climate variable $X$ to all external forcings. $X$ which is assumed to be representative of climate change magnitude over time.
+$$Y_t \sim  \mathcal{N}\{\mu_0 + \mu_1 \color{purple}{X_{all}}(t), \sigma_0 \left[1 + \sigma_1 \color{purple}{X_{all}}(t)\right]\}$$ 
+
+où $\color{purple}{X_{all}}$ est la réponse determimiste de la varible climatique variable $X$ aux forcages externes. On suppose que $X$ est un indicateur de l'intensité du changement climatique.
 
 $$X(t) = \color{purple}{X_{all}}(t) + \epsilon_t = \color{red}{X_{ant}}(t) + \color{green}{X_{nat}}(t) + \epsilon_t$$
 
-where $\epsilon_t$ is a noise representing climate internal variability.
+où $\epsilon_t$ est un bruit représentant la variabilité interne du climat.
 
-In the <font color="green"><strong>counterfactual world</strong></font>, 
+Pour le  <font color="green"><strong> monde countrefactuel</strong></font>, 
 
-$$Y_t \sim  \mathrm{GEV} \{ \mu(t) = \mu_0 + \mu_1 \color{green}{X_{nat}}(t), \sigma(t) = \exp(\sigma_0 + \sigma_1 \color{green}{X_{nat}}(t)), \xi(t) = \xi_0\}$$ 
+$$Y_t \sim  \mathcal{N}\{\mu_0 + \mu_1 \color{green}{X_{nat}}(t), \sigma_0 \left[1 + \sigma_1 \color{green}{X_{nat}}(t)\right]\}$$ 
+
 
 ---
-# Décomposition de la  covariable $X$
-$X_{ant}$ est la réponse de la température moyennne en Europe aux forcages anthropiques. $X_{ant}$ est modélisé par une spline.
+# Décomposition de la covariable $X$ 
 
-$X_{nat}$ est obtenue par un modèle de climat simpifié (Energy Balance Model, [Geoffroy et al. 2013](https://doi.org/10.1175/JCLI-D-12-00196.1))
-
-![](Figs/DA/ascmo-6-205-2020-f04-web.jpg)
+<img src="Figs/DA/covariable_decomposition.png" align="center" height=500> 
 
 ---
-# Ajustement du modèle GEV pour $Y$
+# Ajustement du model gaussien
 
-![](Figs/DA/ascmo-6-205-2020-f05.png)
+<img src="Figs/DA/nonstationnaryfit.png" align="center"  height=500> 
+					
+---
+# Probabilité de l'événement
 
+<img src="Figs/DA/p0p1PRt.png" height="550" align="center" > 
+					
+---
+# Et avec les autres modèles climatiques ?
 
---- 
-# Comparaison entre $p_0$ et $p_1$
+<img src="Figs/DA/PRallmodels.png" height="500" align="center" > 
 
-![](Figs/DA/ascmo-6-205-2020-f07.png)
 
 ---
-# Et les observations ?
+# Correction de bias
 
-paradigm known as models are statistically indistinguishable from the truth
-In more detail, we assume that (for i = 1, …, m)
-θ_i ~ N(μ_m, Σm), and \hatθ_i∣θ_i  ~N(θi,Σθ,i)leading to
-ˆθi~N(μm,Σm+Σθ,i)
+### Objectifs
 
--> cette syntese multibodel sert de prior pour les obersavions
+Une courte introduction pour 
+  
+  - présenter la philosophie et principes généraux
+  
+  - parler de quelques considérations pratique sur la correction de bias et son évaluation.
+  
+Donc, ce n'est pas un cours exhaustif: toutes les méthodes et variantes ne seront pas traitées.
 
-Y(o)
+---
+# Acknowledgement
 
-+ formules de bayes.
+Cette présentation est fortement inspirée par les présentations et les papiers de :
+
+- Mathieu Vrac (LSCE)
+
+- Bastien François (LSCE)
+
+- Douglas Maraun (Uni Graz)
+
+- IPCC AR6 WGI Ch10 <sup>1</sup>
+
+.footnote[[1] `r Citet(myBib, "IPCC_2021_WGI_Ch_10")` ]
+
+---
+# Les modèles de climat sont essentiels
+
+.left-column[
+     ![](Fis/BC/ModelingChain.png)
+]
+
+.right-column[
+Ils permettent
+  
+  - d'explorer les climats passés et futures,
+    
+  - de faire des expériences et tester des hypothèses,
+
+  - de servir de base pour développer des politiques d'atténuation et d'adaptation... 
+    
+... mais ils sont imparfaits et présentent des biais.
+]
+    
+
+---
+# Biais d'un modèle de climat 
+
+</br></br>
+
+> A climate model bias can be defined as the systematic  difference between a simulated climate statistic and the corresponding real-world  climate statistic
 
 
+`r Citet(myBib, "maraun_bias_2016")`]
+
+
+
+
+---
+# Example de biais
+
+<img src="Figs/BC/CMIP5_TPbiases.png" height="400"/>
+.footnote[source: `r Citet(myBib, "eyring_esmvaltool_2016")`]
+
+---
+# Example de biais
+
+![](Figs/BC/CMIP6_TXxTXn.png)
+.footnote[source: `r Citet(myBib, "li_changes_2021")`]
+
+---
+# Example de biais
+
+![](Figs/BC/CMIP6_R1XR5Xbiases.png)
+
+.footnote[source: `r Citet(myBib, "li_changes_2021")`]
+
+
+---
+# Le climat comme une variable aléatoire multivariée
+
+Un processus spatio-temporelle multivarié.
+
+Un modèle parfait ne serait biaisé pour aucune statistique.
+
+Le modèle de climat et le vrai climat devraient donc avoir la même distribution de probabilité.
+
+---
+# Bias correction (BC)
+
+> Bias adjustment is a  statistical post-processing technique used to   pragmatically reduce the mismatch between the statistics of climate model output and observations. 
+
+`r Citet(myBib, "IPCC_2021_WGI_Ch_10")`
+
+
+---
+# Model Output Statistics
+
+Trouver comment transformer une variable aléatoire $X$ en une variable aléatoire $Y$.
+
+Soit $X \sim F$ et $Y \sim G$,
+
+i.e. $X$ et $Y$ suivent les lois de probabilités qui sont définis respectivement par les fonctions de répartition $F$ et $G$.
+
+<br/>
+
+On cherche une transformation $T$ tel que
+
+$$ T(X) \buildrel d \over = Y \quad \Leftrightarrow \quad T(X) \sim G$$
+
+ou en tous cas que la loi de $T(X)$ se rapproche de la loi de $Y$.
+
+$$\mathrm{dist}( T(X), Y ) < \mathrm{dist}(X, Y)$$
+
+Par exemple, en corrigeant l'espérance ou la variance.
+
+ 
+
+---
+# En pratique
+
+On ne corrige pas toutes les variables d'un modèle de climat d'un coup. 
+
+On en choisit un petit nombre et on définit les propriétés statistiques à corriger en fonction de ce qui nous parait important.
+
+</br>
+On ne connait pas les distribution de $X$ et $Y$, on observe seulement des réalisations de  $X$ et $Y$.
+
+
+</br>
+Les observations et les simulations climatiques ne sont pas appareillé: il y a pas de correspondance jour à jour des évènements météorologiques
+$\rightarrow$ on travail sur uniquement sur les statistiques $\neq$ régression.
+
+---
+# Rappels sur les variables aléatoires continues
+
+La distribution d'une variable aléatoire univariée et continue $X$ est entièrement déterminée par sa fonction de répartition (cumulative distribution function) 
+
+$$F(x) = Pr (X \le x) $$
+    
+**Remarque** : on dit que $x_\alpha$ est le quantile de niveau $\alpha$ si $F(x_\alpha) = \alpha$
+    
+Si $F$ est une fonction continue, alors il existe une fonction positive $f$, appelé la densité de probabilité (probability density function) tel que
+
+$$Pr(a\le X\le b) = F(b) - F(a) = \int_a^b f(x)\,dx$$.
+
+---
+# cdf and pdf
+
+![](Figs/BC/cdfpdf-1.svg)
+
+---
+# Empirical estimator of the cdf
+
+Soit $(X_1, ..., X_n)$ des variables aléatoires réelles, indépendantes et identiquement distribuées (i.i.d.) ayant pour cdf $F$. 
+
+On définit la fonction de répartition empirique (empirical cumulative distribution function) par 
+
+$$\widehat F_n(x) =  \frac{1}{n} \sum_{i=1}^n \mathbf{1}_{X_i \le x}.$$
+
+![](Figs/BC/ecdf-1.svg)
+---
+# Egalité en distribution
+
+Deux variables aléatoires réelles X et Y sont égales en distribution si et seulement si elles ont la même fonction de répartition :
+    
+$$X \stackrel{d}{=} Y \Leftrightarrow \operatorname{P}(X \le x) = \operatorname{P}(Y \le x)\quad\text{for all }x$$
+Pour comparer deux échantillons, on peut se baser sur les diagnostiques graphiques suivants :  
+    
+![](Figs/BC/qqplot-1.svg)
+
+
+---
+# Univariate bias correction
+
+</br></br>
+
+- Ajustement de la moyenne
+
+- Quantile mapping
+
+---
+# Correction de la moyenne
+La variable large échelle $X$ est simplement transformée pour avoir la même espérance (moyenne) que la variable $Y$.
+
+Ainsi pour une valeur $X_{new}$, la prédiction pour la valeur de $Y_{new}$ correspondante est donnée par 
+$$\hat{Y}_{new} = X_{new} - \mathbb{E}[X] + \mathbb{E}[Y]$$
+
+En pratique, on remplace l'espérance par la moyenne empirique
+$$\hat{Y}_{new} = X_{new} - \bar{X} + \bar{Y}$$
+en définissant la moyenne empirique de $X$ par 
+$$\bar{X} = \frac{1}{n} \sum_{i=1}^{n} X_i$$
+
+---
+# Exemple synthetique
+
+![](Figs/BC/meancorrection.svg)
+
+---
+# La correction quantile-quantile (quantile mapping)
+
+Soit $X \sim F$ et $Y \sim G$
+
+On cherche une transformation $T$ tel que
+
+$$ T(X) \buildrel d \over = Y \quad \Leftrightarrow \quad T(X) \sim G$$
+
+Si $F$ et $G$ sont des fonctions de répartition continues et strictement monotones, alors 
+$$ G(Y) \buildrel d \over = U(0,1) \buildrel d \over = F(X) $$
+et 
+$$ Y  \buildrel d \over = G^{-1}(F(X)) \buildrel d \over = T(X) $$
+
+---
+# Exemple synthetique
+
+![](Figs/BC/qmapcorrection.svg)
+
+---
+# Dans un contexte de changement climatique
+
+
+</br></br>
+
+|     | Present        | Future                                    |
+|-----|----------------|-------------------------------------------|
+| GCM | $X_0 \sim F_0$ | $X_1 \sim F_1$,                           |
+| Obs | $Y_0 \sim G_0$ | $\color{orange}{Y_1 \sim G_1}$                    |
+
+.center[
+$\color{orange}{Y_0 \sim G_0}$ est inconnu.
+]
+---
+# Quantile Mapping en changement climatique
+
+On suppose que la fonction de correction est stationnaire:
+
+$$Y_0 \buildrel d \over = G_0^{-1}(F_0(X_0)) \buildrel d \over = T(X_0)$$
+$$\color{orange}{Y_1  \buildrel d \over = G_0^{-1}(F_0(X_1)) \buildrel d \over = T(X_1)}$$
+  
+$\Rightarrow$ on suppose les qq-plots stationnaires.
+    
+</br>
+L'évolution du GCM (de $F_0$ vers $F_1$) n'est pas prise en compte. 
+    
+La tendance du GCM sur les quantiles n'est par préservée après correction.
+
+
+---
+# CDF-t `r Citep(myBib, "michelangeli_probabilistic_2009")`
+
+> Cumulative Distribution Function - transform
+
+On suppose qu'il y a une fonction  $T:[0, 1] \rightarrow[0, 1]$ telle que pour  tout $x \in \mathbb{R}$
+    
+$$G_0(x) = T(F_0(x))$$
+et 
+
+$$\color{orange}{ G_1(x) = T(F_1(x))}$$
+
+$\Rightarrow$ stationnarité du the pp-plot.
+
+Une fonction $T$ qui satisfait  $G_0(x) = T(F_0(x))$ est
+$$T(u) = G_0(F_0^{-1}(u)).$$
+En effet, 
+$$G_0(x) = G_0 \circ F_0^{-1} \circ F_0(x).$$
+On suppose alors
+$$\color{orange}{ G_1(x) = G_0 \circ F_0^{-1} \circ F_1(x)}.$$
+---
+# CDF-t
+
+On applique alors le quantile mapping en se servant de  $F_1$ and $G_1$,
+
+$$\begin{align}
+  Y_1 & \buildrel d \over =\color{orange}{ G_1^{-1}} \circ F_1(X_1) \\
+      &  \buildrel d \over =\color{orange}{ (G_0 \circ F_0^{-1} \circ F_1)^{-1}} \circ F_1(X_1) \\
+      &  \buildrel d \over = \underbrace{\color{orange}{F_1^{-1} \circ F_0}}_{\text{apply GCM evolution}} \circ \underbrace{\color{orange}{G_0^{-1}} \circ F_1(X_1)}_{\text{QM into present obs}} \\
+\end{align}$$
+
+La tendance du GCM sur les quantiles n'est par préservée après correction.
+
+
+---
+# DQM `r Citep(myBib, "cannon_bias_2015")`
+
+>Quantile Delta Mapping
+    
+----
+Additive Quantile Delta Mapping:
+  
+$$\color{orange}{Y_1  \buildrel d \over =}  \underbrace{\color{orange}{G_0^{-1} \circ F_1(X_1)}}_{\text{QM into present obs}}   \color{orange}{+} \underbrace{ \color{orange}{X_1 - F_0^{-1} \circ F_1(X_1)}}_{\text{additive delta}}$$
+</br>
+
+----
+Multiplicative Quantile Delta Mapping:
+
+$$\color{orange}{Y_1  \buildrel d \over =}  \underbrace{\color{orange}{G_0^{-1} \circ F_1(X_1)}}_{\text{QM into present obs}}  \color{orange}{\times} \underbrace{ \color{orange}{\dfrac{X_1}{F_0^{-1} \circ F_1(X_1)}}}_{\text{multiplicative delta}}$$
+
+
+
+---
+# Quelques considérations pratiques
+
+----  
+
+$$\begin{align}
+\text{QM}:  \quad  &Y_1   \buildrel d \over = G_0^{-1}(\color{red}{F_0(X_1)})\\
+\text{CDFt}: \quad  &Y_1  \buildrel d \over = F_1^{-1} \circ \color{red}{ F_0 \circ G_0^{-1}} \circ F_1(X_1)
+\end{align}$$
+
+----
+Attention aux supports des distributions !
+
+En utilisant la fonction de répartition empirique, on a des supports finis
+
+Comment extrapoler en dehors de la plage de valeurs observées ?
+
+    
+---
+# Multivariate bias correction (MBC): corriger quoi ?
+
+- Variables individuelles (marginales), </br>
+  e.g. temperature à point de grille 
+
+- Structure de dépendance inter-variable, </br>
+  e.g. temperature et precipitation à un point de grille 
+  
+- Structure de dépendance spatiale,  </br>
+  e.g. correlation des températures entre deux points de grille.
+        
+- Structure de dépendance temporelle, </br>
+  e.g. persistence de jours secs, l'auto-correlation.
+
+
+---
+# MBC configurations
+
+
+<p align="center">
+<img src="Figs/BC/MBCconf.svg" height="600" />
+</p>
+
+
+
+---
+# Marginales et structure de dépendance.
+
+### Théorème de Sklar  (1959)
+
+Toute fonction de répartition multivariée, 
+$$H(x_1,\dots,x_d)=\Pr[X_1\leq x_1,\dots,X_d\leq x_d],$$
+d'un vecteur aléatoire $(X_1,X_2,\dots,X_d)$ 
+peut s'exprimer en fonction des ses lois marginales 
+$F_i(x_i) = \Pr[X_i\leq x_i]$ et d'une copule $C$,
+        $$ H(x_1,\dots,x_d) = C\left(F_1(x_1),\dots,F_d(x_d) \right).$$
+
+<\br>
+De plus, si la loi multivariée  $H$ admet une densité $h$, 
+$$h(x_1,\dots,x_d)= c(F_1(x_1),\dots,F_d(x_d))\cdot f_1(x_1)\cdot\dots\cdot f_d(x_d)$$ 
+
+où $c$ est la densité de probabilité associée à la copule $C$.
+
+---
+# Mêmes marginales mais copules différentes
+
+![](Figs/BC/decomp_samemarg_diffcop.svg)
+
+
+---
+# Mêmes copules mais marginales differentes
+![](Figs/BC/decomp_diffmarg_samecop.svg)
+
+
+---
+# Copule empirique
+
+La fonction copule,  $C:[0,1]^d\rightarrow [0,1]$, peut être estimer par la copule empirique:
+
+$$\begin{align}
+C^n(u_1,\dots,u_d) & = \frac{1}{n} \sum_{i=1}^n \mathbb{1}\left(\hat{F}_1(X_1^i)\leq u_1,\dots,\hat{F}_d(X_d^i)\leq u_d\right)\\
+& = \frac{1}{n} \sum_{i=1}^n \mathbb{1}\left(R_1^i/n
+\leq u_1,\dots, R_d^i/n \leq u_d\right)
+\end{align}$$
+
+où $R_k^i$ est le rang de l'observation $X_k^i$
+
+$$R_k^i=\sum_{j=1}^n \mathbb{1}(X_k^j\leq X_k^i)$$
+Regarder la structure de rangs des données revient à regarder la copule empirique.
+
+
+---
+# R2D2 `r Citep(myBib, "vrac_multivariate_2018")`
+
+>Rank Resampling for Distributions and Dependences bias correction
+
+    
+Rééchantilloner les simulations des modèles pour qu'ils aient la même copule empirique que les observations.
+ 
+On suppose que la structure de dépendance est stationnaire.
+
+![](Figs/BC/R2D2_step0.png)
+
+
+---
+# R2D2
+
+Calculer la copule empirique.
+
+<p align="center">
+<img src="Figs/BC/R2D2_step1.png" height="400" />
+</p>
+
+---
+# R2D2
+
+Choisir une dimension de référence, ici la dimension 1.
+
+<p align="center">
+<img src="Figs/BC/R2D2_step2.png" height="400" />
+</p>
+
+---
+# R2D2
+
+Reproduire l'association de rangs des observations.
+
+<p align="center">
+<img src="Figs/BC/R2D2_step3.png" height="400" />
+</p>
+
+---
+# R2D2
+
+Reproduire l'association de rangs des observations.
+
+<p align="center">
+<img src="Figs/BC/R2D2_step4.png" height="400" />
+</p>
+
+---
+# R2D2
+
+Reproduire l'association de rangs des observations.
+
+<p align="center">
+<img src="Figs/BC/R2D2_step5.png" height="400" />
+</p>
+
+---
+# R2D2
+
+Remettre les marginales.
+
+<p align="center">
+<img src="Figs/BC/R2D2_step6.png" height="400" />
+</p>
+
+---
+# Quelques remarques
+
+Quand on modifie la structure de rangs entre les variables ou les sites,
+
+&nbsp;&nbsp;  $\rightarrow$ on modifie la séquence temporelle de chaque variables,
+  
+  
+&nbsp;&nbsp;  $\rightarrow$ on modifie les propriétés temporelles de ces variables.
+    
+    
+Avec R2D2, seule la dimension de référence conserve sa structure temporelle de rang, donc les propriétés temporelle du GCM. 
+
+
+---
+# dOTC  `r Citep(myBib, "robin_multivariate_2019")`
+
+> dynamical Optimal Transport Correction
+
+----
+
+### Optimal Transport
+
+Trouver un plan de transport $\pi^*(x, y)$ qui déplace les masses de $x$ vers $y$ de telle sorte que la distribution  $\mu$ soit transformée en une distribution  $\nu$ tout en minimisant la somme des coûts de transport $c(x, y)$
+    
+$$\pi^*(x, y) = \inf_{\pi \in \Pi(\mu, \nu)} \iint c(x,y) \pi(x,y) \, \mathrm{d} x \, \mathrm{d} y$$ 
+    
+où $\Pi (\mu ,\nu )$ est l'ensemble des distribution jointe ayant pour lois marginales $\mu$  et  $\nu$.
+
+---
+# Transport plan
+
+
+<p align="center">
+<img src="Figs/BC/Transport-plan.svg" height="400" />
+<br/>
+<a href="https://commons.wikimedia.org/wiki/File:Transport-plan.svg"> source: Wikimedia Commons</a>
+
+Les distributions de $\mu$ and $\nu$ sur les axes x et y, et une distribution jointe entre $\mu$ and $\nu$ qui définit un plan de transport possible. 
+
+---
+# Optimal Transport plan
+
+<p align="center">
+<img src="Figs/BC/example_1d_transport_plan.png" height="400" />
+<br/>
+<a href="http://alexhwilliams.info/itsneuronalblog/2020/10/09/optimal-transport/"> source: alexhwilliams.infos</a>
+
+    
+**Remarque**. En une dimension, la solution du transport optimal est la correction quantile-quantile.
+
+
+---
+# dOTC
+
+![](Figs/BC/OTC.png)
+
+---
+# dOTC and Climate Change
+<p align="center">
+<img src="Figs/BC/dOTC.png" height="500" />
+</p>
+
+
+
+---
+# BC and ML
+
+Ces dernières années, beaucoup de progrès dans les modèles génératifs (e.g. GAN, VAE, normalizing flow, diffusion models)
+
+En particulier pour les problèmes de Unpaired Image-to-Image Translation (e.g.`r Citet(myBib, "ZhuPIE17")`). 
+
+![](Figs/BC/GAN_paintings.png)
+
+---
+# GANs for bias correction  `r Citep(myBib, "francois_multivariate_2020",  .opts = list(max.names = 1))`
+
+![](Figs/BC/GAN_GCM.png)
+
+
+
+---
+# BC: évaluation en période historique
+
+  - Importance d'avoir une période de calibration et de validation,
+  i.e jeux d'apprentissage et de test.
+    
+  - Evaluer les incertitudes liée à l'échantillonage et le sur-apprentissage.
+  
+  - Certaines méthodes reproduisent parfaitement les observations en période de calibration.
+  
+  - Que se passe-t-il quand on a plus de simulations que d'observation ? 
+    
+.footnote[voir :  `r Citet(myBib, c("kim_bias_2015", "vaittinada_ayar_ensemble_2021", "bonnet_sensitivity_2022"),  .opts = list(max.names = 1))`]
+
+---
+# Critères d'évaluation
+
+  Des distances entre distributions multivariée existent ...
+  
+  &nbsp;&nbsp; ... MAIS  ...
+     
+  ... pas facile de tester l'égalité en distribution de deux échantillons multivariés.
+  En particulier en grande dimension (curse of dimensionality).
+ 
+  </br>
+  
+  En générale, on sélectionne un certain nombre de critères facile à calculer et à tester, e.g.
+  
+  - **marginales** : moyenne, variance, quantiles, fréquences d’occurrence...
+  
+  - **dépendence** : corrélation de Spearman ou Pearson  (temporal/ spatial/ intervariable)... 
+
+---
+# Evaluation des projections climatiques
+
+  Pas possible sans faire d'hypothèses supplémentaires !
+
+  #### Paradigme:
+  > models are statistically indistinguishable from the truth.
+
+  i.e. les observations et les modèles sont générés par la même variable aléatoire.
+  
+  &nbsp;&nbsp; $\rightarrow$ perfect model experiment.
+
+---
+# References
+
+```{r, echo=FALSE, results="asis"}
+PrintBibliography(myBib, start = 1, end = 5)
+```
+---
+# References
+
+```{r, echo=FALSE, results="asis"}
+PrintBibliography(myBib, start = 6, end = 10)
+```
+
+---
+# References
+
+```{r, echo=FALSE, results="asis"}
+PrintBibliography(myBib, start = 11, end = 15)
+```
