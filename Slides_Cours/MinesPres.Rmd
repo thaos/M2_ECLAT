@@ -12,17 +12,35 @@ output:
       countIncrementalSlides: false
   
 
+---
+# Avant propos
+
+
+Master en statistiques + thèse à CLS en sciences de environnement + Post-doc au CNRM.
+
+Ingénieur de recherche au LSCE : Laboratoire des Sciences du Climat et de l’Environnement
+
+Je travaille avec les chercheurs de l’équipe ESTIMR : 
+Extrêmes : Statistiques, Impacts et Régionalisation
+
+Ce cours reflète mon expérience personnelle dans les sciences du climat. Donc, ce n'est pas un cours exhaustif et surement avec des lacunes.
+
+Merci donc aux différentes rencontres qui m'ont permit d'alimenter ce cours.
+
+Une grande partie est notamment inspirée des cours de [Julien Cattiaux](https://www.umr-cnrm.fr/spip.php?article629). 
 
 ---
 # Plan du jour
 
-- Etude du climat: pourquoi les statistiques ?
+- Etude du climat : pourquoi les statistiques ?
 
-- Focus sur deux domaines de la climatologie statistique:
-  - La correction de biais
-  - La détection et attribution du changement climatique
+- Focus sur deux domaines de la climatologie statistique :
 
-- TP si le temps le permet
+  - la correction de biais,
+  
+  - la détection et attribution du changement climatique.
+
+- TP sur l'attribution d'événements, si le temps le permet.
 
 ```{r, load_refs, include=FALSE, cache=FALSE}
 library(RefManageR)
@@ -36,22 +54,7 @@ BibOptions(check.entries = FALSE,
 myBib <- ReadBib("./biblio.bib", check = FALSE)
 ```
 
----
-# Avant propos
 
-
-Master en statistiques + thèse à CLS en sciences de environnent + Post-doc au CNRM
-
-Ingénieur de recherche au LSCE (Laboratoire des Sciences du Climat et de l’Environnement)
-
-Je travaille avec les chercheurs de l’équipe ESTIMR: 
-Extrêmes : Statistiques, Impacts et Régionalisation
-
-Ce cours reflète mon expérience personnelle dans les sciences du climat. Donc pas un cours exhaustif et surement avec des lacunes.
-
-Merci donc aux différentes rencontres qui m'ont permit d'alimenter ce cours.
-
-Une grande partie est notamment inspirée des cours de [Julien Cattiaux](https://www.umr-cnrm.fr/spip.php?article629). 
 
 
 
@@ -144,6 +147,17 @@ composantes du système climatique.
 ---
 # Systèmes déterministes et aléas
 
+<p align="center">
+<img src="Figs/MinesParisTech/climatesim_chaos.png"  height="500" />
+<br/>
+<a href="https://journals.ametsoc.org/view/journals/bams/96/8/bams-d-13-00255.1.xml">credits: Kay et al. 2015
+</a>
+</p>
+
+
+---
+# Systèmes déterministes et aléas
+
 Lorsque l'on simule l'évolution du climat au 20ème siècle, on ne connaît pas assez précisément les conditions initiales de l'ère pré-industrielle. 
 
 Par exemple, la trajectoire de la température moyenne globale ne peut donc être exactement reproduite. 
@@ -155,18 +169,8 @@ Par exemple, la trajectoire de la température moyenne globale ne peut donc êtr
 <a href="(https://www.ipcc.ch/site/assets/uploads/2018/02/WG1AR5_Chapter10_FINAL.pdf">IPCC AR5, Fig. 10.1</a>
 </p>
 
----
-# Systèmes déterministes et aléas
 
-<p align="center">
-<img src="Figs/MinesParisTech/climatesim_chaos.png"  height="500" />
-<br/>
-<a href="https://journals.ametsoc.org/view/journals/bams/96/8/bams-d-13-00255.1.xml">credits: Kay et al., “The Community Earth System Model (CESM) Large Ensemble Project: A Community Resource for Studying Climate Change in
-the Presence of Internal Climate Variability.”
-</a>
-</p>
 ---
-
 # Modélisation statistique
 
 
@@ -205,11 +209,52 @@ avec par exemple
 
 .footnote[repris de Cattiaux, Système Climatique IENM, [notes](https://www.umr-cnrm.fr/IMG/pdf/cattiaux_climat_notes_de_cours-2.pdf
 ) et  [cours 3/10](https://www.umr-cnrm.fr/IMG/pdf/cattiaux_ienm_climat_03_print.pdf) (1A)]
+
 ---
+# Différentes échelles temporelles
+<p align="center">
+<img src="Figs/MinesParisTech/init_vs_boundary.png"/>
+<br/>
+<a href="IPCC"</a>
+</p>
 
+---
+# Bilan d'énergie
+<p align="center">
+<img src="Figs/MinesParisTech/bilan_energie.png"/>
+<br/>
+<a href="">source: IPCC AR6 & @YannWeb</a>
+</p>
+
+
+---
+# Bilan radiatif
+<p align="center">
+<img src="Figs/MinesParisTech/bilan-climatique.png"/>
+<br/>
+<a href="">source: IPCC AR4 </a>
+</p>
+
+---
+# Forçages radiatifs
+
+> Le terme de forçage climatique (ou forçage radiatif) désigne une perturbation d’origine extérieure au système climatique qui impacte son bilan radiatif. 
+
+
+<a href="https://www.climat-en-questions.fr/reponse/fonctionnement-climat/forcage-climatique-par-david-saint-martin-olivier-boucher">climat-en-questions.fr </a>
+
+---
+# Forçages radiatifs
+
+
+<p align="center">
+<img src="Figs/MinesParisTech/forcages_bilan.jpeg" height="500" />
+<br/>
+<a href="">source:IPCC AR6  </a>
+</p>
+
+---
 # Modélisation statisque
-
-
 
 <br/>
  
@@ -251,49 +296,6 @@ $$
 &\color{blue}{\text{bruit}}
 \end{aligned}
 $$
-
----
-# Différentes échelles temporelles
-<p align="center">
-<img src="Figs/MinesParisTech/init_vs_boundary.png"/>
-<br/>
-<a href="IPCC"</a>
-</p>
-
----
-# Bilan d'énergie
-<p align="center">
-<img src="Figs/MinesParisTech/bilan_energie.png"/>
-<br/>
-<a href="">source:IPCC  </a>
-</p>
-
-
----
-# Bilan radiatif
-<p align="center">
-<img src="Figs/MinesParisTech/bilan-climatique.png"/>
-<br/>
-<a href="">source:IPCC AR6 & @YannWeb </a>
-</p>
-
----
-# Forçages radiatifs
-
-> Le terme de forçage climatique (ou forçage radiatif) désigne une perturbation d’origine extérieure au système climatique qui impacte son bilan radiatif. 
-
-
-<a href="https://www.climat-en-questions.fr/reponse/fonctionnement-climat/forcage-climatique-par-david-saint-martin-olivier-boucher">climat-en-questions.fr </a>
-
----
-# Forçages radiatifs
-
-
-<p align="center">
-<img src="Figs/MinesParisTech/forcages_bilan.jpeg" height="500" />
-<br/>
-<a href="">source:IPCC AR6  </a>
-</p>
 
 ---
 # Modéliser le bruit
@@ -392,13 +394,17 @@ plot(X, xlab = "", , type = "l", ylim = ylim, main = "non-stationnarité en depe
 ``` 
 
 ---
-# Le climat est un sytème à très grandes dimensions
+# Le climat, un système à très grandes dimensions
 
-Processus spatial et temporelle multivariées et à grande dimension.
+<br/><br/>
 
-Comment l'appréhendez, le décrire, le visualizez ?
+Processus spatial et temporel multivarié et à grande dimension.
 
-Quelles sont les principaux "mode de variabilité" ? quelles sont les différentes échelles de temps et d'espaces
+Comment le décrire, le visualiser et l'analyser ?
+
+Quelles sont les principaux "mode de variabilité" ? 
+
+Quelles sont les différentes échelles de temps et d'espaces des principaux processus ?
 
 ---
 # Differentes échelles spatio-temporelles
@@ -407,12 +413,7 @@ Quelles sont les principaux "mode de variabilité" ? quelles sont les différent
 <br/>
 </p>
 
-
-<<<<<<< HEAD
 ---
-=======
---- 
->>>>>>> 710e2cd3a11e59cedff1a73e4d08f41844703dc4
 # Mode de variabilité
 
 > Structure spatio temporelle sous
@@ -422,7 +423,8 @@ des téléconnexions. On considère souvent qu’un mode de variabilité constit
 le produit d’une configuration spatiale du climat et d’une série chronologique
 d’un indice climatique associé.
 
---- 
+[IPCC, 2013: Annex III: Glossary](https://www.ipcc.ch/site/assets/uploads/2018/02/WG1AR5_AnnexIII_FINAL.pdf)
+---
 # Téléconnexion
 
 > Téléconnexion Association statistique de variables climatiques entre des
@@ -432,6 +434,7 @@ l’échelle d’un bassin, de la variabilité océan-atmosphère, les trains d�
 Rossby, les courants-jets et les rails des dépressions des latitudes moyennes,
 etc.
 
+[IPCC, 2013: Annex III: Glossary](https://www.ipcc.ch/site/assets/uploads/2018/02/WG1AR5_AnnexIII_FINAL.pdf)
 ---
 # ENSO
 
@@ -460,9 +463,11 @@ etc.
 ---
 # En résumé
 
-La modélisation statistique du climat est une approximation du système climatique.
+Le système climatique est une système complexe et chaotique que l'on peut voir (approximer) comme un processus stochastiques à grande dimension.
 
-A quel point cette approximation doit être fidèle à la réalité?
+Les statistiques nous aident à décrire et à analyser ce système.
+
+La modélisation statistique du climat est seulement une approximation: à quel point cette approximation doit être fidèle à la réalité ?
 
 Selon l'application, choisir ce que l'on considère comme un signal déterministe ou comme du bruit:
 
@@ -474,6 +479,8 @@ A partir de quels jeux de données ?
 
 ---
 # Les données et leurs incertitudes.
+
+<br/><br/>
 
 Les observations
 
@@ -651,93 +658,6 @@ Envisat Altimetry | Specified | Observed | Comments
 <br/>
 </p>
 
----
-# Interpolation 
-
-**Exemple: inverse distance weighting**
-
-A general form of finding an interpolated value $u$ at a given point $x$ based on samples $u_i=u(x_i)$ for $i=1,2,...,N$ using IDW is an interpolating function:
-
-$$y(\mathbf{x}) = \begin{cases}
- \dfrac{\sum_{i = 1}^{N}{ w_i(\mathbf{x}) y_i } }{ \sum_{i = 1}^{N}{ w_i(\mathbf{x}) } }, & \text{if } d(\mathbf{x},\mathbf{x}_i) \neq 0 \text{ for all } i, \\
- y_i, & \text{if } d(\mathbf{x},\mathbf{x}_i) = 0 \text{ for some } i,
-\end{cases}$$
-
-where
-$$w_i(\mathbf{x}) =  \frac{1}{d(\mathbf{x},\mathbf{x}_i)^p}$$
-
-[Source: Wikipedia](https://en.wikipedia.org/wiki/Inverse_distance_weighting)
-
----
-# Exemple synthétique
-
-```{r, echo=FALSE, fig.height=4, dev='svg'}
-n <- 5
-X <- c(-8, -2, 1, 4, 5, 7, 9)
-Y <- X^2
-par(mar = c(4, 4, 1, .1))
-plot(X, Y, pch = 19, las = 1, xlim = c(-10, 10), ylim = c(-5, 102), cex = 2, main = "IWD interpolation for p = 1")
-Xnew <- seq(-10, 10, by = 0.1)
-Ynew <- numeric(length(Xnew))
-col <- numeric(length(Xnew))
-for( i in seq_along(Xnew)){
-  dist <- abs(X - Xnew[i])
-  weight <- 1/dist
-  weight <- weight/sum(weight)
-  Ynew[i] <- sum(weight * Y)
-}
-lines(Xnew, Ynew, col = "orange", lty = 2)
-lines(Xnew, Xnew^2, col = "black", lty = 2)
-points(Xnew[Xnew == 2], Ynew[Xnew == 2], col = "orange", cex = 2, pch = 19)
-
-segments(2, -10, 2, 110, col = "red4", lty = 2)
-
-text(2, Ynew[Xnew == 2], col = "red4", labels = "Ŷnew", pos = 2)
-text(2, -5, col = "red4", labels = "Xnew", pos = 2)
-
-dist <- abs(X - 2)
-weight <- 1/dist
-weight <- weight/sum(weight)
-weight <- weight/max(weight)
-Ynew[i] <- sum(weight * Y)
-for( i in seq_along(X)){
-  arrows(2, Y[i], X[i], Y[i], code = 3, lty = 1, lwd = weight[i], length = 0.1, angle = 25)
-}
-``` 
-
----
-# Qualité de l'interpolation
-<p align="center">
-  <strong>Evaluation par leave-one-out <a href="https://en.wikipedia.org/wiki/Cross-validation_(statistics)"> cross-validation </a> </strong>
-</p>
-
-```{r, echo=FALSE, fig.height=4, dev='svg'}
-n <- 5
-X <- c(-8, -2, 1, 4, 5, 7, 9)
-Y <- X^2
-par(mar = c(4, 4, 1, .1), mfrow = c(2, 2))
-for(iloo in c(1, 3, 5, 7)){
-  plot(X, Y, pch = 19, las = 1, xlim = c(-10, 10), ylim = c(-5, 102), cex = 2, main = "IWD interpolation for p = 1")
-  Xnew <- seq(-10, 10, by = 0.1)
-  Ynew <- numeric(length(Xnew))
-  col <- numeric(length(Xnew))
-  for( i in seq_along(Xnew)){
-    dist <- abs(X[-iloo] - Xnew[i])
-    weight <- 1/dist
-    weight <- weight/sum(weight)
-    Ynew[i] <- sum(weight * Y[-iloo])
-  }
-  lines(Xnew, Ynew, col = "orange", lty = 2)
-  lines(Xnew, Xnew^2, col = "black", lty = 2)
-  points(X[iloo], Y[iloo], col = "grey", cex = 2, pch = 19)
-  points(Xnew[Xnew == X[iloo]], Ynew[Xnew == X[iloo]], col = "orange", cex = 2, pch = 19)
-  
-  segments(X[iloo], -10, X[iloo], 110, col = "red4", lty = 2)
-  
-  text(X[iloo], Ynew[Xnew == X[iloo]], col = "red4", labels = "Ŷnew", pos = 2)
-  text(X[iloo], -5, col = "red4", labels = "Xnew", pos = 2)
-}
-``` 
 
 ---
 # Qualité de l'interpolation
@@ -899,10 +819,12 @@ A voir également: cours de [Brian E. J. Rose](https://brian-rose.github.io/Clim
 
 ---
 # Aucun modèle n'est parfait
-
+ 
+ <br/><br/>
+ 
 Quelles approximations est-on prêt à faire, en particulier vis-à-vis de la résolution et des processus explicitement modélisés ?
 
-Où se situent les simulations d'un modèle par rapport aux autres?
+Où se situent les simulations d'un modèle par rapport aux autres? et par rapport aux observations ?
 
 ---
 # Reanalysis
@@ -1006,14 +928,15 @@ Les statistiques peuvent être un outil privilégié pour exprimer et prendre en
 
 ### Objectifs
 
-Présenter la problématique de la détection et attribution
+Présenter la problématique de la détection et attribution.
 
-Présenter quelques facons de répondre à ce type de problématique
+Présenter quelques facons de répondre à ce type de problématique.
 
-En grande partie, on parlera des travaux de
- - l'équipe ESTIMR du LSCE <\br>   
+En grande partie, on parlera des travaux de :
+ - l'équipe ESTIMR du LSCE <br/>
  *Pascal Yiou, Davide Faranda, Philippe Naveau, Robert Vautard* 
- - l'équipe AMACS du CNRM <\br>
+ 
+ - l'équipe AMACS du CNRM <br/>
  *Aurelien Ribes, Julien Cattiaux*
 
 Pour creuser d'avantage voir les publications des deux équipe, 
@@ -1039,7 +962,9 @@ degré de confiance statistique (Hegerl et al., 2010).
 ---
 # Attribution et causalité
 
-Determiner s'il y a un lien de causalité entre les activités humaines et les variations du climat: notions d'intervention et de countrefactuel</p><br>
+Déterminer s'il y a un lien de causalité entre les activités humaines et les variations du climat:
+
+.center[$\Rightarrow$ notions d'intervention et de countrefactuel]
 
 
 .pull-left[
@@ -1100,13 +1025,13 @@ Utiliser les modèles de climats pour faire des expériences contrôlées.
 
 </br>
 
-1.  Montrer que le signal n’est pas cohérent avec le seule variabilité interne. (détection)
+1.  Montrer que le signal n’est pas cohérent avec le seule variabilité interne (détection).
 
 2.  Montrer que le signal est cohérent avec la réponse attendue à un
-ensemble de causes qui contient i (cohérence avec les causes).
+ensemble de causes qui contient la cause $i$ (cohérence avec les causes).
 
 3.  Montrer que le signal n’est pas cohérent avec la réponse attendue sans les
-causes i (autres causes possibles ?).    
+causes $i$ (autres causes possibles ?).    
 
 ---
 # Avec les mains 
@@ -1122,7 +1047,7 @@ $$Y^* = \mu + \sum_{i = n}^N \beta_i X_i^*$$
 où $Y^*$ est la réponse forcée du climat à l'ensemble des forçages.
 $X_i^*$ est la réponse du climat au forçage $i$.
 
-On fait donc l'hypothèse d'additivité des réponses aux différents forçages (pas d'interraction par exemple)
+On fait donc l'hypothèse d'additivité des réponses aux différents forçages. Par exemple, pas d’interaction entre les différents forçages.
 
 
 ---
@@ -1142,7 +1067,7 @@ $Y$ l'état du climat à un instant donnée, donc influencé par la variabilité
 
 $X_i$ est une réponse au forçages $i$ simulé par un modèle climat, qui est donc aussi influencé par la variabilité interne $\varepsilon_{x_i}$.
 
-C'est donc un modèle de type "**Errors-in-variables models**" 
+C'est donc un modèle de type "**Errors-in-variables models**".
 
 ---
 # Interpreter les coefficients $\beta_i$:
@@ -1185,13 +1110,17 @@ $$\left\{
 </br>
 
 
-1. Définir la variable climatique d'intérêt. <em>e.g. temperature, precipitation, ... </em> 
+1. Définir la variable climatique d'intérêt. <br/>
+<em>e.g. temperature, precipitation, ... </em> 
 
-2. Définir le degré d'aggrégation spatiale et temporelle. 	<em>e.g. maximum en  Europe de moyenne sur 10 jours des température</em> 
+2. Définir le degré d'aggrégation spatiale et temporelle. <br/>
+<em>e.g. maximum en  Europe de moyenne sur 10 jours des température</em> 
 
-3. Définir le conditionnement. <em>e.g. seulement en été, ou pour la circulation atmosphérique de type NAO+, ...</em> 
+3. Définir le conditionnement. <br/>
+<em>e.g. seulement en été, ou pour la circulation atmosphérique de type NAO+, ...</em> 
 
-4. Définir la statistique d'intérêt. <em>.e.g. dépassement de seuil</em> 
+4. Définir la statistique d'intérêt. <br/> 
+<em>.e.g. dépassement de seuil</em> 
 
 
 .footnote[
@@ -1321,7 +1250,7 @@ Pour le <font color="purple"><strong>monde factuel</strong></font>,
 
 $$Y_t \sim  \mathcal{N}\{\mu_0 + \mu_1 \color{purple}{X_{all}}(t), \sigma_0 \left[1 + \sigma_1 \color{purple}{X_{all}}(t)\right]\}$$ 
 
-où $\color{purple}{X_{all}}$ est la réponse determimiste de la varible climatique variable $X$ aux forcages externes. On suppose que $X$ est un indicateur de l'intensité du changement climatique.
+où $\color{purple}{X_{all}}$ est la réponse déterministe de la variable climatique variable $X$ aux forçages externes. On suppose que $X$ est un indicateur de l'intensité du changement climatique.
 
 $$X(t) = \color{purple}{X_{all}}(t) + \epsilon_t = \color{red}{X_{ant}}(t) + \color{green}{X_{nat}}(t) + \epsilon_t$$
 
@@ -1358,11 +1287,11 @@ $$Y_t \sim  \mathcal{N}\{\mu_0 + \mu_1 \color{green}{X_{nat}}(t), \sigma_0 \left
 
 ### Objectifs
 
-Une courte introduction pour 
+Une courte introduction pour :
   
-  - présenter la philosophie et principes généraux
+  - présenter la philosophie et principes généraux,
   
-  - parler de quelques considérations pratique sur la correction de bias et son évaluation.
+  - parler de quelques considérations pratiques sur la correction de biais et son évaluation.
   
 Donc, ce n'est pas un cours exhaustif: toutes les méthodes et variantes ne seront pas traitées.
 
@@ -1373,7 +1302,7 @@ Cette présentation est fortement inspirée par les présentations et les papier
 
 - Mathieu Vrac (LSCE)
 
-- Bastien François (LSCE)
+- Bastien François (LSCE -> KNMI)
 
 - Douglas Maraun (Uni Graz)
 
@@ -1385,7 +1314,7 @@ Cette présentation est fortement inspirée par les présentations et les papier
 # Les modèles de climat sont essentiels
 
 .left-column[
-     ![](Fis/BC/ModelingChain.png)
+     ![](Figs/BC/ModelingChain.png)
 ]
 
 .right-column[
@@ -1437,6 +1366,8 @@ Ils permettent
 ---
 # Le climat comme une variable aléatoire multivariée
 
+<br/></br>
+
 Un processus spatio-temporelle multivarié.
 
 Un modèle parfait ne serait biaisé pour aucune statistique.
@@ -1445,6 +1376,9 @@ Le modèle de climat et le vrai climat devraient donc avoir la même distributio
 
 ---
 # Bias correction (BC)
+
+<br/></br>
+
 
 > Bias adjustment is a  statistical post-processing technique used to   pragmatically reduce the mismatch between the statistics of climate model output and observations. 
 
@@ -1477,8 +1411,10 @@ Par exemple, en corrigeant l'espérance ou la variance.
 ---
 # En pratique
 
+</br>
 On ne corrige pas toutes les variables d'un modèle de climat d'un coup. 
 
+</br>
 On en choisit un petit nombre et on définit les propriétés statistiques à corriger en fonction de ce qui nous parait important.
 
 </br>
@@ -1610,10 +1546,7 @@ La tendance du GCM sur les quantiles n'est par préservée après correction.
 
 On suppose qu'il y a une fonction  $T:[0, 1] \rightarrow[0, 1]$ telle que pour  tout $x \in \mathbb{R}$
     
-$$G_0(x) = T(F_0(x))$$
-et 
-
-$$\color{orange}{ G_1(x) = T(F_1(x))}$$
+$$G_0(x) = T(F_0(x)) \quad \text{et} \quad \color{orange}{ G_1(x) = T(F_1(x))}.$$
 
 $\Rightarrow$ stationnarité du the pp-plot.
 
@@ -1677,16 +1610,16 @@ Comment extrapoler en dehors de la plage de valeurs observées ?
 # Multivariate bias correction (MBC): corriger quoi ?
 
 - Variables individuelles (marginales), </br>
-  e.g. temperature à point de grille 
+  *e.g. température à point de grille.*
 
 - Structure de dépendance inter-variable, </br>
-  e.g. temperature et precipitation à un point de grille 
+  *e.g. temperature et precipitation à un point de grille.* 
   
 - Structure de dépendance spatiale,  </br>
-  e.g. correlation des températures entre deux points de grille.
+  *e.g. correlation des températures entre deux points de grille.*
         
 - Structure de dépendance temporelle, </br>
-  e.g. persistence de jours secs, l'auto-correlation.
+  *e.g. persistence de jours secs, l'auto-correlation.*
 
 
 ---
@@ -1711,7 +1644,7 @@ peut s'exprimer en fonction des ses lois marginales
 $F_i(x_i) = \Pr[X_i\leq x_i]$ et d'une copule $C$,
         $$ H(x_1,\dots,x_d) = C\left(F_1(x_1),\dots,F_d(x_d) \right).$$
 
-<\br>
+<br/>
 De plus, si la loi multivariée  $H$ admet une densité $h$, 
 $$h(x_1,\dots,x_d)= c(F_1(x_1),\dots,F_d(x_d))\cdot f_1(x_1)\cdot\dots\cdot f_d(x_d)$$ 
 
@@ -1739,9 +1672,9 @@ C^n(u_1,\dots,u_d) & = \frac{1}{n} \sum_{i=1}^n \mathbb{1}\left(\hat{F}_1(X_1^i)
 \leq u_1,\dots, R_d^i/n \leq u_d\right)
 \end{align}$$
 
-où $R_k^i$ est le rang de l'observation $X_k^i$
+où $R_k^i$ est le rang de l'observation $X_k^i$,
 
-$$R_k^i=\sum_{j=1}^n \mathbb{1}(X_k^j\leq X_k^i)$$
+$$R_k^i=\sum_{j=1}^n \mathbb{1}(X_k^j\leq X_k^i).$$
 Regarder la structure de rangs des données revient à regarder la copule empirique.
 
 
@@ -1822,7 +1755,7 @@ Quand on modifie la structure de rangs entre les variables ou les sites,
   
 &nbsp;&nbsp;  $\rightarrow$ on modifie les propriétés temporelles de ces variables.
     
-    
+<br/>  
 Avec R2D2, seule la dimension de référence conserve sa structure temporelle de rang, donc les propriétés temporelle du GCM. 
 
 
@@ -1870,7 +1803,8 @@ Les distributions de $\mu$ and $\nu$ sur les axes x et y, et une distribution jo
 ![](Figs/BC/OTC.png)
 
 ---
-# dOTC and Climate Change
+# dOTC en changement climatique
+
 <p align="center">
 <img src="Figs/BC/dOTC.png" height="500" />
 </p>
@@ -1882,9 +1816,9 @@ Les distributions de $\mu$ and $\nu$ sur les axes x et y, et une distribution jo
 
 Ces dernières années, beaucoup de progrès dans les modèles génératifs (e.g. GAN, VAE, normalizing flow, diffusion models)
 
-En particulier pour les problèmes de Unpaired Image-to-Image Translation (e.g.`r Citet(myBib, "ZhuPIE17")`). 
+En particulier pour les problèmes de "Unpaired Image-to-Image Translation" (e.g.`r Citet(myBib, "ZhuPIE17")`). 
 
-![](Figs/BC/GAN_paintings.png)
+![](Figs/BC/GAN_Paintings.png)
 
 ---
 # GANs for bias correction  `r Citep(myBib, "francois_multivariate_2020",  .opts = list(max.names = 1))`
