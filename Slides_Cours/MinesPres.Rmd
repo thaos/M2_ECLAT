@@ -664,6 +664,7 @@ Envisat Altimetry | Specified | Observed | Comments
 
 <p align="center">
 <strong>Evaluation par <a href="https://en.wikipedia.org/wiki/Cross-validation_(statistics)"> cross-validation </a> </strong>
+<br/>
 <img src="Figs/CRU_interp_MSE.png"/>
 <br/>
 <img src="Figs/CRU_interp_corr.png"/>
@@ -964,7 +965,8 @@ degré de confiance statistique (Hegerl et al., 2010).
 
 Déterminer s'il y a un lien de causalité entre les activités humaines et les variations du climat:
 
-.center[$\Rightarrow$ notions d'intervention et de countrefactuel]
+&nbsp;&nbsp;&nbsp;&nbsp;
+$\Rightarrow$ notions d'intervention et de countrefactuel !
 
 
 .pull-left[
@@ -1855,7 +1857,7 @@ En particulier pour les problèmes de "Unpaired Image-to-Image Translation" (e.g
   
   En générale, on sélectionne un certain nombre de critères facile à calculer et à tester, e.g.
   
-  - **marginales** : moyenne, variance, quantiles, fréquences d’occurrence...
+  - **marginales** : moyenne, variance, quantiles, fréquences occurrence...
   
   - **dépendence** : corrélation de Spearman ou Pearson  (temporal/ spatial/ intervariable)... 
 
